@@ -11,11 +11,11 @@ public class B_Tester {
 	public static void main(String[] args) throws FileNotFoundException, IOException { new B_Tester().run(); }
 	public void run() throws FileNotFoundException, IOException {
 
-		B_Graphics.setup();
+		Graphics.setup();
 		
 		float mesh_width = 310.5f;
 		float mesh_height = 310.5f;
-		B_Mesh mesh = new B_Mesh(new float[] {
+		Mesh mesh = new Mesh(new float[] {
 				mesh_width,  mesh_height, 0.0f,  // top right
 				mesh_width,  0, 			0.0f,  // bottom right
 			    0, 			  0, 			0.0f,  // bottom left
@@ -31,12 +31,12 @@ public class B_Tester {
 				    1, 2, 3    // second triangle
 				});
 
-		while (B_Graphics.isActive()) {
-			B_Graphics.queue(mesh, new Matrix4f(), new Vector4f(1,1,1,1), new B_Texture("khronos.png"));
-			B_Graphics.render();
+		while (Graphics.isActive()) {
+			Graphics.queue(mesh, new Matrix4f(), new Vector4f(1,1,1,1), new Texture("khronos.png"));
+			Graphics.render();
 		}
 		
-		B_Graphics.quit();
+		Graphics.quit();
 	}
 
 }

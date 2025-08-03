@@ -1,6 +1,6 @@
 package musicplayer.ext;
 
 
-public class TextRenderer {
+public class B_Text {
 	// TODO
 }

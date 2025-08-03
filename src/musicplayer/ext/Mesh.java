@@ -2,8 +2,7 @@ package musicplayer.ext;
 
 import static org.lwjgl.opengl.GL40.*;
 
-public class B_Mesh {
-	
+public class Mesh {
 	
 	/*
 	 * Since meshes are used only to draw shapes and text, 
@@ -16,11 +15,11 @@ public class B_Mesh {
 	int vbo = -1; 	// Vertices
 	int tbo = -1; 	// Texture coordinates
 	int ibo = -1; 	// Indices
-	int cbo = -1; 	// Colors
+	int cbo = -1; 	// Colors (TODO)
 	
 	int count = -1;
 
-	public B_Mesh(float[] vertices, float[] texcoords, int[] indices) {
+	public Mesh(float[] vertices, float[] texcoords, int[] indices) {
 		
 		vao = glGenVertexArrays();
 		glBindVertexArray(vao);
@@ -28,7 +27,7 @@ public class B_Mesh {
 		vbo = bufferFloats(vertices, 0, 3);
 		tbo = bufferFloats(texcoords, 1, 2);
 		
-		int ibo = glGenBuffers();
+		ibo = glGenBuffers();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);  
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
 		

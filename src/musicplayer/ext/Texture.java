@@ -11,19 +11,17 @@ import java.nio.ByteBuffer;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.stb.STBImage;
 
-public class B_Texture {
+public class Texture {
 	
 	int texture;
 	
-	public B_Texture(String filename) throws FileNotFoundException, IOException {
+	public Texture(String filename) throws FileNotFoundException, IOException {
 		
 		// https://learnopengl.com/Getting-started/Textures
 		texture = glGenTextures();
-		glBindTexture(GL_TEXTURE_2D, texture)
-		;
+		glBindTexture(GL_TEXTURE_2D, texture);
+		
 		// set the texture wrapping/filtering options (on the currently bound texture object)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
