@@ -35,7 +35,7 @@ public class Graphics {
 	 *  (Called in a callback set in the Window class.) */
 	static void fixViewScale(int width, int height) {
 		GL11.glViewport(0, 0, width, height);
-		Matrix4f world_transform = new Matrix4f().ortho(0, width, 0, height, -1024f, 1024f);
+		Matrix4f world_transform = new Matrix4f().ortho(0, width, height, 0, -1024f, 1024f);
 		Shader.uniform("world_transform", world_transform);
 	}
 

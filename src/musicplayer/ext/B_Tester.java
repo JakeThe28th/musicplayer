@@ -30,9 +30,15 @@ public class B_Tester {
 				    0, 1, 3,   // first triangles
 				    1, 2, 3    // second triangle
 				});
+		
+		Text textrenderer = new Text();
 
 		while (Graphics.isActive()) {
-			Graphics.queue(mesh, new Matrix4f(), new Vector4f(1,1,1,1), new Texture("khronos.png"));
+			
+			Graphics.queue(mesh, new Matrix4f().translate(0, 0, 2), new Vector4f(1,1,1,1), new Texture("khronos.png"));
+
+			textrenderer.text(10, 100, 10, "Hello, World!");
+			
 			Graphics.render();
 		}
 		

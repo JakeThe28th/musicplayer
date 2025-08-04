@@ -18,13 +18,14 @@ public class Shader {
 						layout (location = 0) in vec3 v_postion;
 						layout (location = 1) in vec2 v_texcoord;
 
-						uniform mat4 world_transform;						
+						uniform mat4 world_transform;	
+						uniform mat4 transform;											
 						out vec2 f_texcoord;
 
 						void main()
 						{
 							f_texcoord = v_texcoord;
-						    gl_Position = world_transform * vec4(v_postion, 1.0);
+						    gl_Position = world_transform * transform * vec4(v_postion, 1.0);
 						}
 					""");
 			int fragment_shader = create(GL40.GL_FRAGMENT_SHADER, 
@@ -39,6 +40,7 @@ public class Shader {
 						{
 						    //FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
 							FragColor = texture(texture_image, f_texcoord);
+							if (FragColor.a < 0.001) discard;
 						} 
 					""");
 			
