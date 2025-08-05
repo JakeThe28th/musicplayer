@@ -21,6 +21,81 @@ public class Text {
 	 * the shader, so the RAM cost will just 
 	 * have to be eaten. */
 	
+	int font_size = 24;
+	//Font font = new Font("SansSerif", Font.PLAIN, font_size);
+	Font font = new Font("Consolas", Font.PLAIN, font_size);
+	
+	HashMap<Integer, TextureInfo> 	textures = new HashMap<Integer, TextureInfo>();
+	
+	/* Offset for drawing so it's drawn at the 'top left corner' of the character, 
+	 * relative to the font size. Characters will probably have different heights 
+	 * and stuff, the important part is that the location is consistent, so it 
+	 * won't match the corner of some or most characters */
+	public static final float CORNER_X_OFFSET = 0; TODO
+	public static final float CORNER_Y_OFFSET = 0; TODO
+	
+	/* The height of a typical character in this font, relative to the font size.
+	 * Again, consistency is important. Some characters like g or Q have parts
+	 * that go below the usual baseline of a character, so this value is gonna
+	 * be taller than most characters need. */
+	public static final float CHARACTER_HEIGHT = 0; TODO
+	
+	/* The width of each character in this font, relative to the font size.
+	 * Consolas is monospace, so the width is the same for every character. 
+	 * Kerning can be dealt with later...  */
+	public static final float CHARACTER_WIDTH = 0.70f;
+
+	/** Draw one line of text, where 0, 0 is the 'top left' of the character*<br>
+	 *  *Not exactly the top left, but close enough... */
+	protected int[] text_aligned(int x, int y, int z, String text) {
+		int xx = x;
+		for (int i = 0; i < text.length(); i++) {
+			character(xx, y, z, text.charAt(i));
+			xx += font_size * CHARACTER_WIDTH;
+		}
+	} TODO
+	
+	/** Draw one line of text */
+	protected void text(int x, int y, int z, String text) {
+		int xx = x;
+		for (int i = 0; i < text.length(); i++) {
+			character(xx, y, z, text.charAt(i));
+			xx += font_size * CHARACTER_WIDTH;
+		}
+	}
+	
+	/** Draw one character of text */
+	protected void character(int x, int y, int z, char character) {
+		RenderQueue.queue(
+				mesh(character), 
+				new Matrix4f().translate(x, y, z), 
+				new Vector4f(1,1,1,1), 
+				texture()
+				);
+	}
+	
+	private Mesh mesh(char character) {
+		if (textures.get(font_size) == null) {
+			textures.put(font_size, new TextureInfo(font_size));
+		}
+		TextureInfo info = textures.get(font_size);
+		if (info.meshes.get(character) == null) {
+			info.make(character);
+		}
+		return info.meshes.get(character);
+	}
+
+	private Texture texture() {
+		if (textures.get(font_size) == null) {
+			textures.put(font_size, new TextureInfo(font_size));
+		}
+		TextureInfo info = textures.get(font_size);
+		return info.gltexture();
+	}
+		
+	/** Stores texture and mesh information for a
+	 *  texture sheet of characters for a specific
+	 *  font size */
 	class TextureInfo {
 		
 		public static final int CHARCOUNT = 16; // character amount = 16 * 16 = 256
@@ -33,6 +108,7 @@ public class Text {
 		public Texture gltexture() {
 			if (changed) {
 			  try {
+				if (gltexture != null) gltexture.free();
 				gltexture = new Texture(texture);
 				changed = false;
 			  } catch (IOException e) { e.printStackTrace(); }
@@ -64,9 +140,11 @@ public class Text {
 			int real_x = unit_x + offset;
 			int real_y = unit_y + (unit_size-offset);
 			
+			Font f = font.deriveFont(font_size);
+			
 			Graphics2D g = texture.createGraphics();
 				g.setColor(Color.white);
-		    	g.setFont(font);
+		    	g.setFont(f);
 		    	g.drawString(character+"", real_x, real_y);
 		    	
 		    int w = texture.getWidth();
@@ -95,54 +173,6 @@ public class Text {
 
 		}
 		
-	}
-	
-	int font_size = 24;
-	//Font font = new Font("SansSerif", Font.PLAIN, font_size);
-	Font font = new Font("Consolas", Font.PLAIN, font_size);
-	
-	HashMap<Integer, TextureInfo> 	textures = new HashMap<Integer, TextureInfo>();
-	
-	public Mesh mesh(char character) {
-		
-		if (textures.get(font_size) == null) {
-			textures.put(font_size, new TextureInfo(font_size));
-		}
-		
-		TextureInfo info = textures.get(font_size);
-		
-		if (info.meshes.get(character) == null) {
-			info.make(character);
-		}
-		
-		return info.meshes.get(character);
-	}
-
-	private Texture texture() {
-		if (textures.get(font_size) == null) {
-			textures.put(font_size, new TextureInfo(font_size));
-		}
-		
-		TextureInfo info = textures.get(font_size);
-		return info.gltexture();
-	}
-	
-	public void text(int x, int y, int z, String text) {
-		int xx = x;
-		for (int i = 0; i < text.length(); i++) {
-			character(xx, y, z, text.charAt(i));
-			xx += font_size * 0.70;
-		}
-	}
-	
-	public void character(int x, int y, int z, char character) {
-		Graphics.queue(
-				mesh(character), 
-				new Matrix4f().translate(x, y, z), 
-				new Vector4f(1,1,1,1), 
-				texture()
-				);
-
-	}
+	}	
 	
 }

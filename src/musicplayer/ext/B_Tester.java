@@ -32,14 +32,17 @@ public class B_Tester {
 				});
 		
 		Text textrenderer = new Text();
+		
+		// GEE WIZ I WONDER IF RECREATING A TEXTURE EVERY FRAME AND NOT FREEING IT USES RAM
+		Texture khronos = new Texture("khronos.png");
 
 		while (Graphics.isActive()) {
 			
-			Graphics.queue(mesh, new Matrix4f().translate(0, 0, 2), new Vector4f(1,1,1,1), new Texture("khronos.png"));
+			RenderQueue.queue(mesh, new Matrix4f().translate(0, 0, 2), new Vector4f(1,1,1,1), khronos);
 
 			textrenderer.text(10, 100, 10, "Hello, World!");
 			
-			Graphics.render();
+			RenderQueue.render();
 		}
 		
 		Graphics.quit();

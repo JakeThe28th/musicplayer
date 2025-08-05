@@ -59,4 +59,8 @@ public class Texture {
 		return buffer;
 	}
 
+	public void free() {
+		glDeleteTextures(texture);
+	}
+
 }
