@@ -20,7 +20,7 @@ public class Texture {
 		this(ImageIO.read(new FileInputStream(filename)));
 	}
 	
-	public Texture(BufferedImage image) throws FileNotFoundException, IOException {
+	public Texture(BufferedImage image) {
 		
 		// https://learnopengl.com/Getting-started/Textures
 		texture = glGenTextures();
