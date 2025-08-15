@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2i;
 import org.joml.Vector4f;
 
 public class Text {
@@ -21,7 +22,7 @@ public class Text {
 	 * the shader, so the RAM cost will just 
 	 * have to be eaten. */
 	
-	int font_size = 24;
+	int font_size = 20;
 	//Font font = new Font("SansSerif", Font.PLAIN, font_size);
 	Font font = new Font("Consolas", Font.PLAIN, font_size);
 	
@@ -31,33 +32,33 @@ public class Text {
 	 * relative to the font size. Characters will probably have different heights 
 	 * and stuff, the important part is that the location is consistent, so it 
 	 * won't match the corner of some or most characters */
-	public static final float CORNER_X_OFFSET = 0; TODO
-	public static final float CORNER_Y_OFFSET = 0; TODO
+	public static final float CORNER_X_OFFSET = -(12f / 24f);
+	public static final float CORNER_Y_OFFSET = -(16f / 24f);
 	
 	/* The height of a typical character in this font, relative to the font size.
 	 * Again, consistency is important. Some characters like g or Q have parts
 	 * that go below the usual baseline of a character, so this value is gonna
 	 * be taller than most characters need. */
-	public static final float CHARACTER_HEIGHT = 0; TODO
+	public static final float CHARACTER_HEIGHT = 1.1f;
 	
 	/* The width of each character in this font, relative to the font size.
 	 * Consolas is monospace, so the width is the same for every character. 
 	 * Kerning can be dealt with later...  */
-	public static final float CHARACTER_WIDTH = 0.70f;
+	public static final float CHARACTER_WIDTH = 0.60f;
 
-	/** Draw one line of text, where 0, 0 is the 'top left' of the character*<br>
-	 *  *Not exactly the top left, but close enough... */
-	protected int[] text_aligned(int x, int y, int z, String text) {
-		int xx = x;
+	public Vector2i size(String text) {
+		int xx = 0;
 		for (int i = 0; i < text.length(); i++) {
-			character(xx, y, z, text.charAt(i));
 			xx += font_size * CHARACTER_WIDTH;
 		}
-	} TODO
+		return new Vector2i(xx, (int) (font_size * CHARACTER_HEIGHT));
+	}	
 	
-	/** Draw one line of text */
+	/** Draw one line of text, where 0, 0 is the 'top left' of the character*<br>
+	 *  *Not exactly the top left, but close enough... */
 	protected void text(int x, int y, int z, String text) {
-		int xx = x;
+		int xx = x + (int) (CORNER_X_OFFSET * font_size);
+			y  = y + (int) (CORNER_Y_OFFSET * font_size);
 		for (int i = 0; i < text.length(); i++) {
 			character(xx, y, z, text.charAt(i));
 			xx += font_size * CHARACTER_WIDTH;
@@ -107,11 +108,9 @@ public class Text {
 		
 		public Texture gltexture() {
 			if (changed) {
-			  try {
 				if (gltexture != null) gltexture.free();
 				gltexture = new Texture(texture);
 				changed = false;
-			  } catch (IOException e) { e.printStackTrace(); }
 			}
 			return gltexture;
 		}
@@ -173,6 +172,6 @@ public class Text {
 
 		}
 		
-	}	
-	
+	}
+
 }
