@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import musicplayer.audio.AudioDevice;
+import musicplayer.ext.Shapes;
 import musicplayer.gui.G_ScrollableList;
 import musicplayer.gui.G_Song;
 import musicplayer.gui.GraphicsHandler;
@@ -76,6 +77,9 @@ public class SnowMusicClient {
 		playlist_gui = new G_ScrollableList();
 		for (Song song : Library.getPlaylist(playlist).listSongs()) {
 			playlist_gui.add(new G_Song(song.name()));
+			playlist_gui.add(new G_Song(song.name())); // TEMP (TODO) 
+			playlist_gui.add(new G_Song(song.name())); // TEMP (TODO) 
+			playlist_gui.add(new G_Song(song.name())); // TEMP (TODO) 
 		}
 	}
 	
@@ -86,9 +90,12 @@ public class SnowMusicClient {
 	
 	G_ScrollableList playlist_gui;
 	public void draw_playlist_view() {
-		GraphicsHandler.text(10, 10, 0, playlist);
-		
-		int yy = 30;
+		GraphicsHandler.color(0.15f, 0.25f, 0.5f, 1);
+		GraphicsHandler.rect(0, 0, GraphicsHandler.width(), 30, 0);
+		GraphicsHandler.color(1, 0.75f, 0.75f, 1);
+		GraphicsHandler.text(10, 10, 2, playlist);
+		GraphicsHandler.color(1, 1, 1, 1);
+		int yy = 35;
 		playlist_gui.draw(0, yy, GraphicsHandler.width(), GraphicsHandler.height(), 0);
 	}
 	

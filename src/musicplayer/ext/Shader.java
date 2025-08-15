@@ -38,9 +38,10 @@ public class Shader {
 						uniform vec4 mix_color;
 
 						// (for the scrolling song titles)
-						uniform float fade_transparent_x = 0;
-						uniform float fade_opaque_x = 0;
-
+						uniform int first_fade_transparent_x = 0;
+						uniform int first_fade_opaque_x = 0;
+						uniform int second_fade_transparent_x = 0;
+						uniform int second_fade_opaque_x = 0;
 						void main()
 						{
 						    //FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
@@ -48,10 +49,18 @@ public class Shader {
 	
 							if (FragColor.a < 0.001) discard;
 
-							// Fading (for the scrolling song titles)
-							float t = (gl_FragCoord.x - fade_transparent_x) / (fade_opaque_x - fade_transparent_x);
-							FragColor.a = clamp(t, 0, 1);
-							if (FragColor.a < 0.001) discard;
+							float t = 0;
+							if (gl_FragCoord.x < second_fade_opaque_x) {
+								// Fading (for the left of scrolling song titles)
+								t = (gl_FragCoord.x - first_fade_transparent_x) / (first_fade_opaque_x - first_fade_transparent_x);
+								FragColor.a = clamp(t, 0, 1);
+								if (FragColor.a < 0.001) discard;
+							} else {
+								// Fading (for the right of scrolling song titles)
+								t = (gl_FragCoord.x - second_fade_transparent_x) / (second_fade_opaque_x - second_fade_transparent_x);
+								FragColor.a = clamp(t, 0, 1);
+								if (FragColor.a < 0.001) discard;
+							}
 						} 
 					""");
 			GL40.glEnable(GL40.GL_BLEND);  
@@ -92,6 +101,13 @@ public class Shader {
 				vector.y, 
 				vector.z, 
 				vector.w
+			);
+	}
+	
+	protected static void uniform(String uniform, int integer) {
+		GL40.glUniform1i(
+				GL40.glGetUniformLocation(shader(), uniform), 
+				integer
 			);
 	}
 	
