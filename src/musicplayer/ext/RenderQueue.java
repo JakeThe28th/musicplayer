@@ -30,6 +30,7 @@ public class RenderQueue {
 
 			GL40.glDrawElements(GL_TRIANGLES, state.mesh.count(), GL_UNSIGNED_INT, 0);
 		}
+		queue.clear();
 		Window.tick();
 	}
 	

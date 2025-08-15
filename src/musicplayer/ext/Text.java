@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.HashMap;
 
 import org.joml.Matrix4f;
@@ -22,7 +21,7 @@ public class Text {
 	 * the shader, so the RAM cost will just 
 	 * have to be eaten. */
 	
-	int font_size = 20;
+	int font_size = 18;
 	//Font font = new Font("SansSerif", Font.PLAIN, font_size);
 	Font font = new Font("Consolas", Font.PLAIN, font_size);
 	
@@ -64,7 +63,8 @@ public class Text {
 			y  = y + (int) (CORNER_Y_OFFSET * font_size);
 		for (int i = 0; i < text.length(); i++) {
 			character(xx, y, z, text.charAt(i));
-			xx += font_size * CHARACTER_WIDTH;
+			// even though it doesn't throw an error, not casting here before adding to x causes weird drift
+			xx += (int) (font_size * CHARACTER_WIDTH);
 		}
 	}
 	
