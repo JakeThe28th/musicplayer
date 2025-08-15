@@ -1,5 +1,4 @@
 package musicplayer.ext;
 
-public class Input {
-todo
+public class B_Input {
 }

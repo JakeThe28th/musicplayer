@@ -4,14 +4,10 @@ import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.opengl.GL11.*;
-import java.util.ArrayList;
-
 import org.joml.Matrix4f;
-import org.joml.Vector4f;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL40;
 
 public class Graphics {
 	

@@ -13,8 +13,6 @@ import org.lwjgl.opengl.GL40;
 
 public class RenderQueue {
 	
-	// --==+  render queue  +==-- //
-	
 	private static record RenderState(Mesh mesh, Matrix4f transform, Vector4f color, Texture texture) { }
 	
 	static ArrayList<RenderState> queue = new ArrayList<RenderState>();
@@ -29,7 +27,7 @@ public class RenderQueue {
 			if (state.texture != null) {
 				glBindTexture(GL_TEXTURE_2D, state.texture.texture);
 			}
-			
+
 			GL40.glDrawElements(GL_TRIANGLES, state.mesh.count(), GL_UNSIGNED_INT, 0);
 		}
 		Window.tick();
