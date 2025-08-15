@@ -54,9 +54,12 @@ public class Text {
 		return new Vector2i(xx, (int) (font_size * CHARACTER_HEIGHT));
 	}	
 	
+	Vector4f color = new Vector4f(1,1,1,1);
+	public void color(Vector4f new_color) { color = new_color; }
+	
 	/** Draw one line of text, where 0, 0 is the 'top left' of the character*<br>
 	 *  *Not exactly the top left, but close enough... */
-	protected void text(int x, int y, int z, String text) {
+	public void text(int x, int y, int z, String text) {
 		int xx = x + (int) (CORNER_X_OFFSET * font_size);
 			y  = y + (int) (CORNER_Y_OFFSET * font_size);
 		for (int i = 0; i < text.length(); i++) {
@@ -70,7 +73,7 @@ public class Text {
 		RenderQueue.queue(
 				mesh(character), 
 				new Matrix4f().translate(x, y, z), 
-				new Vector4f(1,1,1,1), 
+				color, 
 				texture()
 				);
 	}

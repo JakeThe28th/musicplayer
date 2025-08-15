@@ -11,9 +11,9 @@ import org.lwjgl.opengl.GL11;
 
 public class Graphics {
 	
-	public static void setup() {
+	public static void setup(int width, int height, String name) {
 		init();
-		Window.init(400, 400, "Graphicics tesntmeoewo");
+		Window.init(width, height, name);
 		Graphics.clearColor(0, 0, 0, 0.8f);
 		Shader.shader();
 	}

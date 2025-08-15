@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import disaethia.engine.audio.AudioSource;
-import disaethia.io.audio.pcm.WAVFile;
+import musicplayer.audio.AudioSource;
+import musicplayer.audio.io.pcm.WAVFile;
 
 public class Song {
 

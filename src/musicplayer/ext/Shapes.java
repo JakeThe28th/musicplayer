@@ -35,6 +35,7 @@ public class Shapes {
 	// -- Drawing stuff -- //
 	
 	static Vector4f color = new Vector4f(1,1,1,1);
+	public static void color(Vector4f new_color) { color = new_color; }
 	
 	public static void rect(int left, int top, int right, int bottom, int depth) {
 		Matrix4f transform = new Matrix4f().translate(left, top, depth).scale(right-left, bottom-top, 1);

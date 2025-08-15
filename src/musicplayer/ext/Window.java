@@ -17,8 +17,8 @@ public class Window {
 	private static long 		window;
 	private static boolean 		should_close = false;
 	
-	protected static int 		window_height;
-	protected static int 		window_width;
+	public static int 			window_height;
+	public static int 			window_width;
 
 	protected static void init(int width, int height, String title) {
 		// Configure GLFW

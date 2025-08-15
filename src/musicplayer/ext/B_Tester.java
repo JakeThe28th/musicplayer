@@ -15,7 +15,7 @@ public class B_Tester {
 	public static void main(String[] args) throws FileNotFoundException, IOException { new B_Tester().run(); }
 	public void run() throws FileNotFoundException, IOException {
 
-		Graphics.setup();
+		Graphics.setup(400, 400, "Graphicics tesntmeoewo");
 		
 		float mesh_width = 310.5f;
 		float mesh_height = 310.5f;

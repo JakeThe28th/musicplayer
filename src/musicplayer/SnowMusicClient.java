@@ -4,19 +4,13 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import disaethia.engine.audio.AudioDevice;
-import disaethia.engine.audio.AudioSource;
-import disaethia.engine.graphics.Camera;
-import disaethia.engine.graphics.Window;
-import disaethia.engine.graphics.records.WindowHint;
-import disaethia.engine.wrapper.Graphics;
-import disaethia.libraries.snow2d.text.PixelTextRenderer;
-import disaethia.utility.Log;
+import musicplayer.audio.AudioDevice;
 import musicplayer.gui.G_ScrollableList;
 import musicplayer.gui.G_Song;
 import musicplayer.gui.GraphicsHandler;
 import musicplayer.parts.Library;
 import musicplayer.parts.Song;
+import musicplayer.utility.Log;
 
 public class SnowMusicClient {
 	
@@ -62,7 +56,7 @@ public class SnowMusicClient {
 
 		// Main loop
 		while (GraphicsHandler.isOpen()) {
-			GraphicsHandler.clear();
+			//GraphicsHandler.clear();
 			
 			//Library.update();
 
@@ -70,7 +64,9 @@ public class SnowMusicClient {
 			if (current_view == VIEW_PLAYLIST) draw_playlist_view();
 			if (current_view == VIEW_LIBRARY) draw_playlist_view();
 			
-			GraphicsHandler.refresh();
+			GraphicsHandler.render();
+			
+			//GraphicsHandler.refresh();
 		}
 		
 	}
@@ -92,7 +88,7 @@ public class SnowMusicClient {
 	public void draw_playlist_view() {
 		GraphicsHandler.text(10, 10, 0, playlist);
 		
-		int yy = 20;
+		int yy = 30;
 		playlist_gui.draw(0, yy, GraphicsHandler.width(), GraphicsHandler.height(), 0);
 	}
 	

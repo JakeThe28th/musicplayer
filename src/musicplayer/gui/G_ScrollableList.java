@@ -8,7 +8,7 @@ public class G_ScrollableList {
 	
 	int scroll = 0;
 	
-	public static final int ITEM_HEIGHT = 10;
+	public static final int ITEM_HEIGHT = 20;
 	public static final int SCROLL_BAR_WIDTH = 10;
 
 	

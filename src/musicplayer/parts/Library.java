@@ -10,8 +10,7 @@ import java.util.Set;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import disaethia.engine.audio.AudioSource;
-import disaethia.io.audio.pcm.WAVFile;
+import musicplayer.audio.AudioSource;
 
 /** Stores the information for all loaded songs */
 public class Library {
