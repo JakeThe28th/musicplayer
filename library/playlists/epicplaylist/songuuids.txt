@@ -1,0 +1,3 @@
+defaultalbum:awesomedefaultsong
+defaultalbum:pumpkin
+awesome-other-album:wowow
