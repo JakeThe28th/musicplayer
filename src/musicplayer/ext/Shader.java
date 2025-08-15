@@ -15,7 +15,7 @@ public class Shader {
 			int vertex_shader = create(GL40.GL_VERTEX_SHADER, 
 					"""
 						#version 330 core
-						layout (location = 0) in vec3 v_postion;
+						layout (location = 0) in vec3 v_position;
 						layout (location = 1) in vec2 v_texcoord;
 
 						uniform mat4 world_transform;	
@@ -25,7 +25,7 @@ public class Shader {
 						void main()
 						{
 							f_texcoord = v_texcoord;
-						    gl_Position = world_transform * transform * vec4(v_postion, 1.0);
+						    gl_Position = world_transform * transform * vec4(v_position, 1.0);
 						}
 					""");
 			int fragment_shader = create(GL40.GL_FRAGMENT_SHADER, 
@@ -36,14 +36,26 @@ public class Shader {
 						uniform sampler2D texture_image;
 						in vec2 f_texcoord;
 						uniform vec4 mix_color;
-						
+
+						// (for the scrolling song titles)
+						uniform float fade_transparent_x = 0;
+						uniform float fade_opaque_x = 0;
+
 						void main()
 						{
 						    //FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
 							FragColor = texture(texture_image, f_texcoord) * mix_color;
+	
+							if (FragColor.a < 0.001) discard;
+
+							// Fading (for the scrolling song titles)
+							float t = (gl_FragCoord.x - fade_transparent_x) / (fade_opaque_x - fade_transparent_x);
+							FragColor.a = clamp(t, 0, 1);
 							if (FragColor.a < 0.001) discard;
 						} 
 					""");
+			GL40.glEnable(GL40.GL_BLEND);  
+			GL40.glBlendFunc(GL40.GL_SRC_ALPHA, GL40.GL_ONE_MINUS_SRC_ALPHA);
 			
 			shader = GL40.glCreateProgram();
 			GL40.glAttachShader(shader, vertex_shader);
