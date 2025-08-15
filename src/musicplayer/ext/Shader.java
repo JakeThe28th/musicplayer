@@ -35,11 +35,12 @@ public class Shader {
 
 						uniform sampler2D texture_image;
 						in vec2 f_texcoord;
+						uniform vec4 mix_color;
 						
 						void main()
 						{
 						    //FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
-							FragColor = texture(texture_image, f_texcoord);
+							FragColor = texture(texture_image, f_texcoord) * mix_color;
 							if (FragColor.a < 0.001) discard;
 						} 
 					""");
