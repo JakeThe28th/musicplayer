@@ -8,7 +8,6 @@ public class G_ScrollableList {
 	
 	int scroll = 0;
 	
-	public static final int ITEM_HEIGHT = 20;
 	public static final int SCROLL_BAR_WIDTH = 10;
 
 	
@@ -17,8 +16,8 @@ public class G_ScrollableList {
 		// Draw list
 		int yy = scroll;
 		for (G_Element element : elements) {
-			element.draw(left+SCROLL_BAR_WIDTH, top+yy, right-SCROLL_BAR_WIDTH, top+yy+ITEM_HEIGHT, depth + 1);
-			yy+=ITEM_HEIGHT;
+			element.draw(left+SCROLL_BAR_WIDTH, top+yy, right-SCROLL_BAR_WIDTH, top+yy+element.height(), depth + 1);
+			yy+=element.height();
 		}
 		// Draw scrollbar
 		// TODO

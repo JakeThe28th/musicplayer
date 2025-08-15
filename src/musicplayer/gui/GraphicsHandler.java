@@ -2,6 +2,7 @@ package musicplayer.gui;
 
 import java.io.IOException;
 
+import org.joml.Vector2i;
 import org.joml.Vector4f;
 
 import musicplayer.ext.Graphics;
@@ -30,6 +31,12 @@ public class GraphicsHandler {
 	public static void 		render() { RenderQueue.render(); }
 	
 	/* -- Drawing stuffs -- */
+	
+	public static Vector2i size(String string) {
+		return text.size(string);
+	}
+	
+	/* -- -- */
 		
 	public static void color(float r, float g, float b, float a) {
 		Shapes.color(new Vector4f(r,g,b,a));

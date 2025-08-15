@@ -12,4 +12,6 @@ public interface G_Element {
 	
 	public void draw(int left, int top, int right, int bottom, int depth);
 	
+	public int height();
+	
 }
