@@ -10,7 +10,9 @@ import java.nio.IntBuffer;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
+
 
 public class Window {
 
@@ -77,13 +79,16 @@ public class Window {
 		
 		Graphics.fixViewScale(window_width, window_height);
 		
+		Input.setCallbacks(window);
+		
 	}
 
 	protected static void tick() {
 		glfwSwapBuffers(window); // swap the color buffers
+		
+		Input.clearKeys();
 
-		// Poll for window events. The key callback above will only be
-		// invoked during this call.
+		// Poll for window events.
 		glfwPollEvents();
 	}
 
