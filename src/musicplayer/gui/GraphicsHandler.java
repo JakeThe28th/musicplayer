@@ -6,13 +6,17 @@ import org.joml.Vector2i;
 import org.joml.Vector4f;
 
 import musicplayer.ext.Graphics;
+import musicplayer.ext.Input;
 import musicplayer.ext.RenderQueue;
 import musicplayer.ext.Shapes;
 import musicplayer.ext.Text;
 import musicplayer.ext.Window;
 
 /** It's probably overkill to use the GUI library here so,
- *  making it its' own thing... */
+ *  making it its' own thing... 
+ *  !!! Use this instead of directly calling stuff from the 'ext' package !!!
+ *      (cuz I'll probably change that stuff later, it's better to have a 
+ *       layer of abstraction so everything doesn't immediately break) */
 public class GraphicsHandler {
 	
 	static int width = 512;
@@ -60,5 +64,12 @@ public class GraphicsHandler {
 	public static void pop_scissor() {
 		// TODO Auto-generated method stub
 	}
+	
+	
+	/* -- Input stuffs -- */
+	
+	public static int mouseX() { return Input.mouseX(); }
+	public static int mouseY() { return Input.mouseY(); }
+
 	
 }

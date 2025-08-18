@@ -26,6 +26,8 @@ public class Input {
 	static double 			mouse_scroll_x 			= 0;
 	static double 			mouse_scroll_y 			= 0;
 	static Key				last_key 				= null;
+	static double			mouse_x					= 0;
+	static double			mouse_y					= 0;
 
 	public static void setCallbacks(long current_window) {
 		
@@ -94,8 +96,13 @@ public class Input {
 	}
 
 	private static void setMousePos(double xpos, double ypos) {
-		// TODO Auto-generated method stub
-		
+		mouse_x = xpos;
+		mouse_y = ypos;
 	}
+	
+	// -- Getters -- //
+	
+	public static int mouseX() { return (int) mouse_x; }
+	public static int mouseY() { return (int) mouse_y; }
 
 }

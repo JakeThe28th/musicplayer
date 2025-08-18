@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import musicplayer.audio.AudioDevice;
+import musicplayer.ext.Input;
 import musicplayer.ext.Shapes;
 import musicplayer.gui.G_ScrollableList;
 import musicplayer.gui.G_Song;
@@ -97,6 +98,7 @@ public class SnowMusicClient {
 		GraphicsHandler.color(1, 1, 1, 1);
 		int yy = 35;
 		playlist_gui.draw(0, yy, GraphicsHandler.width(), GraphicsHandler.height(), 0);
+		GraphicsHandler.text(Input.mouseX(), Input.mouseY(), 0, "Hello!");
 	}
 	
 	public void draw_minified_view() {
