@@ -5,11 +5,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import musicplayer.audio.AudioDevice;
-import musicplayer.ext.Input;
-import musicplayer.ext.Shapes;
+import musicplayer.graphics.API;
 import musicplayer.gui.G_ScrollableList;
 import musicplayer.gui.G_Song;
-import musicplayer.gui.GraphicsHandler;
 import musicplayer.parts.Library;
 import musicplayer.parts.Song;
 import musicplayer.utility.Log;
@@ -54,10 +52,10 @@ public class SnowMusicClient {
 		Library.current("defaultalbum", "awesomedefaultsong");
 		//Library.play();
 		
-		GraphicsHandler.init();
+		API.init();
 
 		// Main loop
-		while (GraphicsHandler.isOpen()) {
+		while (API.isOpen()) {
 			//GraphicsHandler.clear();
 			
 			//Library.update();
@@ -66,7 +64,7 @@ public class SnowMusicClient {
 			if (current_view == VIEW_PLAYLIST) draw_playlist_view();
 			if (current_view == VIEW_LIBRARY) draw_playlist_view();
 			
-			GraphicsHandler.render();
+			API.render();
 			
 			//GraphicsHandler.refresh();
 		}
@@ -91,14 +89,14 @@ public class SnowMusicClient {
 	
 	G_ScrollableList playlist_gui;
 	public void draw_playlist_view() {
-		GraphicsHandler.color(0.15f, 0.25f, 0.5f, 1);
-		GraphicsHandler.rect(0, 0, GraphicsHandler.width(), 30, 0);
-		GraphicsHandler.color(1, 0.75f, 0.75f, 1);
-		GraphicsHandler.text(10, 10, 2, playlist);
-		GraphicsHandler.color(1, 1, 1, 1);
+		API.color(0.15f, 0.25f, 0.5f, 1);
+		API.rect(0, 0, API.width(), 30, 0);
+		API.color(1, 0.75f, 0.75f, 1);
+		API.text(10, 10, 2, playlist);
+		API.color(1, 1, 1, 1);
 		int yy = 35;
-		playlist_gui.draw(0, yy, GraphicsHandler.width(), GraphicsHandler.height(), 0);
-		GraphicsHandler.text(Input.mouseX(), Input.mouseY(), 0, "Hello!");
+		playlist_gui.draw(0, yy, API.width(), API.height(), 0);
+		API.text(API.mouseX(), API.mouseY(), 0, "Hello!");
 	}
 	
 	public void draw_minified_view() {

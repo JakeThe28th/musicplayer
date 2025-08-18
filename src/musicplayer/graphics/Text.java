@@ -1,4 +1,4 @@
-package musicplayer.ext;
+package musicplayer.graphics;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,7 +10,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector2i;
 import org.joml.Vector4f;
 
-public class Text {
+class Text {
 	
 	/* It would probably be more efficient
 	 * to only have one mesh and refer to

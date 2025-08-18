@@ -1,11 +1,11 @@
-package musicplayer.ext;
+package musicplayer.graphics;
 
 import java.awt.image.BufferedImage;
 
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
 
-public class Shapes {
+class Shapes {
 	
 	static Texture white = newWhiteTexture();
 

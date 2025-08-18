@@ -1,4 +1,4 @@
-package musicplayer.ext;
+package musicplayer.graphics;
 
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 
@@ -6,7 +6,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.*;
 
-public class Shader {
+class Shader {
 
 	// There's only one shader needed in this program, so I'm hardcoding it.
 	static int shader = -1;

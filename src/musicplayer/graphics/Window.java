@@ -1,4 +1,4 @@
-package musicplayer.ext;
+package musicplayer.graphics;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
 
 
-public class Window {
+class Window {
 
 	private static long 		window;
 	private static boolean 		should_close = false;

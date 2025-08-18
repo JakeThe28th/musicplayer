@@ -1,4 +1,4 @@
-package musicplayer.ext;
+package musicplayer.graphics;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
@@ -12,6 +12,11 @@ import org.joml.Matrix4f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL40;
 
+// TODO: marking as deprecated not because it's actually deprecated
+// but so that there's a big annoying popup i don't forget about
+// G_Song directly uses uniforms for its faded edges effect,
+// I need to add that to the api and de-publicify this soon
+@Deprecated
 public class RenderQueue {
 		
 	public static HashMap<String, Integer> temp_integer_uniforms = new HashMap<String, Integer>();

@@ -1,4 +1,4 @@
-package musicplayer.ext;
+package musicplayer.graphics;
 
 import static org.lwjgl.opengl.GL40.*;
 
@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
 
-public class Texture {
+class Texture {
 	
 	int texture;
 	

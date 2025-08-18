@@ -1,4 +1,4 @@
-package musicplayer.ext;
+package musicplayer.graphics;
 
 import static org.lwjgl.glfw.GLFW.glfwSetCharCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
@@ -8,7 +8,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
 
 import org.lwjgl.glfw.GLFW;
 
-public class Input {
+class Input {
 
 	public static void clearKeys() {
 		// Events

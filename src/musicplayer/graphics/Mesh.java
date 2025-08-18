@@ -1,8 +1,8 @@
-package musicplayer.ext;
+package musicplayer.graphics;
 
 import static org.lwjgl.opengl.GL40.*;
 
-public class Mesh {
+class Mesh {
 	
 	/*
 	 * Since meshes are used only to draw shapes and text, 

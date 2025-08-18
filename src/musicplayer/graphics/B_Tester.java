@@ -1,4 +1,4 @@
-package musicplayer.ext;
+package musicplayer.graphics;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
