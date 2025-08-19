@@ -59,6 +59,9 @@ public abstract class G_Element {
 		
 		if (hover_rectangle.contains(API.mouseX(), API.mouseY())) {
 			API.color(API.TRANSPARENT_WHITE);
+			if (API.left_click_down()) { API.color(API.TRANSLUCENT_WHITE); }
+			if (API.left_click_released()) { onClick(); }
+
 			API.rect(hover_rectangle, 0);
 		}
 		

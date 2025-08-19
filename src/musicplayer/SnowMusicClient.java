@@ -63,7 +63,7 @@ public class SnowMusicClient {
 		while (API.isOpen()) {
 			//GraphicsHandler.clear();
 			
-			//Library.update();
+			Library.update();
 
 			//if (current_view == VIEW_MINIFIED) draw_minified_view();
 			//if (current_view == VIEW_PLAYLIST) draw_playlist_view();

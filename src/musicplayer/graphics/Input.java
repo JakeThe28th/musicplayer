@@ -23,6 +23,7 @@ class Input {
 	static String 			input_string 			= "";
 	static Key[] 			current_keys 			= new Key[1024];
 	static MouseButton[] 	current_mouse_buttons 	= new MouseButton[8];
+	static boolean[] 		down_mouse_buttons 		= new boolean[8];
 	static double 			mouse_scroll_x 			= 0;
 	static double 			mouse_scroll_y 			= 0;
 	static Key				last_key 				= null;
@@ -71,8 +72,7 @@ class Input {
 	}
 
 	private static void setMouseButtonDown(int button, boolean b) {
-		// TODO Auto-generated method stub
-		
+		down_mouse_buttons[button] = b;
 	}
 
 	private static void setKeyScancodeDown(int scancode, boolean b) {
@@ -91,8 +91,7 @@ class Input {
 	}
 
 	private static void setMouseButton(int button, int action, int mods) {
-		// TODO Auto-generated method stub
-		
+		current_mouse_buttons[button] = new MouseButton(button, action, mods);
 	}
 
 	private static void setMousePos(double xpos, double ypos) {
@@ -104,5 +103,19 @@ class Input {
 	
 	public static int mouseX() { return (int) mouse_x; }
 	public static int mouseY() { return (int) mouse_y; }
+	
+	public static boolean mouseButtonDown(int button) {
+		return down_mouse_buttons[button];
+	}
+	
+	public static boolean mouseButtonPressed(int button) {
+		if (current_mouse_buttons[button] == null) return false;
+		return current_mouse_buttons[button].action == GLFW.GLFW_PRESS;
+	}
+	
+	public static boolean mouseButtonReleased(int button) {
+		if (current_mouse_buttons[button] == null) return false;
+		return current_mouse_buttons[button].action == GLFW.GLFW_RELEASE;
+	}
 
 }

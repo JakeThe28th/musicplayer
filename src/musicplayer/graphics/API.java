@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.joml.Matrix4f;
 import org.joml.Vector2i;
 import org.joml.Vector4f;
+import org.lwjgl.glfw.GLFW;
 
 import musicplayer.utility.Rectangle;
 
@@ -16,7 +17,9 @@ import musicplayer.utility.Rectangle;
 public class API {
 	
 	public static final Vector4f TRANSPARENT_WHITE = new Vector4f(1, 1, 1, 0.25f);
-	
+	public static final Vector4f TRANSLUCENT_WHITE = new Vector4f(1, 1, 1, 0.5f);
+	public static final Vector4f TRANSPARENT_RED = new Vector4f(1, 0, 0, 0.25f);
+
 	static int width = 512;
 	static int height = 8*96;
 	
@@ -86,5 +89,17 @@ public class API {
 	
 	public static int mouseX() { return Input.mouseX(); }
 	public static int mouseY() { return Input.mouseY(); }
+	
+	public static boolean left_click_pressed() {
+		return Input.mouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_LEFT);
+	}
+	
+	public static boolean left_click_released() {
+		return Input.mouseButtonReleased(GLFW.GLFW_MOUSE_BUTTON_LEFT);
+	}
+	
+	public static boolean left_click_down() {
+		return Input.mouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_LEFT);
+	}
 
 }
