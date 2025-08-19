@@ -70,7 +70,7 @@ public class SnowMusicClient {
 			//if (current_view == VIEW_LIBRARY) draw_playlist_view();
 			
 			controls.recalculate_size();
-			controls.layout(0, 0, API.width(), API.height());
+			controls.layout(0, API.height() - controls.height(), API.width(), API.height());
 			controls.draw(0);
 			
 //			G_Text tx = new G_Text();

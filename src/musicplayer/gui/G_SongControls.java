@@ -9,24 +9,24 @@ public class G_SongControls extends G_Element {
 	
 	G_Text 		title			= new G_Text().text("No Song");
 	G_Slider 	progress_bar	= new G_Slider();
-	G_List		icons			= new G_List();
+	G_List		center_icons	= new G_List(
+										new G_Icon("previous"),
+										new G_Icon("stop"),
+										new G_Icon("play"),
+										new G_Icon("next"));
+	
+	G_List		left_icons		= new G_List(
+										new G_Icon("volume"));
+	
+	G_List		right_icons		= new G_List(
+										new G_Icon("shuffle"));
 	
 	{
 		title.halign(Alignment.MIDDLE);
-		progress_bar.right_margin = 30;
-		progress_bar.left_margin = 30;
+		right_margin = 30;
+		left_margin = 30;
 		
-		G_Icon ic;
-			ic = new G_Icon();
-			ic.icon_name = "pause";
-			icons.elements.add(ic);
-			ic = new G_Icon();
-			ic.icon_name = "play";
-			icons.elements.add(ic);
-			ic = new G_Icon();
-			ic.icon_name = "shuffle";
-			icons.elements.add(ic);
-		icons.halign(Alignment.MIDDLE);
+		center_icons.halign(Alignment.MIDDLE);
 		
 	}
 	
@@ -34,12 +34,19 @@ public class G_SongControls extends G_Element {
 	public void recalculate_size() {
 		title.recalculate_size();
 		progress_bar.recalculate_size();
-		icons.recalculate_size();
+		center_icons.recalculate_size();
+		left_icons.recalculate_size();
+		right_icons.recalculate_size();
+		
+		this.unpadded_height = title.height() + progress_bar.height() + center_icons.height();
 	}
 	
 	@Override
 	public void layout(int left, int top, int right, int bottom) {
 		int yy = top;
+		
+		left += left_margin;
+		right -= right_margin;
 		
 			  title.layout(left, yy, right, yy + title.height());
 		yy += title.height();
@@ -47,14 +54,20 @@ public class G_SongControls extends G_Element {
 			  progress_bar.layout(left, yy, right, yy + progress_bar.height());
 		yy += progress_bar.height();
 		
-		icons.layout(left, yy, right, bottom);
+		
+		left_icons		.layout(left, 							yy, left +left_icons .width(), 	bottom);
+		center_icons	.layout(left +left_icons.width(), 		yy, right-right_icons.width(), 	bottom);
+		right_icons		.layout(right-right_icons.width(), 		yy, right, 						bottom);
 		
 	}
+	
 	@Override
 	public void draw(int depth) {
 		title.draw(depth + 1);
 		progress_bar.draw(depth + 1);
-		icons.draw(depth+1);
+		center_icons.draw(depth+1);
+		left_icons.draw(depth+1);
+		right_icons.draw(depth+1);
 	}	
 	
 }

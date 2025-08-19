@@ -5,10 +5,12 @@ import org.joml.Vector4f;
 import musicplayer.graphics.API;
 
 public class G_Slider extends G_Element {
+	
+	// TODO instead of adding top/bottom for vertical probably just swap out x and y  in draw and in mouse check
 
 	@Override
 	public void recalculate_size() {
-		// TODO Auto-generated method stub
+		this.unpadded_height = 8;
 	}
 	
 	Vector4f slider_color = new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 1);

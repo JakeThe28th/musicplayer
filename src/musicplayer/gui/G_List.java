@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 public class G_List extends G_Element {
 	
+	public G_List(G_Element...elements) {
+		for (G_Element e : elements) {
+			this.elements.add(e);
+		}
+	}
+	
 	ArrayList<G_Element> elements = new ArrayList<G_Element>();
 	
 	boolean vertical = false;
@@ -28,7 +34,7 @@ public class G_List extends G_Element {
 	@Override
 	public void layout(int left, int top, int right, int bottom) {
 		
-		int xx = GUIUtility.getAlignmentOffset(left, right, width(), horizontal_align);
+		int xx = left + left_margin + GUIUtility.getAlignmentOffset(left, right, width(), horizontal_align);
 		for (G_Element e : elements) {
 			e.layout(xx, top, xx+30, bottom);
 			xx+=e.width();

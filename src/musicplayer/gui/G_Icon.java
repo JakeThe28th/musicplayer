@@ -4,8 +4,19 @@ import musicplayer.graphics.API;
 
 public class G_Icon extends G_Element {
 	
+	public G_Icon(String name) {
+		icon_name = name;
+	}
+	
+	{
+//		this.left_margin 	= 5;
+//		this.right_margin 	= 5;
+//		this.top_margin 	= 5;
+//		this.bottom_margin 	= 5;
+	}
+	
 	String icon_name = "stop";
-	int icon_size = 30;
+	int icon_size = 20;
 
 	@Override
 	public void recalculate_size() {

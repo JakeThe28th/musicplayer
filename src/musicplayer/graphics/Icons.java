@@ -87,7 +87,7 @@ class Icons {
 							mesh_indices)
 							);
 					
-					Log.send(current_object_name);
+					Log.send("Loaded icon '" + current_object_name + "'");
 					
 				}
 				// Reset for next object
