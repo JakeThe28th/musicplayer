@@ -53,6 +53,7 @@ public abstract class G_Element {
 	Rectangle hover_rectangle = new Rectangle(0,0,0,0);
 	
 	public boolean input() {
+		
 		for (G_Element e : sub_elements()) {
 			if (e.input()) return true;
 		}

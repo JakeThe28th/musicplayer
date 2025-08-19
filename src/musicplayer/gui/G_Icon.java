@@ -27,9 +27,10 @@ public class G_Icon extends G_Element {
 
 	@Override
 	public void layout(int left, int top, int right, int bottom) {
-		x = left + left_margin;
+		int xoffset = GUIUtility.getAlignmentOffset(left, right, width(), horizontal_align);
+		x = left + left_margin + xoffset;
 		y = top + top_margin;
-		hover_rectangle = new Rectangle(left, top, left+width(), top+height());
+		hover_rectangle = new Rectangle(left+xoffset, top, left+width()+xoffset, top+height());
 	}
 
 	@Override

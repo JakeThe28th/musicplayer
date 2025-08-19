@@ -99,6 +99,7 @@ public class Library {
 	
 	public static void current(String album, String identifier) {
 		try {
+			if (current_song != null) current_song.stop();
 			current_song = get(album, identifier).audio();
 			MusicPlayer.controls.current(new UUID(album, identifier));
 		} catch (IOException | UnsupportedAudioFileException e) {
@@ -106,9 +107,13 @@ public class Library {
 		}
 	}
 	
-	public static void play() { current_song.play(); }
+	public static void current(UUID song) {
+		current(song.album, song.identifier);
+	}
+	
+	public static void play() { current_song.play(); MusicPlayer.controls.setPlaying(true); }
 	public static void pause() { current_song.pause(); }
-	public static void stop() { current_song.stop(); }
+	public static void stop() { current_song.stop(); current_song.seekstop(0); }
 	public static void update() { current_song.update(); }
 
 	public static long songTime() {

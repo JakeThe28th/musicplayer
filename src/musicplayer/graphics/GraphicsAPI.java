@@ -18,9 +18,10 @@ import musicplayer.utility.Rectangle;
  *       layer of abstraction so everything doesn't immediately break) */
 public class GraphicsAPI {
 	
-	public static final Vector4f TRANSPARENT_WHITE = new Vector4f(1, 1, 1, 0.25f);
-	public static final Vector4f TRANSLUCENT_WHITE = new Vector4f(1, 1, 1, 0.5f);
-	public static final Vector4f TRANSPARENT_RED = new Vector4f(1, 0, 0, 0.25f);
+	public static final Vector4f TRANSPARENT_WHITE 	= new Vector4f(1, 1, 1, 0.25f);
+	public static final Vector4f TRANSLUCENT_WHITE 	= new Vector4f(1, 1, 1, 0.5f);
+	public static final Vector4f TRANSPARENT_RED 	= new Vector4f(1, 0, 0, 0.25f);
+	public static final Vector4f BLACK 				= new Vector4f(0,0,0,1);
 
 	static int width = 512;
 	static int height = 8*96;
@@ -51,6 +52,7 @@ public class GraphicsAPI {
 	}
 	
 	public static void color(Vector4f c) {
+		if (c == null) throw new Error();
 		Shapes.color(c);
 		text.color(c);
 	}
@@ -89,7 +91,9 @@ public class GraphicsAPI {
 		RenderQueue.current_scissor = scissor_stack.pop();
 	}
 	
-	
+	public static Rectangle scissor() {
+		return RenderQueue.current_scissor;
+	}
 
 	
 	/* -- Input stuffs -- */
@@ -108,5 +112,5 @@ public class GraphicsAPI {
 	public static boolean left_click_down() {
 		return Input.mouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 	}
-	
+
 }

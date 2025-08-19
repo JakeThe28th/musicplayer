@@ -247,6 +247,14 @@ public class AudioSource {
 		play();
 	}
 	
+	/** Seek to a specific time in milliseconds and stop
+	 * (added as a band aid fix since i'm gonna rewrite this later anyways...) */
+	public void seekstop(long milliseconds) {
+		reset();
+		current_sample = msToSamples(milliseconds);
+		played_samples = current_sample;
+	}
+	
 	/** Make sure to call this when you're done with the source */
 	public void end() {
 		if (active) {
