@@ -1,6 +1,7 @@
 package musicplayer.graphics;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
@@ -12,9 +13,14 @@ class Shapes {
 	static Texture white = newWhiteTexture();
 
 	private static Texture newWhiteTexture() {
-		BufferedImage white = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-		white.setRGB(0, 0, Integer.MAX_VALUE);
-		return new Texture(white);
+		//BufferedImage white = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+		//white.setRGB(0, 0, Integer.MAX_VALUE);
+		//return new Texture(white);
+		
+		// using the above code with "(int) Long.MAX_VALUE)" would also work but
+		// i already split the bufferedimage reading from the texture making
+		// so i want to retroactively justify wasting 3 minutes
+		return new Texture(new byte[] { (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF }, 1, 1);
 	}
 	
 	static Mesh unit_square = new Mesh(

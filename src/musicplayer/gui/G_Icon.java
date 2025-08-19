@@ -1,18 +1,16 @@
 package musicplayer.gui;
 
+import java.util.ArrayList;
+
 import musicplayer.graphics.API;
+import musicplayer.utility.Rectangle;
 
 public class G_Icon extends G_Element {
 	
+	@Override public ArrayList<G_Element> sub_elements() { return G_Element.EMPTY; }
+	
 	public G_Icon(String name) {
 		icon_name = name;
-	}
-	
-	{
-//		this.left_margin 	= 5;
-//		this.right_margin 	= 5;
-//		this.top_margin 	= 5;
-//		this.bottom_margin 	= 5;
 	}
 	
 	String icon_name = "stop";
@@ -31,6 +29,7 @@ public class G_Icon extends G_Element {
 	public void layout(int left, int top, int right, int bottom) {
 		x = left + left_margin;
 		y = top + top_margin;
+		hover_rectangle = new Rectangle(left, top, left+width(), top+height());
 	}
 
 	@Override
@@ -38,5 +37,5 @@ public class G_Icon extends G_Element {
 		API.color(base_color);
 		API.icon(x, y, depth, icon_name, icon_size);
 	}
-
+	
 }

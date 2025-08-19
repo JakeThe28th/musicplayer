@@ -21,18 +21,10 @@ class Texture {
 	}
 	
 	public Texture(BufferedImage image) {
-		
-		// https://learnopengl.com/Getting-started/Textures
-		texture = glGenTextures();
-		glBindTexture(GL_TEXTURE_2D, texture);
-		
-		// set the texture wrapping/filtering options (on the currently bound texture object)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		
-		// add the image data to the texture
+		this(bufferedImageToTextureData(image), image.getWidth(), image.getHeight());
+	}
+	
+	private static byte[] bufferedImageToTextureData(BufferedImage image) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		
@@ -46,6 +38,22 @@ class Texture {
 			gldata[(i*4)+3] = (byte) ((argb[i] >> 24));
 	    }
 		
+		return gldata;
+	}
+
+	public Texture(byte[] gldata, int width, int height) {
+		
+		// https://learnopengl.com/Getting-started/Textures
+		texture = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, texture);
+		
+		// set the texture wrapping/filtering options (on the currently bound texture object)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		
+		// add the image data to the texture
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, toByteBuffer(gldata));
 		glGenerateMipmap(GL_TEXTURE_2D);
 		

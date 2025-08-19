@@ -46,21 +46,24 @@ class Shader {
 						{
 						    //FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
 							FragColor = texture(texture_image, f_texcoord) * mix_color;
-	
+
 							if (FragColor.a < 0.001) discard;
 
 							float t = 0;
+							float blend_alpha = 1;
 							if (gl_FragCoord.x < second_fade_opaque_x) {
 								// Fading (for the left of scrolling song titles)
 								t = (gl_FragCoord.x - first_fade_transparent_x) / (first_fade_opaque_x - first_fade_transparent_x);
-								FragColor.a = clamp(t, 0, 1);
-								if (FragColor.a < 0.001) discard;
+								blend_alpha = clamp(t, 0, 1);
+								if (blend_alpha < 0.001) discard;
 							} else {
 								// Fading (for the right of scrolling song titles)
 								t = (gl_FragCoord.x - second_fade_transparent_x) / (second_fade_opaque_x - second_fade_transparent_x);
-								FragColor.a = clamp(t, 0, 1);
-								if (FragColor.a < 0.001) discard;
+								blend_alpha = clamp(t, 0, 1);
+								if (blend_alpha < 0.001) discard;
 							}
+
+							FragColor.a = FragColor.a * blend_alpha;
 						} 
 					""");
 			GL40.glEnable(GL40.GL_BLEND);  

@@ -1,9 +1,15 @@
 package musicplayer.gui;
 
+import java.util.ArrayList;
+
 import musicplayer.graphics.API;
 import musicplayer.gui.enums.Alignment;
+import musicplayer.parts.Library;
 
 public class G_SongControls extends G_Element {
+	
+	@Override public ArrayList<G_Element> sub_elements() { return subelements; }
+	ArrayList<G_Element> subelements = new ArrayList<G_Element>();
 	
 	// The song controls that remain at the bottom of the screen
 	
@@ -12,7 +18,10 @@ public class G_SongControls extends G_Element {
 	G_List		center_icons	= new G_List(
 										new G_Icon("previous"),
 										new G_Icon("stop"),
-										new G_Icon("play"),
+										new G_Icon("play")
+										{ @Override public void onClick() {
+											Library.play();
+										}},
 										new G_Icon("next"));
 	
 	G_List		left_icons		= new G_List(
@@ -28,6 +37,11 @@ public class G_SongControls extends G_Element {
 		
 		center_icons.halign(Alignment.MIDDLE);
 		
+		subelements.add(title);
+		subelements.add(progress_bar);
+		subelements.add(center_icons);
+		subelements.add(left_icons);
+		subelements.add(right_icons);
 	}
 	
 	@Override

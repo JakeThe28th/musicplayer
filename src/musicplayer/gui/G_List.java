@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class G_List extends G_Element {
 	
+	@Override public ArrayList<G_Element> sub_elements() { return elements; }
+	
 	public G_List(G_Element...elements) {
 		for (G_Element e : elements) {
 			this.elements.add(e);

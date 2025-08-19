@@ -1,12 +1,14 @@
 package musicplayer.gui;
 
+import java.util.ArrayList;
+
 import org.joml.Vector2i;
 
 import musicplayer.graphics.API;
-import musicplayer.gui.enums.Alignment;
-import musicplayer.utility.Log;
 
 public class G_Text extends G_Element {
+	
+	@Override public ArrayList<G_Element> sub_elements() { return G_Element.EMPTY; }
 	
 	String 	text 	= "Unset Text";
 	int 	x 		= 0;

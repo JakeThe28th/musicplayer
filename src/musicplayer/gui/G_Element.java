@@ -1,8 +1,12 @@
 package musicplayer.gui;
 
+import java.util.ArrayList;
+
 import org.joml.Vector4f;
 
+import musicplayer.graphics.API;
 import musicplayer.gui.enums.Alignment;
+import musicplayer.utility.Rectangle;
 
 /**
  * Kind of a reversion, but I 
@@ -14,6 +18,8 @@ import musicplayer.gui.enums.Alignment;
  */
 public abstract class G_Element {
 		
+	public static final ArrayList<G_Element> EMPTY = new ArrayList<G_Element>();
+
 	public int width() 		{ return left_margin + unpadded_width + right_margin; }
 	public int height()  	{ return top_margin + unpadded_height + bottom_margin; };
 
@@ -40,5 +46,27 @@ public abstract class G_Element {
 	// Actually draws the element
 	public abstract void draw(int depth);
 	
+	// Returns all sub-elements of this element
+	public abstract ArrayList<G_Element> sub_elements();
+	
+	// Interaction //
+	Rectangle hover_rectangle = new Rectangle(0,0,0,0);
+	
+	public boolean input() {
+		for (G_Element e : sub_elements()) {
+			if (e.input()) return true;
+		}
+		
+		if (hover_rectangle.contains(API.mouseX(), API.mouseY())) {
+			API.color(API.TRANSPARENT_WHITE);
+			API.rect(hover_rectangle, 0);
+		}
+		
+		return false;
+	}
+
+	public void onClick() {
+		
+	}
 	
 }

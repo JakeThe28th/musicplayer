@@ -58,7 +58,7 @@ public class SnowMusicClient {
 		//Library.play();
 		
 		API.init();
-
+		
 		// Main loop
 		while (API.isOpen()) {
 			//GraphicsHandler.clear();
@@ -72,6 +72,7 @@ public class SnowMusicClient {
 			controls.recalculate_size();
 			controls.layout(0, API.height() - controls.height(), API.width(), API.height());
 			controls.draw(0);
+			controls.input();
 			
 //			G_Text tx = new G_Text();
 //				tx.text("Blah...");

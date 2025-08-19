@@ -1,10 +1,14 @@
 package musicplayer.gui;
 
+import java.util.ArrayList;
+
 import org.joml.Vector4f;
 
 import musicplayer.graphics.API;
 
 public class G_Slider extends G_Element {
+	
+	@Override public ArrayList<G_Element> sub_elements() { return G_Element.EMPTY; }
 	
 	// TODO instead of adding top/bottom for vertical probably just swap out x and y  in draw and in mouse check
 

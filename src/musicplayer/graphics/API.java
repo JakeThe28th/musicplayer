@@ -6,12 +6,16 @@ import org.joml.Matrix4f;
 import org.joml.Vector2i;
 import org.joml.Vector4f;
 
+import musicplayer.utility.Rectangle;
+
 /** It's probably overkill to use the GUI library here so,
  *  making it its' own thing... 
  *  !!! Use this instead of directly calling stuff from the 'ext' package !!!
  *      (cuz I'll probably change that stuff later, it's better to have a 
  *       layer of abstraction so everything doesn't immediately break) */
 public class API {
+	
+	public static final Vector4f TRANSPARENT_WHITE = new Vector4f(1, 1, 1, 0.25f);
 	
 	static int width = 512;
 	static int height = 8*96;
@@ -52,6 +56,10 @@ public class API {
 
 	public static void rect(int left, int top, int right, int bottom, int depth) {
 		Shapes.rect(left, top, right, bottom, depth);
+	}
+	
+	public static void rect(Rectangle rect, int depth) {
+		rect(rect.left(), rect.top(), rect.right(), rect.bottom(), depth);
 	}
 	
 	public static void dot(int x, int y, int z, int radius) {
