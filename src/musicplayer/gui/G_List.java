@@ -2,7 +2,7 @@ package musicplayer.gui;
 
 import java.util.ArrayList;
 
-import musicplayer.MusicPlayer;
+import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.utility.Rectangle;
@@ -107,7 +107,7 @@ public class G_List extends G_Element {
 		
 		if (scrollable && (height() > scissor_box.bottom()-scissor_box.top())) {
 			Rectangle b = scissor_box;
-			GraphicsAPI.color(MusicPlayer.DARKEST_COLOR);
+			GraphicsAPI.color(MainProgram.DARKEST_COLOR);
 			int scrollbar_size = (int) ((( b.bottom()-b.top() ) / (double) height()) * (b.bottom()-b.top()));
 			int scrollbar_offset = (int) (scroll_y / (double) height());
 			GraphicsAPI.rect(
@@ -116,7 +116,7 @@ public class G_List extends G_Element {
 					b.left()+20,
 					b.bottom()-5,
 					depth + 1);
-			GraphicsAPI.color(MusicPlayer.ACCENT_COLOR);
+			GraphicsAPI.color(MainProgram.ACCENT_COLOR);
 			GraphicsAPI.rect(
 					b.left()+10, 
 					b.top()+scrollbar_offset + 10, 

@@ -9,14 +9,14 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
 
-import musicplayer.MusicPlayer;
+import musicplayer.MainProgram;
 
 class Graphics {
 	
 	public static void setup(int width, int height, String name) {
 		init();
 		Window.init(width, height, name);
-		Graphics.clearColor(MusicPlayer.DARK_COLOR.x, MusicPlayer.DARK_COLOR.y, MusicPlayer.DARK_COLOR.z, 0.8f);
+		Graphics.clearColor(MainProgram.DARK_COLOR.x, MainProgram.DARK_COLOR.y, MainProgram.DARK_COLOR.z, 0.8f);
 		Shader.shader();
 	}
 

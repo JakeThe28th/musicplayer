@@ -2,7 +2,7 @@ package musicplayer.gui;
 
 import java.util.ArrayList;
 
-import musicplayer.MusicPlayer;
+import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.graphics.RenderQueue;
 import musicplayer.gui.enums.Alignment;
@@ -22,7 +22,7 @@ public class G_Song extends G_Element {
 	G_Icon menu = new G_Icon("hamburger");
 	
 	{ 
-		menu.base_color = MusicPlayer.SEMIDARK_COLOR;
+		menu.base_color = MainProgram.SEMIDARK_COLOR;
 		menu.halign(Alignment.MIDDLE);
 		menu.icon_size = 10;
 		subelements.add(menu);
@@ -69,11 +69,11 @@ public class G_Song extends G_Element {
 	public void draw(int depth) {
 		
 		if (index % 2 == 1) {
-			GraphicsAPI.color(MusicPlayer.DARKER_COLOR);
+			GraphicsAPI.color(MainProgram.DARKER_COLOR);
 			GraphicsAPI.rect(hover_rectangle, depth);
 		}
 		
-		GraphicsAPI.color(MusicPlayer.SEMIDARK_COLOR);
+		GraphicsAPI.color(MainProgram.SEMIDARK_COLOR);
 		GraphicsAPI.text(number_x, top, depth, index + "");
 		
 		GraphicsAPI.color(base_color);

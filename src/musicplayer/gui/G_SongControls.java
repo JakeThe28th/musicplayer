@@ -2,7 +2,7 @@ package musicplayer.gui;
 
 import java.util.ArrayList;
 
-import musicplayer.MusicPlayer;
+import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.parts.Library;
@@ -57,7 +57,7 @@ public class G_SongControls extends G_Element {
 	G_List		right_icons		= new G_List(shuffle);
 	
 	{
-		base_color = MusicPlayer.LIGHT_COLOR;
+		base_color = MainProgram.LIGHT_COLOR;
 
 		title.halign(Alignment.MIDDLE);
 		right_margin = 30;

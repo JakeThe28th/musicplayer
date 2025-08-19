@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.joml.Vector4f;
 
-import musicplayer.MusicPlayer;
+import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.utility.Rectangle;
 
@@ -19,7 +19,7 @@ public class G_Slider extends G_Element {
 		this.unpadded_height = 8;
 	}
 	
-	Vector4f slider_color = MusicPlayer.ACCENT_COLOR;
+	Vector4f slider_color = MainProgram.ACCENT_COLOR;
 	
 	int left 		= 0;
 	int right 		= 0;

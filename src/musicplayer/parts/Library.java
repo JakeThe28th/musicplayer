@@ -10,7 +10,7 @@ import java.util.Set;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import musicplayer.MusicPlayer;
+import musicplayer.MainProgram;
 import musicplayer.audio.AudioSource;
 
 /** Stores the information for all loaded songs */
@@ -101,7 +101,7 @@ public class Library {
 		try {
 			if (current_song != null) current_song.stop();
 			current_song = get(album, identifier).audio();
-			MusicPlayer.controls.current(new UUID(album, identifier));
+			MainProgram.controls.current(new UUID(album, identifier));
 		} catch (IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();
 		}
@@ -111,7 +111,7 @@ public class Library {
 		current(song.album, song.identifier);
 	}
 	
-	public static void play() { current_song.play(); MusicPlayer.controls.setPlaying(true); }
+	public static void play() { current_song.play(); MainProgram.controls.setPlaying(true); }
 	public static void pause() { current_song.pause(); }
 	public static void stop() { current_song.stop(); current_song.seekstop(0); }
 	public static void update() { current_song.update(); }

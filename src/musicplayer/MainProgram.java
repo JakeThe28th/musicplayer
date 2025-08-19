@@ -19,7 +19,7 @@ import musicplayer.parts.Library;
 import musicplayer.parts.Song;
 import musicplayer.utility.Log;
 
-public class MusicPlayer {
+public class MainProgram {
 	
 	public static final Vector4f ACCENT_COLOR = new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 1);
 	public static final Vector4f LIGHT_COLOR = new Vector4f(63 / 255f, 89 / 255f, 84 / 255f, 1);
