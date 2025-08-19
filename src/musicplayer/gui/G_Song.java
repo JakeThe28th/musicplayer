@@ -3,7 +3,7 @@ package musicplayer.gui;
 import musicplayer.graphics.API;
 import musicplayer.graphics.RenderQueue;
 
-public class G_Song implements G_Element {
+public class G_Song extends G_Element {
 	
 	public G_Song(String n) {
 		name = n;

@@ -8,6 +8,9 @@ import musicplayer.audio.AudioDevice;
 import musicplayer.graphics.API;
 import musicplayer.gui.G_ScrollableList;
 import musicplayer.gui.G_Song;
+import musicplayer.gui.G_SongControls;
+import musicplayer.gui.G_Text;
+import musicplayer.gui.enums.Alignment;
 import musicplayer.parts.Library;
 import musicplayer.parts.Song;
 import musicplayer.utility.Log;
@@ -39,6 +42,8 @@ public class SnowMusicClient {
 	
 	ArrayList<String> current_playlist_song_list = null;
 	
+	G_SongControls controls = new G_SongControls();
+	
 	private void run() throws IOException, ParseException {
 		
 		// TODO: this is scuffed i need to refactor audio
@@ -60,14 +65,27 @@ public class SnowMusicClient {
 			
 			//Library.update();
 
-			if (current_view == VIEW_MINIFIED) draw_minified_view();
-			if (current_view == VIEW_PLAYLIST) draw_playlist_view();
-			if (current_view == VIEW_LIBRARY) draw_playlist_view();
+			//if (current_view == VIEW_MINIFIED) draw_minified_view();
+			//if (current_view == VIEW_PLAYLIST) draw_playlist_view();
+			//if (current_view == VIEW_LIBRARY) draw_playlist_view();
 			
+			controls.recalculate_size();
+			controls.layout(0, 0, API.width(), API.height());
+			controls.draw(0);
+			
+//			G_Text tx = new G_Text();
+//				tx.text("Blah...");
+//				tx.halign(Alignment.MIDDLE);
+//				tx.recalculate_size();
+//				tx.layout(0, 0, API.width(), API.height());
+//				tx.draw(0);
+//				
 			API.render();
-			
+						
 			//GraphicsHandler.refresh();
 		}
+		
+		d.end();
 		
 	}
 	

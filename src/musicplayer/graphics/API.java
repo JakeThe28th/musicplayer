@@ -40,12 +40,21 @@ public class API {
 		text.color(new Vector4f(r,g,b,a));
 	}
 	
+	public static void color(Vector4f c) {
+		Shapes.color(c);
+		text.color(c);
+	}
+	
 	public static void text(int x, int y, int depth, String string) {
 		text.text(x, y, depth, string);
 	}
 
 	public static void rect(int left, int top, int right, int bottom, int depth) {
 		Shapes.rect(left, top, right, bottom, depth);
+	}
+	
+	public static void dot(int x, int y, int z, int radius) {
+		Shapes.dot(x, y, z, radius);
 	}
 	
 	/** Saves the current scissor and then sets the new scissor to this. */
@@ -64,5 +73,4 @@ public class API {
 	public static int mouseX() { return Input.mouseX(); }
 	public static int mouseY() { return Input.mouseY(); }
 
-	
 }
