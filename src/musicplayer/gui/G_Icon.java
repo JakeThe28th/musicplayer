@@ -2,7 +2,7 @@ package musicplayer.gui;
 
 import java.util.ArrayList;
 
-import musicplayer.graphics.API;
+import musicplayer.graphics.GraphicsAPI;
 import musicplayer.utility.Rectangle;
 
 public class G_Icon extends G_Element {
@@ -34,8 +34,8 @@ public class G_Icon extends G_Element {
 
 	@Override
 	public void draw(int depth) {
-		API.color(base_color);
-		API.icon(x, y, depth, icon_name, icon_size);
+		GraphicsAPI.color(base_color);
+		GraphicsAPI.icon(x, y, depth, icon_name, icon_size);
 	}
 	
 }

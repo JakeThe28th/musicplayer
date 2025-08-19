@@ -5,7 +5,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import musicplayer.audio.AudioDevice;
-import musicplayer.graphics.API;
+import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_ScrollableList;
 import musicplayer.gui.G_Song;
 import musicplayer.gui.G_SongControls;
@@ -57,10 +57,10 @@ public class SnowMusicClient {
 		Library.current("defaultalbum", "awesomedefaultsong");
 		//Library.play();
 		
-		API.init();
+		GraphicsAPI.init();
 		
 		// Main loop
-		while (API.isOpen()) {
+		while (GraphicsAPI.isOpen()) {
 			//GraphicsHandler.clear();
 			
 			Library.update();
@@ -70,7 +70,7 @@ public class SnowMusicClient {
 			//if (current_view == VIEW_LIBRARY) draw_playlist_view();
 			
 			controls.recalculate_size();
-			controls.layout(0, API.height() - controls.height(), API.width(), API.height());
+			controls.layout(0, GraphicsAPI.height() - controls.height(), GraphicsAPI.width(), GraphicsAPI.height());
 			controls.draw(0);
 			controls.input();
 			
@@ -81,7 +81,7 @@ public class SnowMusicClient {
 //				tx.layout(0, 0, API.width(), API.height());
 //				tx.draw(0);
 //				
-			API.render();
+			GraphicsAPI.render();
 						
 			//GraphicsHandler.refresh();
 		}
@@ -108,14 +108,14 @@ public class SnowMusicClient {
 	
 	G_ScrollableList playlist_gui;
 	public void draw_playlist_view() {
-		API.color(0.15f, 0.25f, 0.5f, 1);
-		API.rect(0, 0, API.width(), 30, 0);
-		API.color(1, 0.75f, 0.75f, 1);
-		API.text(10, 10, 2, playlist);
-		API.color(1, 1, 1, 1);
+		GraphicsAPI.color(0.15f, 0.25f, 0.5f, 1);
+		GraphicsAPI.rect(0, 0, GraphicsAPI.width(), 30, 0);
+		GraphicsAPI.color(1, 0.75f, 0.75f, 1);
+		GraphicsAPI.text(10, 10, 2, playlist);
+		GraphicsAPI.color(1, 1, 1, 1);
 		int yy = 35;
-		playlist_gui.draw(0, yy, API.width(), API.height(), 0);
-		API.text(API.mouseX(), API.mouseY(), 0, "Hello!");
+		playlist_gui.draw(0, yy, GraphicsAPI.width(), GraphicsAPI.height(), 0);
+		GraphicsAPI.text(GraphicsAPI.mouseX(), GraphicsAPI.mouseY(), 0, "Hello!");
 	}
 	
 	public void draw_minified_view() {

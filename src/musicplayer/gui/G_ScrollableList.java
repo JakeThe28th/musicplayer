@@ -2,7 +2,7 @@ package musicplayer.gui;
 
 import java.util.ArrayList;
 
-import musicplayer.graphics.API;
+import musicplayer.graphics.GraphicsAPI;
 
 public class G_ScrollableList {
 	
@@ -14,7 +14,7 @@ public class G_ScrollableList {
 
 	
 	public void draw(int left, int top, int right, int bottom, int depth) {
-		API.push_scissor(left, top, right, bottom);
+		GraphicsAPI.push_scissor(left, top, right, bottom);
 		// Draw list
 		int yy = scroll;
 		for (G_Element element : elements) {
@@ -23,7 +23,7 @@ public class G_ScrollableList {
 		}
 		// Draw scrollbar
 		// TODO
-		API.pop_scissor();
+		GraphicsAPI.pop_scissor();
 	}
 
 	public void add(G_Element element) { elements.add(element); }

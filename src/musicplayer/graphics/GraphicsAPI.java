@@ -14,7 +14,7 @@ import musicplayer.utility.Rectangle;
  *  !!! Use this instead of directly calling stuff from the 'ext' package !!!
  *      (cuz I'll probably change that stuff later, it's better to have a 
  *       layer of abstraction so everything doesn't immediately break) */
-public class API {
+public class GraphicsAPI {
 	
 	public static final Vector4f TRANSPARENT_WHITE = new Vector4f(1, 1, 1, 0.25f);
 	public static final Vector4f TRANSLUCENT_WHITE = new Vector4f(1, 1, 1, 0.5f);

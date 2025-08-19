@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.joml.Vector4f;
 
-import musicplayer.graphics.API;
+import musicplayer.graphics.GraphicsAPI;
 
 public class G_Slider extends G_Element {
 	
@@ -39,11 +39,11 @@ public class G_Slider extends G_Element {
 
 	@Override
 	public void draw(int depth) {
-		API.color(base_color);
-		API.rect(left, y-thickness, right, y+thickness, depth);
-		API.color(slider_color);
-		API.rect(left, y-thickness, left + draw_amount, y+thickness, depth);
-		API.dot(left + draw_amount, y, depth, 7);
+		GraphicsAPI.color(base_color);
+		GraphicsAPI.rect(left, y-thickness, right, y+thickness, depth);
+		GraphicsAPI.color(slider_color);
+		GraphicsAPI.rect(left, y-thickness, left + draw_amount, y+thickness, depth);
+		GraphicsAPI.dot(left + draw_amount, y, depth, 7);
 	}
 
 }

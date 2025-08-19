@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.joml.Vector4f;
 
-import musicplayer.graphics.API;
+import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.utility.Rectangle;
 
@@ -57,12 +57,12 @@ public abstract class G_Element {
 			if (e.input()) return true;
 		}
 		
-		if (hover_rectangle.contains(API.mouseX(), API.mouseY())) {
-			API.color(API.TRANSPARENT_WHITE);
-			if (API.left_click_down()) { API.color(API.TRANSLUCENT_WHITE); }
-			if (API.left_click_released()) { onClick(); }
+		if (hover_rectangle.contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY())) {
+			GraphicsAPI.color(GraphicsAPI.TRANSPARENT_WHITE);
+			if (GraphicsAPI.left_click_down()) { GraphicsAPI.color(GraphicsAPI.TRANSLUCENT_WHITE); }
+			if (GraphicsAPI.left_click_released()) { onClick(); }
 
-			API.rect(hover_rectangle, 0);
+			GraphicsAPI.rect(hover_rectangle, 0);
 		}
 		
 		return false;

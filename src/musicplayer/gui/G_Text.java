@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.joml.Vector2i;
 
-import musicplayer.graphics.API;
+import musicplayer.graphics.GraphicsAPI;
 
 public class G_Text extends G_Element {
 	
@@ -18,7 +18,7 @@ public class G_Text extends G_Element {
 
 	@Override
 	public void recalculate_size() {
-		Vector2i size = API.size(text);
+		Vector2i size = GraphicsAPI.size(text);
 		this.unpadded_width = size.x;
 		this.unpadded_height = size.y;
 	}
@@ -35,8 +35,8 @@ public class G_Text extends G_Element {
 
 	@Override
 	public void draw(int depth) {
-		API.color(base_color);
-		API.text(x, y, depth, text);
+		GraphicsAPI.color(base_color);
+		GraphicsAPI.text(x, y, depth, text);
 	}
 
 
