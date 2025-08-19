@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
+import musicplayer.parts.MusicPlayer;
 import musicplayer.utility.Rectangle;
 
 public class G_PlaylistHeader extends G_Element {
@@ -30,7 +31,7 @@ public class G_PlaylistHeader extends G_Element {
 		subelements.add(home);
 		subelements.add(menu);
 		
-		title.text = MainProgram.playlist;
+		title.text = MusicPlayer.playlist;
 		title.halign(Alignment.MIDDLE);
 		
 		recalculate_size();

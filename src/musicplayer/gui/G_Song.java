@@ -50,21 +50,23 @@ public class G_Song extends G_Element {
 		this.bottom = bottom - this.bottom_margin;
 		this.hover_rectangle = new Rectangle(left, top, this.right, bottom);
 		
-		this.right -= 40;
+		this.right -= 60;
 		
 		name_concat = name;
-		while (GraphicsAPI.size(name_concat).x > (this.right-this.left)) {
+		while (GraphicsAPI.size(name_concat).x > (this.right-this.left) && name_concat.length() >= 4) {
 			name_concat = name_concat.substring(0, name_concat.length()-1);
 		}
 		name_concat = name_concat.substring(0, name_concat.length()-3);
 		name_concat += "...";
 		
-		menu.layout(this.right, this.top, this.right+40, this.bottom);
+		visualizer_left = this.right;
+		menu.layout(this.right+30, this.top, this.right+60, this.bottom);
 	}
 	
 	int left, top, right, bottom;
 	int number_x;
 	int index = 0;
+	int visualizer_left;
 
 	@Override
 	public void draw(int depth) {
@@ -75,13 +77,31 @@ public class G_Song extends G_Element {
 		}
 		
 		GraphicsAPI.color(MainProgram.SEMIDARK_COLOR);
+		if (index == MusicPlayer.song_index) {
+			GraphicsAPI.color(base_color);
+		}
 		GraphicsAPI.text(number_x, top, depth, index + "");
 		
 		GraphicsAPI.color(base_color);
 		
 		int text_width = this.unpadded_width;
-
 		
+		// visualizer thing
+		if (index == MusicPlayer.song_index) {
+			GraphicsAPI.color(MainProgram.TRANSPARENT_ACCENT_COLOR);
+			int target_width 		= right - left;
+			int slice_w 	 		= 5;
+			int slices = target_width/slice_w;
+			int offset_per_slice	= 370 / slices;
+			for (int i = 0; i < slices; i++) {
+				float hh = MusicPlayer.level_offset(MusicPlayer.songTime(), (short) (i * offset_per_slice)) / ((float) Short.MAX_VALUE / 32f);
+				//hh = hh/hh;
+				hh += (bottom-top)/2;
+				GraphicsAPI.rect(left+(slice_w*i), bottom-((int) hh), left+(slice_w*(i+1)), bottom, depth + 1);
+			}
+			GraphicsAPI.color(MainProgram.ACCENT_COLOR);
+		}
+
 		if (text_width > (right-left) && (GraphicsAPI.mouseY() > top && GraphicsAPI.mouseY() < bottom)) {
 			RenderQueue.temp_integer_uniforms.put("first_fade_transparent_x", left);
 			RenderQueue.temp_integer_uniforms.put("first_fade_opaque_x", left+30);
@@ -111,6 +131,7 @@ public class G_Song extends G_Element {
 		MusicPlayer.current(song);
 		MusicPlayer.seek(0);
 		MusicPlayer.play();
+		MusicPlayer.song_index = index;
 	}
 
 	public void index(int index) {

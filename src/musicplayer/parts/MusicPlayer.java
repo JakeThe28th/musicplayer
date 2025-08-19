@@ -8,6 +8,7 @@ import musicplayer.MainProgram;
 import musicplayer.audio.AudioSource;
 import musicplayer.gui.G_List;
 import musicplayer.gui.G_Song;
+import musicplayer.utility.Log;
 
 /** Handles most stuff regarding music playback */
 public class MusicPlayer {
@@ -88,4 +89,18 @@ public class MusicPlayer {
 		}
 	}
 	
+	public static short level(long time) {
+		if (current_song != null) {
+			return current_song.sample(current_song.msToSamples(time));
+		}
+		return 0;
+	}
+	
+	public static short level_offset(long time, short sample_offset) {
+		if (current_song != null) {
+			if (sample_offset < 0) return 0;
+			return current_song.sample(current_song.msToSamples(time) + sample_offset);
+		}
+		return 0;
+	}
 }

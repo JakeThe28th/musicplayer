@@ -25,6 +25,7 @@ public class MainProgram {
 	public static final Vector4f DARKER_COLOR = new Vector4f(19 / 255f, 40 / 255f, 39 / 255f, 1);
 	public static final Vector4f DARKEST_COLOR = new Vector4f(10 / 255f, 24 / 255f, 23 / 255f, 1);
 	public static final Vector4f SEMIDARK_COLOR = new Vector4f(80 / 255f, 100 / 255f, 100 / 255f, 1);
+	public static final Vector4f TRANSPARENT_ACCENT_COLOR = new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 0.25f);
 
 	
 	public static G_SongControls controls = new G_SongControls();
@@ -33,7 +34,7 @@ public class MainProgram {
 	
 	public static void main(String[] args) throws IOException, ParseException {
 		
-		// TODO: this is scuffed i need to refactor audio
+		// TODO: this is scuffed... i need to refactor audio
 		AudioDevice d = new AudioDevice(AudioDevice.defaultDevice()); 
 		
 		for (Song song : Library.listSongs()) {

@@ -29,6 +29,9 @@ public class G_List extends G_Element {
 	}
 	
 	public void add(G_Element e) {
+		if (e instanceof G_Song) {
+			((G_Song) e).index(elements.size());
+		}
 		this.elements.add(e);
 		this.recalculate_size();
 	}
