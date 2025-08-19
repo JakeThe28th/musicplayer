@@ -15,10 +15,10 @@ import musicplayer.parts.Library;
 import musicplayer.parts.Song;
 import musicplayer.utility.Log;
 
-public class SnowMusicClient {
+public class MusicPlayer {
 	
 	public static void main(String[] args) throws IOException, ParseException {
-		new SnowMusicClient().run();
+		new MusicPlayer().run();
 	}
 	
 	int current_view = 2;
