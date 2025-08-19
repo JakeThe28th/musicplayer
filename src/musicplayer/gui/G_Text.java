@@ -24,15 +24,7 @@ public class G_Text extends G_Element {
 	@Override
 	public void layout(int left, int top, int right, int bottom) {
 		
-		int xoffset = 0;
-
-		if (this.horizontal_align == Alignment.MIDDLE) {
-			xoffset = ((right-left) - width()) / 2;
-		}
-		
-		if (this.horizontal_align == Alignment.RIGHT) {
-			xoffset = ((right-left) - width());
-		}
+		int xoffset = GUIUtility.getAlignmentOffset(left, right, width(), horizontal_align);
 		
 		x = left + left_margin + xoffset;
 		y = top + top_margin;

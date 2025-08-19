@@ -2,6 +2,7 @@ package musicplayer.graphics;
 
 import java.io.IOException;
 
+import org.joml.Matrix4f;
 import org.joml.Vector2i;
 import org.joml.Vector4f;
 
@@ -55,6 +56,11 @@ public class API {
 	
 	public static void dot(int x, int y, int z, int radius) {
 		Shapes.dot(x, y, z, radius);
+	}
+	
+
+	public static void icon(int x, int y, int z, String name, int size) {
+		Icons.icon(x, y, z, name, size);
 	}
 	
 	/** Saves the current scissor and then sets the new scissor to this. */
