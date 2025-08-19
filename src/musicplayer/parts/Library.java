@@ -91,58 +91,5 @@ public class Library {
 		}
 		return set;
 	}
-	
-	
-	/* -- ++ Actually playing songs and stuff ++ -- */
-
-	private static AudioSource current_song;
-	
-	public static void current(String album, String identifier) {
-		try {
-			if (current_song != null) current_song.stop();
-			current_song = get(album, identifier).audio();
-			MainProgram.controls.current(new UUID(album, identifier));
-		} catch (IOException | UnsupportedAudioFileException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static void current(UUID song) {
-		current(song.album, song.identifier);
-	}
-	
-	public static void play() { current_song.play(); MainProgram.controls.setPlaying(true); }
-	public static void pause() { current_song.pause(); }
-	public static void stop() { current_song.stop(); current_song.seekstop(0); }
-	public static void update() { current_song.update(); }
-
-	public static long songTime() {
-		if (current_song != null) {
-			return current_song.currentTimeMillis();
-		} else 
-			return 0;
-	}
-
-	public static long songLength() {
-		if (current_song != null) {
-			return current_song.lengthMillis();
-		} else 
-			return 0;
-	}
-
-	public static boolean playing() {
-		if (current_song != null) {
-			return current_song.playing();
-		} else 
-			return false;
-	}
-
-	public static void seek(long time) {
-		boolean playing = playing();
-		if (current_song != null) {
-			current_song.seek(time);
-			if (!playing) pause();
-		}
-	}
 
 }

@@ -7,6 +7,7 @@ import musicplayer.graphics.GraphicsAPI;
 import musicplayer.graphics.RenderQueue;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.parts.Library;
+import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.UUID;
 import musicplayer.utility.Rectangle;
 
@@ -107,9 +108,9 @@ public class G_Song extends G_Element {
 
 	@Override
 	public void onClick() {
-		Library.current(song);
-		Library.seek(0);
-		Library.play();
+		MusicPlayer.current(song);
+		MusicPlayer.seek(0);
+		MusicPlayer.play();
 	}
 
 	public void index(int index) {

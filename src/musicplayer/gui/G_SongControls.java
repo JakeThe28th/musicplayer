@@ -6,8 +6,8 @@ import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.parts.Library;
+import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.UUID;
-import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
 public class G_SongControls extends G_Element {
@@ -24,29 +24,29 @@ public class G_SongControls extends G_Element {
 			{ @Override public void onDrag(double new_value) {
 				if (current_song != null) {
 					if (GraphicsAPI.left_click_pressed()) {
-						should_unpause_after_seek = Library.playing();
+						should_unpause_after_seek = MusicPlayer.playing();
 					}
-					Library.pause();
+					MusicPlayer.pause();
 					
-					Library.seek((long) (Library.songLength() * new_value));
+					MusicPlayer.seek((long) (MusicPlayer.songLength() * new_value));
 					
 					if (GraphicsAPI.left_click_released()) {
-						if (should_unpause_after_seek) Library.play();
+						if (should_unpause_after_seek) MusicPlayer.play();
 					}
 					
 				}
 			} };
 		G_Icon 		previous 		= new G_Icon("previous");
 		G_Icon 		stop 			= new G_Icon("stop")
-			{ @Override public void onClick() { Library.stop(); play_pause.icon_name = "play"; }};
+			{ @Override public void onClick() { MusicPlayer.stop(); play_pause.icon_name = "play"; }};
 		G_Icon 		play_pause 		= new G_Icon("play") 
 			{ @Override public void onClick() { 
-				if (Library.playing()) {
+				if (MusicPlayer.playing()) {
 					icon_name = "play";
-					Library.pause(); 
+					MusicPlayer.pause(); 
 				} else {
 					icon_name = "pause";
-					Library.play();
+					MusicPlayer.play();
 				}
 				}};
 		G_Icon 		next 			= new G_Icon("next");
@@ -114,7 +114,7 @@ public class G_SongControls extends G_Element {
 		GraphicsAPI.rect(draw_area, depth);
 		
 		if (current_song != null) {
-			progress_bar.amount = Library.songTime() / (float) Library.songLength();
+			progress_bar.amount = MusicPlayer.songTime() / (float) MusicPlayer.songLength();
 		}		
 		
 		title.draw(depth + 1);
