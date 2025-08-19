@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import musicplayer.audio.AudioDevice;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.gui.G_List;
 import musicplayer.gui.G_ScrollableList;
 import musicplayer.gui.G_Song;
 import musicplayer.gui.G_SongControls;
@@ -16,6 +17,10 @@ import musicplayer.parts.Song;
 import musicplayer.utility.Log;
 
 public class MusicPlayer {
+	
+	public static G_SongControls controls = new G_SongControls();
+	
+	// ^^^ GUI Objects ^^^ //
 	
 	public static void main(String[] args) throws IOException, ParseException {
 		
@@ -38,22 +43,15 @@ public class MusicPlayer {
 			
 			Library.update();
 
-			//if (current_view == VIEW_MINIFIED) draw_minified_view();
-			//if (current_view == VIEW_PLAYLIST) draw_playlist_view();
-			//if (current_view == VIEW_LIBRARY) draw_playlist_view();
+			if (current_view == VIEW_MINIFIED) draw_minified_view();
+			if (current_view == VIEW_PLAYLIST) draw_playlist_view();
+			if (current_view == VIEW_LIBRARY) draw_playlist_view();
 			
 			controls.recalculate_size();
 			controls.layout(0, GraphicsAPI.height() - controls.height(), GraphicsAPI.width(), GraphicsAPI.height());
 			controls.draw(0);
 			controls.input();
-			
-//			G_Text tx = new G_Text();
-//				tx.text("Blah...");
-//				tx.halign(Alignment.MIDDLE);
-//				tx.recalculate_size();
-//				tx.layout(0, 0, API.width(), API.height());
-//				tx.draw(0);
-//				
+
 			GraphicsAPI.render();
 						
 			//GraphicsHandler.refresh();
@@ -62,7 +60,7 @@ public class MusicPlayer {
 		d.end();
 	}
 	
-	int current_view = 2;
+	static int current_view = 2;
 	public static final int VIEW_MINIFIED = 1; // The condensed music player view
 	public static final int VIEW_PLAYLIST = 2; // Viewing the current list of songs
 	public static final int VIEW_LIBRARY  = 3; // Viewing the list of albums & playlists
@@ -82,13 +80,10 @@ public class MusicPlayer {
 	static int song_index = 0;
 	
 	static ArrayList<String> current_playlist_song_list = null;
-	
-	static G_SongControls controls = new G_SongControls();
-	
-	
+
 	static public void set_current_playlist(String name) {
 		playlist = name;
-		playlist_gui = new G_ScrollableList();
+		playlist_gui = new G_List().verticalify().scrollable(true);
 		for (Song song : Library.getPlaylist(playlist).listSongs()) {
 			playlist_gui.add(new G_Song(song.name()));
 			playlist_gui.add(new G_Song(song.name())); // TEMP (TODO) 
@@ -102,7 +97,7 @@ public class MusicPlayer {
 		
 	}
 	
-	static G_ScrollableList playlist_gui;
+	static G_List playlist_gui;
 	static public void draw_playlist_view() {
 		GraphicsAPI.color(0.15f, 0.25f, 0.5f, 1);
 		GraphicsAPI.rect(0, 0, GraphicsAPI.width(), 30, 0);
@@ -110,7 +105,10 @@ public class MusicPlayer {
 		GraphicsAPI.text(10, 10, 2, playlist);
 		GraphicsAPI.color(1, 1, 1, 1);
 		int yy = 35;
-		playlist_gui.draw(0, yy, GraphicsAPI.width(), GraphicsAPI.height(), 0);
+		playlist_gui.recalculate_size();
+		playlist_gui.layout(0, yy, GraphicsAPI.width(), GraphicsAPI.height()-controls.height());
+		playlist_gui.draw(0);
+
 		GraphicsAPI.text(GraphicsAPI.mouseX(), GraphicsAPI.mouseY(), 0, "Hello!");
 	}
 	

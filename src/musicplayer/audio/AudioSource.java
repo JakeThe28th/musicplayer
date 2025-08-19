@@ -224,8 +224,8 @@ public class AudioSource {
 	
 	/** Stop audio from this source, remove buffers, and rewind.*/
 	public void stop() { 
-		reset();
 		rewind();
+		reset();
 		state = STATE_STOPPED;
 		} 
 	

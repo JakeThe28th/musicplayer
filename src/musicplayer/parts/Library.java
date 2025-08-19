@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import musicplayer.MusicPlayer;
 import musicplayer.audio.AudioSource;
 
 /** Stores the information for all loaded songs */
@@ -46,6 +47,10 @@ public class Library {
 		if (albums.get(album_name) == null) return null;
 		Album album = albums.get(album_name);
 		return album.get(identifier);
+	}
+	
+	public static Song get(UUID song) {
+		return get(song.album, song.identifier);
 	}
 	
 	public static Album getAlbum(String album_name) {
@@ -95,6 +100,7 @@ public class Library {
 	public static void current(String album, String identifier) {
 		try {
 			current_song = get(album, identifier).audio();
+			MusicPlayer.controls.current(new UUID(album, identifier));
 		} catch (IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();
 		}
@@ -104,5 +110,34 @@ public class Library {
 	public static void pause() { current_song.pause(); }
 	public static void stop() { current_song.stop(); }
 	public static void update() { current_song.update(); }
+
+	public static long songTime() {
+		if (current_song != null) {
+			return current_song.currentTimeMillis();
+		} else 
+			return 0;
+	}
+
+	public static long songLength() {
+		if (current_song != null) {
+			return current_song.lengthMillis();
+		} else 
+			return 0;
+	}
+
+	public static boolean playing() {
+		if (current_song != null) {
+			return current_song.playing();
+		} else 
+			return false;
+	}
+
+	public static void seek(long time) {
+		boolean playing = playing();
+		if (current_song != null) {
+			current_song.seek(time);
+			if (!playing) pause();
+		}
+	}
 
 }

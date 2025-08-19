@@ -12,6 +12,9 @@ import org.joml.Matrix4f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL40;
 
+import musicplayer.utility.Log;
+import musicplayer.utility.Rectangle;
+
 // TODO: marking as deprecated not because it's actually deprecated
 // but so that there's a big annoying popup i don't forget about
 // G_Song directly uses uniforms for its faded edges effect,
@@ -20,8 +23,9 @@ import org.lwjgl.opengl.GL40;
 public class RenderQueue {
 		
 	public static HashMap<String, Integer> temp_integer_uniforms = new HashMap<String, Integer>();
+	public static Rectangle current_scissor = null;
 	
-	private static record RenderState(Mesh mesh, Matrix4f transform, Vector4f color, Texture texture, HashMap<String, Integer> integer_uniforms) { }
+	private static record RenderState(Mesh mesh, Matrix4f transform, Vector4f color, Texture texture, HashMap<String, Integer> integer_uniforms, Rectangle scissor) { }
 	
 	static ArrayList<RenderState> queue = new ArrayList<RenderState>();
 	
@@ -39,6 +43,19 @@ public class RenderQueue {
 			if (state.texture != null) {
 				glBindTexture(GL_TEXTURE_2D, state.texture.texture);
 			}
+			
+			if (state.scissor() != null) {
+				GL40.glScissor(
+						state.scissor().left(), 
+						Window.window_height - state.scissor().bottom(), 
+						(state.scissor().right()-state.scissor().left()), 
+						(state.scissor().bottom()-state.scissor().top()));
+				GL40.glEnable(GL40.GL_SCISSOR_TEST);
+			} else {
+				GL40.glScissor(0, 0, Window.window_width, Window.window_height);
+				GL40.glDisable(GL40.GL_SCISSOR_TEST);
+
+			}
 
 			GL40.glDrawElements(GL_TRIANGLES, state.mesh.count(), GL_UNSIGNED_INT, 0);
 		}
@@ -49,7 +66,7 @@ public class RenderQueue {
 	
 	@SuppressWarnings("unchecked")
 	public static void queue(Mesh mesh, Matrix4f transform, Vector4f color, Texture texture) {
-		queue.add(new RenderState(mesh, transform, color, texture, (HashMap<String, Integer>) temp_integer_uniforms.clone()));
+		queue.add(new RenderState(mesh, transform, color, texture, (HashMap<String, Integer>) temp_integer_uniforms.clone(), current_scissor));
 	}
 
 }

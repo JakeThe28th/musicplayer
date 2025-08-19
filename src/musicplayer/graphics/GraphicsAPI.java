@@ -1,12 +1,14 @@
 package musicplayer.graphics;
 
 import java.io.IOException;
+import java.util.Stack;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2i;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
+import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
 /** It's probably overkill to use the GUI library here so,
@@ -74,16 +76,21 @@ public class GraphicsAPI {
 		Icons.icon(x, y, z, name, size);
 	}
 	
+	static Stack<Rectangle> scissor_stack = new Stack<Rectangle>();
+	
 	/** Saves the current scissor and then sets the new scissor to this. */
-	public static void push_scissor(int left, int top, int right, int bottom) {
-		// TODO 
-	}
-
-	/** Reverts to the previous scissor box. */
-	public static void pop_scissor() {
-		// TODO Auto-generated method stub
+	public static void push_scissor(Rectangle box) {
+		scissor_stack.push(RenderQueue.current_scissor);
+		RenderQueue.current_scissor = box;
 	}
 	
+	/** Reverts to the previous scissor box. */
+	public static void pop_scissor() {
+		RenderQueue.current_scissor = scissor_stack.pop();
+	}
+	
+	
+
 	
 	/* -- Input stuffs -- */
 	
@@ -101,5 +108,5 @@ public class GraphicsAPI {
 	public static boolean left_click_down() {
 		return Input.mouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 	}
-
+	
 }
