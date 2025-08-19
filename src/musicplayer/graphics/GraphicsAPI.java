@@ -22,6 +22,7 @@ public class GraphicsAPI {
 	public static final Vector4f TRANSLUCENT_WHITE 	= new Vector4f(1, 1, 1, 0.5f);
 	public static final Vector4f TRANSPARENT_RED 	= new Vector4f(1, 0, 0, 0.25f);
 	public static final Vector4f BLACK 				= new Vector4f(0,0,0,1);
+	public static final Vector4f WHITE 				= new Vector4f(1,1,1,1);
 
 	static int width = 512;
 	static int height = 8*96;
