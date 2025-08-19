@@ -16,6 +16,7 @@ import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.Song;
 import musicplayer.utility.Log;
+import musicplayer.utility.Utility;
 
 public class MainProgram {
 	
@@ -53,9 +54,16 @@ public class MainProgram {
 			
 			MusicPlayer.update();
 
-			if (current_view == VIEW_MINIFIED) draw_minified_view();
-			if (current_view == VIEW_PLAYLIST) draw_playlist_view();
-			if (current_view == VIEW_LIBRARY) draw_playlist_view();
+			long transition_time = System.currentTimeMillis() - view_transition_timer;
+			float transition_amount = transition_time / (float) view_transition_time;
+			      transition_amount = (float) Utility.lerp(transition_amount, 1, transition_amount);
+			int xoffset = (int) (GraphicsAPI.width() * (transition_amount));
+			if (transition_time < view_transition_time) {
+				draw_view(last_view, xoffset);
+				draw_view(current_view, xoffset-GraphicsAPI.width());
+			} else {
+				draw_view(current_view, 0);
+			}
 			
 			controls.recalculate_size();
 			controls.layout(0, GraphicsAPI.height() - controls.height(), GraphicsAPI.width(), GraphicsAPI.height());
@@ -70,29 +78,40 @@ public class MainProgram {
 		d.end();
 	}
 		
-	static int current_view = 2;
+	private static void draw_view(int view, int offset) {
+		if (view == VIEW_MINIFIED) draw_minified_view();
+		if (view == VIEW_PLAYLIST) draw_playlist_view(offset);
+		if (view == VIEW_LIBRARY) draw_library_view(offset);
+	}
+
+	public static int current_view = 2;
 	public static final int VIEW_MINIFIED = 1; // The condensed music player view
 	public static final int VIEW_PLAYLIST = 2; // Viewing the current list of songs
 	public static final int VIEW_LIBRARY  = 3; // Viewing the list of albums & playlists
 
 	public boolean pinned = false;
 	
-	static public void draw_library_view() {
+	static long view_transition_time = 250;
+	public static long view_transition_timer = 0;
+	public static int last_view = 2;
+	
+	static public void draw_library_view(int x_offset) {
 		
+		GraphicsAPI.text(x_offset+130, 30, 0, "Test");
 		
 	}
 	
 	public static G_List playlist_gui;
 	public static G_PlaylistHeader playlist_header = new G_PlaylistHeader();
-	static public void draw_playlist_view() {		
+	static public void draw_playlist_view(int xx) {		
 		playlist_header.recalculate_size();
-		playlist_header.layout(0, 0, GraphicsAPI.width(), playlist_header.height());
+		playlist_header.layout(xx, 0, GraphicsAPI.width() + xx, playlist_header.height());
 		playlist_header.draw(0);
 		playlist_header.input();
 		
 		
 		playlist_gui.recalculate_size();
-		playlist_gui.layout(0, playlist_header.height(), GraphicsAPI.width(), GraphicsAPI.height()-controls.height());
+		playlist_gui.layout(xx, playlist_header.height(), GraphicsAPI.width() + xx, GraphicsAPI.height()-controls.height());
 		playlist_gui.draw(0);
 		playlist_gui.input();
 		
