@@ -1,6 +1,7 @@
 package musicplayer.parts;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 public class Playlist {
@@ -16,10 +17,10 @@ public class Playlist {
 		// TODO load playlist image and metadata and stuff from directory
 	}
 
-	LinkedHashSet<UUID> songs = new LinkedHashSet<UUID>();
+	ArrayList<UUID> songs = new ArrayList<UUID>();
 
-	public LinkedHashSet<Song> listSongs() {
-		LinkedHashSet<Song> set = new LinkedHashSet<Song>();
+	public ArrayList<Song> listSongs() {
+		ArrayList<Song> set = new ArrayList<Song>();
 		for (UUID identifier : songs) {
 			set.add(Library.getAlbum(identifier.album).get(identifier.identifier));
 		}

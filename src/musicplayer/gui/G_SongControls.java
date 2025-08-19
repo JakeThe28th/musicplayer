@@ -36,7 +36,8 @@ public class G_SongControls extends G_Element {
 					
 				}
 			} };
-		G_Icon 		previous 		= new G_Icon("previous");
+		G_Icon 		previous 		= new G_Icon("previous")
+			{ @Override public void onClick() { MusicPlayer.previous(); }};
 		G_Icon 		stop 			= new G_Icon("stop")
 			{ @Override public void onClick() { MusicPlayer.stop(); play_pause.icon_name = "play"; }};
 		G_Icon 		play_pause 		= new G_Icon("play") 
@@ -49,7 +50,8 @@ public class G_SongControls extends G_Element {
 					MusicPlayer.play();
 				}
 				}};
-		G_Icon 		next 			= new G_Icon("next");
+		G_Icon 		next 			= new G_Icon("next")
+			{ @Override public void onClick() { MusicPlayer.next(); }};
 		G_Icon 		volume 			= new G_Icon("volume");
 		G_Icon 		shuffle 		= new G_Icon("shuffle");
 	G_List		center_icons	= new G_List(previous, stop, play_pause, next);
