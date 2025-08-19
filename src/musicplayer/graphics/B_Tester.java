@@ -13,6 +13,7 @@ import org.joml.Vector4f;
 public class B_Tester {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException { new B_Tester().run(); }
+	@SuppressWarnings("deprecation")
 	public void run() throws FileNotFoundException, IOException {
 
 		Graphics.setup(400, 400, "Graphicics tesntmeoewo");
@@ -47,11 +48,13 @@ public class B_Tester {
 			//Shapes.rect(10, 10, Window.window_width-10, Window.window_height-10, 0);
 			
 			Vector2i size = textrenderer.size("Hello, World!");
-			Shapes.rect(10, 10, 10+size.x, 10+size.y, 0);
-			textrenderer.text(10, 10, 10, "Hello, World!");
+			//Shapes.rect(10, 10, 10+size.x, 10+size.y, 0);
+			//textrenderer.text(10, 10, 10, "Hello, World!");
 			
 			//RenderQueue.queue(mesh, new Matrix4f().translate(0, 0, 2), new Vector4f(1,1,1,1), khronos);
 
+			Icons.icon(20, 30, 0, "stop", 10);
+			
 			//textrenderer.text(10, 100, 10, "Hello, World!");
 			
 			RenderQueue.render();
