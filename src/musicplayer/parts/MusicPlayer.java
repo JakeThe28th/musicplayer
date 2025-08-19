@@ -34,16 +34,6 @@ public class MusicPlayer {
 		MainProgram.playlist_gui = new G_List().verticalify().scrollable(true);
 		for (Song song : Library.getPlaylist(playlist).listSongs()) {
 			MainProgram.playlist_gui.add(new G_Song(song.uuid()));
-			
-			MainProgram.playlist_gui.add(new G_Song(song.uuid()));
-			MainProgram.playlist_gui.add(new G_Song(song.uuid()));
-			MainProgram.playlist_gui.add(new G_Song(song.uuid()));
-			MainProgram.playlist_gui.add(new G_Song(song.uuid()));
-			MainProgram.playlist_gui.add(new G_Song(song.uuid()));
-			MainProgram.playlist_gui.add(new G_Song(song.uuid()));
-			MainProgram.playlist_gui.add(new G_Song(song.uuid()));
-			MainProgram.playlist_gui.add(new G_Song(song.uuid()));
-
 		}
 	}
 	
