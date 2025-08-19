@@ -13,6 +13,9 @@ public class G_SongControls extends G_Element {
 	
 	{
 		title.halign(Alignment.MIDDLE);
+		progress_bar.right_margin = 30;
+		progress_bar.left_margin = 30;
+
 	}
 	
 	@Override

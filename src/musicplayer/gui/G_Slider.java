@@ -26,7 +26,7 @@ public class G_Slider extends G_Element {
 		this.left = left + this.left_margin;
 		this.right = right - this.right_margin;
 		this.y = top + ((bottom-top) / 2);
-		this.draw_amount = (int) (amount * (right - left));
+		this.draw_amount = (int) (amount * (this.right - this.left));
 
 		amount = (Math.sin(System.currentTimeMillis()/1000.0) + 1) / 2 ;
 	}

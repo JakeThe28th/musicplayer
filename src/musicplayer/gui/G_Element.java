@@ -15,7 +15,7 @@ import musicplayer.gui.enums.Alignment;
 public abstract class G_Element {
 		
 	public int width() 		{ return left_margin + unpadded_width + right_margin; }
-	public int height()  	{ return left_margin + unpadded_height + right_margin; };
+	public int height()  	{ return top_margin + unpadded_height + bottom_margin; };
 
 	protected int 			unpadded_width 		= 0;
 	protected int 			unpadded_height 	= 0;
