@@ -67,7 +67,7 @@ public class G_Song extends G_Element {
 	int number_x;
 	int index = 0;
 	int visualizer_left;
-
+	
 	@Override
 	public void draw(int depth) {
 		

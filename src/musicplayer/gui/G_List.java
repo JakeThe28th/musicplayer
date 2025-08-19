@@ -125,6 +125,8 @@ public class G_List extends G_Element {
 	
 	int scrollbar_height;
 	void calculate_scrollbar_position() {
+		if (height() <= scissor_box.height() && !allow_lower_align_when_not_full) scroll_y = 0; 
+
 		Rectangle b = scissor_box;
 		double hh = height();
 		double real_height = b.bottom()-b.top();
@@ -173,6 +175,8 @@ public class G_List extends G_Element {
 	int initial_mouse_y;
 	double initial_scroll_y;
 	
+	boolean allow_lower_align_when_not_full = false; //im so tireeed
+
 	@Override
 	public boolean input() {
 		if (scrollable) {
