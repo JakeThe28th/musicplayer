@@ -68,6 +68,7 @@ public class G_PlaylistGridItem extends G_Element {
 	public void onClick() {
 		MusicPlayer.set_current_view_playlist(playlist.identifier());
 		MainProgram.change_view(MainProgram.VIEW_PLAYLIST);	
+		MusicPlayer.scroll_to_current();
 	}
 
 }

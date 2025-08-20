@@ -107,11 +107,11 @@ public class G_Song extends G_Element {
 
 	@Override
 	public void onClick() {
+		MusicPlayer.song_index = index;
 		MusicPlayer.current(song);
 		MusicPlayer.set_current_playlist(MusicPlayer.view_playlist);
 		MusicPlayer.seek(0);
 		MusicPlayer.play();
-		MusicPlayer.song_index = index;
 	}
 
 	public void index(int index) {

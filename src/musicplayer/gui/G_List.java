@@ -107,4 +107,8 @@ public class G_List extends G_Element {
 		}
 	}
 
+	public G_Element element(int i) {
+		return elements.get(i);
+	}
+
 }

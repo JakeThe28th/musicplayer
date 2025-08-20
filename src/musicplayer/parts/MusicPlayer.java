@@ -8,6 +8,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import musicplayer.MainProgram;
 import musicplayer.audio.AudioSource;
 import musicplayer.gui.G_List;
+import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Song;
 import musicplayer.utility.Log;
 
@@ -15,7 +16,11 @@ import musicplayer.utility.Log;
 public class MusicPlayer {
 	
 	public boolean paused = false;
-	
+
+	public static int scroll_mode = 1;
+	public static final int SCROLL_PAGE = 0;
+	public static final int SCROLL_SONG = 1;
+
 	public static int playback_mode = 10;
 	public static final int LOOP_NONE = 0; // Don't loop
 	public static final int LOOP_SONG = 1; // Loop the song
@@ -59,8 +64,29 @@ public class MusicPlayer {
 		} catch (IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();
 		}
+		
+		scroll_to_current();
 	}
 	
+	public static void scroll_to_current() {
+		if (view_playlist.equals(playlist)) {
+			G_Scrollable scroll = MainProgram.playlist_gui_scroll;
+			int element_height = MainProgram.playlist_gui_list.element(0).height();
+			int target = (element_height * song_index);
+
+			if (target > scroll.scroll_y && scroll.sheight != 0) {
+			if (target < scroll.scroll_y + (scroll.sheight-element_height)) {
+				target = -1;
+			} else {
+				if (scroll_mode == SCROLL_SONG) {
+					target = target - (scroll.sheight-(element_height+10));
+				}
+			}
+			}
+			MainProgram.playlist_gui_scroll.scroll_target = target;
+		}
+	}
+
 	public static void current(UUID song) {
 		current(song.album, song.identifier);
 	}
