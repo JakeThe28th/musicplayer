@@ -106,6 +106,9 @@ public class G_Scrollable extends G_Element {
 
 	@Override
 	public boolean input() {
+		
+		if (MainProgram.popups.size() > 0) return false;
+		
 		if (scroll_area.contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY())) {
 			if (GraphicsAPI.left_click_pressed()) {
 				scrolling = true;

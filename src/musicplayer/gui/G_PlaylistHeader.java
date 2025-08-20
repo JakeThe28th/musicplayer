@@ -3,7 +3,10 @@ package musicplayer.gui;
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
+import musicplayer.gui.extra.Popup;
+import musicplayer.gui.extra.Popup.Option;
 import musicplayer.parts.MusicPlayer;
+import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
 public class G_PlaylistHeader extends G_Element {
@@ -11,11 +14,28 @@ public class G_PlaylistHeader extends G_Element {
 	G_Text 		title			= new G_Text().text("No Playlist");
 	G_Icon 		home 			= new G_Icon("home")
 		{ @Override public void onClick() { 
-			MainProgram.view_transition_timer = System.currentTimeMillis();
-			MainProgram.last_view = MainProgram.current_view;
-			MainProgram.current_view = MainProgram.VIEW_LIBRARY; 
+			MainProgram.change_view(MainProgram.VIEW_LIBRARY);
 		}};
-	G_Icon 		menu 			= new G_Icon("hamburger");
+	G_Icon 		menu 			= new G_Icon("hamburger")
+			{ @Override public void onClick() {
+				
+				Option[] options = new Option[MainProgram.playlist_menu_options.size()];
+				for (int i = 0; i <  MainProgram.playlist_menu_options.size(); i++) {
+					options[i] = MainProgram.playlist_menu_options.get(i);
+				}
+				
+				MainProgram.popups.add(
+						new Popup(
+								x + width(), 
+								y + height(), 
+								Alignment.RIGHT, 
+								Alignment.LEFT, 
+								options
+							)
+						);
+			} };
+	
+	
 	
 	public void set_playlist(String name) {
 		title.text = name;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.joml.Vector4f;
 
+import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.utility.Rectangle;
@@ -60,6 +61,8 @@ public abstract class G_Element {
 	Rectangle hover_rectangle = new Rectangle(0,0,0,0);
 	
 	public boolean input() {
+		
+		if (MainProgram.popups.size() > 0) return false;
 		
 		for (G_Element e : sub_elements) {
 			if (e.input()) return true;

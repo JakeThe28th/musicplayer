@@ -66,10 +66,8 @@ public class G_PlaylistGridItem extends G_Element {
 	
 	@Override
 	public void onClick() {
-		MainProgram.last_view = MainProgram.current_view;
-		MainProgram.current_view = MainProgram.VIEW_PLAYLIST;
-		MainProgram.view_transition_timer = System.currentTimeMillis();
 		MusicPlayer.set_current_view_playlist(playlist.identifier());
+		MainProgram.change_view(MainProgram.VIEW_PLAYLIST);	
 	}
 
 }

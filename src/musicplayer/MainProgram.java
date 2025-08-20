@@ -3,6 +3,7 @@ package musicplayer;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import org.joml.Vector4f;
 
@@ -14,6 +15,9 @@ import musicplayer.gui.G_PlaylistHeader;
 import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Song;
 import musicplayer.gui.G_SongControls;
+import musicplayer.gui.enums.Alignment;
+import musicplayer.gui.extra.Popup;
+import musicplayer.gui.extra.Popup.Option;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.Song;
@@ -30,11 +34,27 @@ public class MainProgram {
 	public static final Vector4f SEMIDARK_COLOR = new Vector4f(80 / 255f, 100 / 255f, 100 / 255f, 1);
 	public static final Vector4f TRANSPARENT_ACCENT_COLOR = new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 0.25f);
 
+	public static ArrayList<Popup> popups = new ArrayList<Popup>();
 	
 	public static G_SongControls controls = new G_SongControls();
 	
+	public static ArrayList<Option> playlist_menu_options = new ArrayList<Option>();
+	
+	static {
+		playlist_menu_options.add(new Option("View Library", () -> {
+			change_view(MainProgram.VIEW_LIBRARY);
+		}));
+		playlist_menu_options.add(new Option("Other Test Button (play)", () -> {
+			MusicPlayer.play();
+		}));
+		playlist_menu_options.add(new Option("Other Test Button (pause)", () -> {
+			MusicPlayer.pause();
+		}));
+	}
+	
 	// ^^^ GUI Objects ^^^ //
 	
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws IOException, ParseException {
 		
 		GraphicsAPI.init();
@@ -75,13 +95,28 @@ public class MainProgram {
 			controls.layout(0, GraphicsAPI.height() - controls.height(), GraphicsAPI.width(), GraphicsAPI.height());
 			controls.draw(0);
 			controls.input();
-
+			
+			int i = 10;
+			boolean should_close_popups = true;
+			for (Popup p : (ArrayList<Popup>) popups.clone()) {
+				i++;
+				boolean close = p.draw(i);
+				should_close_popups = should_close_popups && close;
+			}
+			if (should_close_popups) popups.clear();
+			
 			GraphicsAPI.render();
 						
 			//GraphicsHandler.refresh();
 		}
 		
 		d.end();
+	}
+	
+	public static void change_view(int new_view) {
+		MainProgram.last_view = MainProgram.current_view;
+		MainProgram.current_view = new_view;
+		MainProgram.view_transition_timer = System.currentTimeMillis();
 	}
 		
 	private static void draw_view(int view, int offset) {
