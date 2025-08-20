@@ -37,7 +37,7 @@ public class G_Scrollable extends G_Element {
 		
 		scissor_box = new Rectangle(left, top, right, bottom);
 		
-		left += 30;
+		left += 25;
 		top -= scroll_y;
 		
 		// Scissor is set so that the sub-element knows

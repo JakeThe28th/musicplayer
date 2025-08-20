@@ -43,7 +43,7 @@ public class G_Song extends G_Element {
 
 	@Override
 	public void layout(int left, int top, int right, int bottom) {
-		this.left = left + this.left_margin + 30;
+		this.left = left + this.left_margin + 40;
 		this.number_x = left + this.left_margin;
 		this.top = top + this.top_margin;
 		this.right = right - this.right_margin;
