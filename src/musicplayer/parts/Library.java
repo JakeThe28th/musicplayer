@@ -12,6 +12,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import musicplayer.MainProgram;
 import musicplayer.audio.AudioSource;
+import musicplayer.gui.G_PlaylistGridItem;
 import musicplayer.utility.Log;
 
 /** Stores the information for all loaded songs */
@@ -36,6 +37,7 @@ public class Library {
 	}
 	
 	private static void registerAlbum(Album album) {
+		MainProgram.albums_grid.add(new G_PlaylistGridItem(album.linked_playlist));
 		albums.put(album.getName(), album);
 		if (playlists.get(album.getName()) != null) {
 			throw new Error("Trying to add an album which has the same name as a playlist");
