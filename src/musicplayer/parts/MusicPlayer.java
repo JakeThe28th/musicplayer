@@ -185,9 +185,9 @@ public class MusicPlayer {
 		if (playback_mode > 3) playback_mode = 0;
 		
 		MainProgram.controls.shuffle.icon_name = switch (playback_mode) {
-			case LOOP_NONE -> "x";
-			case LOOP_SONG -> "pause";		// TODO
-			case LOOP_LIST -> "home";		// TODO
+			case LOOP_NONE -> "play_once";
+			case LOOP_SONG -> "loop_once";		// TODO
+			case LOOP_LIST -> "loop";		// TODO
 			case SHUFFLE   -> "shuffle";
 			default -> "";
 		};
