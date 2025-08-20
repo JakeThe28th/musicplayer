@@ -8,6 +8,7 @@ import org.joml.Vector4f;
 
 import musicplayer.audio.AudioDevice;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.gui.G_Grid;
 import musicplayer.gui.G_List;
 import musicplayer.gui.G_PlaylistHeader;
 import musicplayer.gui.G_Scrollable;
@@ -96,9 +97,27 @@ public class MainProgram {
 	public static long view_transition_timer = 0;
 	public static int last_view = 2;
 	
+	public static G_Grid albums_grid = new G_Grid();
+	public static G_Scrollable albums_scroll = new G_Scrollable(albums_grid);
+	
 	static public void draw_library_view(int x_offset) {
 		
-		GraphicsAPI.text(x_offset+130, 30, 0, "Test");
+		int bottom = GraphicsAPI.height()-controls.height();
+		int top = 10;
+		int header_height = 20;
+		int section_height = ( (bottom-top)-(header_height*2) ) / 2 ;
+		int left_margin = 20;
+		
+		GraphicsAPI.color(GraphicsAPI.WHITE);
+		GraphicsAPI.text(x_offset+left_margin, top, 0, "Albums");
+		
+		albums_scroll.recalculate_size();
+		albums_scroll.layout(x_offset, top+header_height, x_offset+GraphicsAPI.width(), top+header_height+section_height);
+		albums_scroll.draw(0);
+		albums_scroll.input();
+		
+		GraphicsAPI.color(GraphicsAPI.WHITE);
+		GraphicsAPI.text(x_offset+left_margin, top+section_height+header_height, 0, "Playlists");
 		
 	}
 	

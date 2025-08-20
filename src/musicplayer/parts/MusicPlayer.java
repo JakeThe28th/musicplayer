@@ -47,7 +47,7 @@ public class MusicPlayer {
 	public static void current(String album, String identifier) {
 		try {
 			if (current_song != null) current_song.stop();
-			current_song = Library.get(album, identifier).audio();
+			current_song = Library.getSongFromAlbum(album, identifier).audio();
 			MainProgram.controls.current(new UUID(album, identifier));
 		} catch (IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();

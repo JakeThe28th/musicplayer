@@ -126,7 +126,7 @@ public class G_SongControls extends G_Element {
 	UUID current_song = null;
 
 	public void current(UUID song) {
-		title.text = Library.get(song).name();
+		title.text = Library.getSongFromAlbum(song).name();
 		current_song = song;
 		recalculate_size();
 	}

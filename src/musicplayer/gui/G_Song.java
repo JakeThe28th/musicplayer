@@ -30,7 +30,7 @@ public class G_Song extends G_Element {
 	
 	public G_Song(UUID n) {
 		song = n;
-		name.text(Library.get(song).name());
+		name.text(Library.getSongFromAlbum(song).name());
 	}
 	
 	@Override

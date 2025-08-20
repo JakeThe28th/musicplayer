@@ -12,6 +12,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import musicplayer.MainProgram;
 import musicplayer.audio.AudioSource;
+import musicplayer.utility.Log;
 
 /** Stores the information for all loaded songs */
 public class Library {
@@ -26,15 +27,24 @@ public class Library {
 	static {
 		File library = new File(library_directory + "albums\\");
 		for (File album : library.listFiles()) {
-			albums.put(album.getName(), new Album(album));
-			playlists.put(album.getName(), new Playlist(getAlbum(album.getName()))); // Every album should get a playlist
-			for (File song : album.listFiles()) {
-				if (song.isDirectory()) loadSong(album.getName(), song.getName(), song);
+			try {
+				registerAlbum(new Album(album));
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
 	
-	public static void set(String album_name, String identifier, Song song) {
+	private static void registerAlbum(Album album) {
+		albums.put(album.getName(), album);
+		if (playlists.get(album.getName()) != null) {
+			throw new Error("Trying to add an album which has the same name as a playlist");
+		} else {
+			playlists.put(album.getName(), album.linked_playlist);
+		}
+	}
+	
+	public static void setSongInAlbum(String album_name, String identifier, Song song) {
 		// Commented out since if the album is null something has gone wrong
 		//if (albums.get(album_name) == null) albums.put(album_name, new Album());
 		Album album = albums.get(album_name);
@@ -43,14 +53,14 @@ public class Library {
 		getPlaylist(album_name).add(new UUID(album_name, identifier));
 	}
 
-	public static Song get(String album_name, String identifier) {
+	public static Song getSongFromAlbum(String album_name, String identifier) {
 		if (albums.get(album_name) == null) return null;
 		Album album = albums.get(album_name);
 		return album.get(identifier);
 	}
 	
-	public static Song get(UUID song) {
-		return get(song.album, song.identifier);
+	public static Song getSongFromAlbum(UUID song) {
+		return getSongFromAlbum(song.album, song.identifier);
 	}
 	
 	public static Album getAlbum(String album_name) {
@@ -61,13 +71,6 @@ public class Library {
 	public static Playlist getPlaylist(String playlist) {
 		if (playlists.get(playlist) == null) return null;
 		return playlists.get(playlist);
-	}
-
-	public static void loadSong(String album, String identifier, File directory) {
-		try { 
-			set(album, identifier, new Song(directory));
-			get(album, identifier).uuid(album, identifier);
-		} catch (IOException e) { e.printStackTrace(); }
 	}
 	
 	public static Album[] listAlbums() {
