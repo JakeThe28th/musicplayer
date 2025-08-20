@@ -50,7 +50,7 @@ public class G_Song extends G_Element {
 		this.bottom = bottom - this.bottom_margin;
 		this.hover_rectangle = new Rectangle(left, top, this.right, bottom);
 		
-		this.right -= 60;
+		this.right -= 30;
 		
 		name_concat = name;
 		while (GraphicsAPI.size(name_concat).x > (this.right-this.left) && name_concat.length() >= 4) {
@@ -60,7 +60,7 @@ public class G_Song extends G_Element {
 		name_concat += "...";
 		
 		visualizer_left = this.right;
-		menu.layout(this.right+30, this.top, this.right+60, this.bottom);
+		menu.layout(this.right, this.top, this.right+30, this.bottom);
 	}
 	
 	int left, top, right, bottom;
@@ -90,11 +90,11 @@ public class G_Song extends G_Element {
 		if (index == MusicPlayer.song_index) {
 			GraphicsAPI.color(MainProgram.TRANSPARENT_ACCENT_COLOR);
 			int target_width 		= right - left;
-			int slice_w 	 		= 5;
+			int slice_w 	 		= 2;
 			int slices = target_width/slice_w;
-			int offset_per_slice	= 370 / slices;
+			int offset_per_pixel	= 1;
 			for (int i = 0; i < slices; i++) {
-				float hh = MusicPlayer.level_offset(MusicPlayer.songTime(), (short) (i * offset_per_slice)) / ((float) Short.MAX_VALUE / 32f);
+				float hh = MusicPlayer.level_offset(MusicPlayer.songTime(), (short) ((slice_w*i) * offset_per_pixel)) / ((float) Short.MAX_VALUE / 32f);
 				//hh = hh/hh;
 				hh += (bottom-top)/2;
 				GraphicsAPI.rect(left+(slice_w*i), bottom-((int) hh), left+(slice_w*(i+1)), bottom, depth + 1);
