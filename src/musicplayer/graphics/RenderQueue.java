@@ -15,12 +15,7 @@ import org.lwjgl.opengl.GL40;
 import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
-// TODO: marking as deprecated not because it's actually deprecated
-// but so that there's a big annoying popup i don't forget about
-// G_Song directly uses uniforms for its faded edges effect,
-// I need to add that to the api and de-publicify this soon
-@Deprecated
-public class RenderQueue {
+class RenderQueue {
 		
 	public static HashMap<String, Integer> temp_integer_uniforms = new HashMap<String, Integer>();
 	public static Rectangle current_scissor = null;

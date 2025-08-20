@@ -2,7 +2,6 @@ package musicplayer.gui;
 
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
-import musicplayer.graphics.RenderQueue;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
@@ -12,8 +11,7 @@ import musicplayer.utility.Rectangle;
 public class G_Song extends G_Element {
 
 	UUID song;
-	String name;
-	String name_concat = "";
+	G_Text name = new G_Text();
 	
 	G_Icon menu = new G_Icon("hamburger");
 	
@@ -22,18 +20,25 @@ public class G_Song extends G_Element {
 		menu.halign(Alignment.MIDDLE);
 		menu.icon_size = 10;
 		addSubElement(menu);
+		addSubElement(name);
+		name.bottom_margin = 0;
+		name.top_margin = 0;
+		name.right_margin = 0;
+		name.left_margin = 0;
+		name.recalculate_size();
 	}
 	
 	public G_Song(UUID n) {
 		song = n;
-		name = Library.get(song).name();
+		name.text(Library.get(song).name());
 	}
 	
 	@Override
 	public void recalculate_size() {
-		this.unpadded_height = GraphicsAPI.size(name).y;
-		this.unpadded_width = GraphicsAPI.size(name).x;
+		this.unpadded_height = name.height();
+		this.unpadded_width = name.width();
 		menu.recalculate_size();
+		name.recalculate_size();
 	}
 
 	@Override
@@ -47,15 +52,10 @@ public class G_Song extends G_Element {
 		
 		this.right -= 30;
 		
-		name_concat = name;
-		while (GraphicsAPI.size(name_concat).x > (this.right-this.left) && name_concat.length() >= 4) {
-			name_concat = name_concat.substring(0, name_concat.length()-1);
-		}
-		name_concat = name_concat.substring(0, name_concat.length()-3);
-		name_concat += "...";
-		
 		visualizer_left = this.right;
 		menu.layout(this.right, this.top, this.right+30, this.bottom);
+		
+		name.layout(this.left, this.top, this.right, this.bottom);
 	}
 	
 	int left, top, right, bottom;
@@ -97,25 +97,7 @@ public class G_Song extends G_Element {
 			GraphicsAPI.color(MainProgram.ACCENT_COLOR);
 		}
 
-		if (text_width > (right-left) && (GraphicsAPI.mouseY() > top && GraphicsAPI.mouseY() < bottom)) {
-			RenderQueue.temp_integer_uniforms.put("first_fade_transparent_x", left);
-			RenderQueue.temp_integer_uniforms.put("first_fade_opaque_x", left+30);
-			RenderQueue.temp_integer_uniforms.put("second_fade_transparent_x", right);
-			RenderQueue.temp_integer_uniforms.put("second_fade_opaque_x", right-30);
-			text_width += 30;
-			// scroll text
-			int time = (int) Math.floorMod((System.currentTimeMillis() / 20), text_width);
-			GraphicsAPI.text(left+time, top, depth, name);
-			GraphicsAPI.text((left-text_width)+time, top, depth, name);
-			RenderQueue.temp_integer_uniforms.put("first_fade_transparent_x", 0);
-			RenderQueue.temp_integer_uniforms.put("first_fade_opaque_x", 0);
-			RenderQueue.temp_integer_uniforms.put("second_fade_transparent_x", 0);
-			RenderQueue.temp_integer_uniforms.put("second_fade_opaque_x", 0);
-		} else if (text_width > (right-left) ) {
-			GraphicsAPI.text(left, top, depth, name_concat);
-		} else {
-			GraphicsAPI.text(left, top, depth, name);
-		}
+		name.draw(depth+2);
 		
 		menu.draw(depth+1);
 		

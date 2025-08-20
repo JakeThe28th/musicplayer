@@ -10,5 +10,14 @@ public record Rectangle(int left, int top, int right, int bottom) {
 	// i should have made this earlier
 	public int height() {
 		return bottom - top;
+	}
+
+	public int width() {
+		return right - left;
+	}
+	
+	public boolean isHovered() {
+		return contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY());
 	} 
+	
 	}

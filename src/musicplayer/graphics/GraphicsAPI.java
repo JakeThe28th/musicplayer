@@ -114,4 +114,15 @@ public class GraphicsAPI {
 		return Input.mouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_LEFT);
 	}
 
+	public static void setFadeColumn(int left, int left_inner, int right, int right_inner) {
+		RenderQueue.temp_integer_uniforms.put("first_fade_transparent_x", left);
+		RenderQueue.temp_integer_uniforms.put("first_fade_opaque_x", left_inner);
+		RenderQueue.temp_integer_uniforms.put("second_fade_transparent_x", right);
+		RenderQueue.temp_integer_uniforms.put("second_fade_opaque_x", right_inner);
+	}
+	
+	public static void resetFadeColumn() {
+		setFadeColumn(0,0,0,0);
+	}
+
 }
