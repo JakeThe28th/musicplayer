@@ -49,7 +49,7 @@ public class G_SongControls extends G_Element {
 			{ @Override public void onClick() { MusicPlayer.next(); }};
 		G_Icon 		volume 			= new G_Icon("volume");
  public G_Icon 		shuffle 		= new G_Icon("shuffle")
-			{ @Override public void onClick() { MusicPlayer.changePlaybackMode(); }};
+			{ @Override public void onClick() { MusicPlayer.cyclePlaybackMode(); }};
 
 	G_List		center_icons	= new G_List(previous, stop, play_pause, next);
 	G_List		left_icons		= new G_List(volume);

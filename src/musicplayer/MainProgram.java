@@ -69,6 +69,7 @@ public class MainProgram {
 		MusicPlayer.set_current_playlist("defaultalbum");
 		MusicPlayer.set_current_view_playlist("defaultalbum");
 		MusicPlayer.current("defaultalbum", "awesomedefaultsong");
+		MusicPlayer.cyclePlaybackMode();
 		//Library.play();
 		
 //		MusicPlayer.set_current_playlist("awesome-other-album");

@@ -16,7 +16,7 @@ public class MusicPlayer {
 	
 	public boolean paused = false;
 	
-	public static int playback_mode = 2;
+	public static int playback_mode = 10;
 	public static final int LOOP_NONE = 0; // Don't loop
 	public static final int LOOP_SONG = 1; // Loop the song
 	public static final int LOOP_LIST = 2; // Loop the playlist
@@ -27,7 +27,8 @@ public class MusicPlayer {
 	public static String view_playlist = "default";
 	public static int song_index = 0;
 
-	private static AudioSource current_song;
+	private static Song current_song;
+	private static AudioSource current_song_audio;
 	
 	static public void set_current_playlist(String name) {
 		playlist = name;
@@ -43,9 +44,17 @@ public class MusicPlayer {
 	}
 	
 	public static void current(String album, String identifier) {
+		
+		// Maybe bad for loading songs quickly, but also maybe
+		// not wasting 1000s of megabytes is worth that...
+		// Also, even without loading things in advance,
+		// I haven't actually heard any noticeable delay from songs being loaded...
+		if (current_song != null) current_song.free_audio();
+
 		try {
-			if (current_song != null) current_song.stop();
-			current_song = Library.getSongFromAlbum(album, identifier).audio();
+			if (current_song_audio != null) current_song_audio.stop();
+			current_song = Library.getSongFromAlbum(album, identifier);
+			current_song_audio = current_song.audio();
 			MainProgram.controls.current(new UUID(album, identifier));
 		} catch (IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();
@@ -58,12 +67,12 @@ public class MusicPlayer {
 	
 	static boolean playing = false;
 	
-	public static void play() { current_song.play(); MainProgram.controls.setPlaying(true); playing = true; }
-	public static void pause() { current_song.pause(); playing = false;  }
-	public static void stop() { current_song.stop(); current_song.seekstop(0); playing = false; }
+	public static void play() { current_song_audio.play(); MainProgram.controls.setPlaying(true); playing = true; }
+	public static void pause() { current_song_audio.pause(); playing = false;  }
+	public static void stop() { current_song_audio.stop(); current_song_audio.seekstop(0); playing = false; }
 	public static void update() { 
-		current_song.update();
-		if (current_song.stopped() && playing) {
+		current_song_audio.update();
+		if (current_song_audio.stopped() && playing) {
 			if (playback_mode == LOOP_SONG) {
 				seek(0);
 				play();
@@ -73,7 +82,7 @@ public class MusicPlayer {
 		}
 	}
 	
-	public static void next() { 
+	public static void next() { 		
 		song_index++;
 		ArrayList<Song> songs = Library.getPlaylist(playlist).listSongs();
 		if (song_index >= songs.size() && playback_mode == LOOP_LIST) {
@@ -89,7 +98,6 @@ public class MusicPlayer {
 		current(next_song.uuid());
 		seek(0);
 		if (playing) play();
-		
 	}
 	
 	public static void previous() { 
@@ -104,49 +112,49 @@ public class MusicPlayer {
 	}
 
 	public static long songTime() {
-		if (current_song != null) {
-			return current_song.currentTimeMillis();
+		if (current_song_audio != null) {
+			return current_song_audio.currentTimeMillis();
 		} else 
 			return 0;
 	}
 
 	public static long songLength() {
-		if (current_song != null) {
-			return current_song.lengthMillis();
+		if (current_song_audio != null) {
+			return current_song_audio.lengthMillis();
 		} else 
 			return 0;
 	}
 
 	public static boolean playing() {
-		if (current_song != null) {
-			return current_song.playing();
+		if (current_song_audio != null) {
+			return current_song_audio.playing();
 		} else 
 			return false;
 	}
 
 	public static void seek(long time) {
-		if (current_song != null) {
-			current_song.seek(time);
+		if (current_song_audio != null) {
+			current_song_audio.seek(time);
 			if (!playing) pause();
 		}
 	}
 	
 	public static short level(long time) {
-		if (current_song != null) {
-			return current_song.sample(current_song.msToSamples(time));
+		if (current_song_audio != null) {
+			return current_song_audio.sample(current_song_audio.msToSamples(time));
 		}
 		return 0;
 	}
 	
 	public static short level_offset(long time, short sample_offset) {
-		if (current_song != null) {
+		if (current_song_audio != null) {
 			if (sample_offset < 0) return 0;
-			return current_song.sample(current_song.msToSamples(time) + sample_offset);
+			return current_song_audio.sample(current_song_audio.msToSamples(time) + sample_offset);
 		}
 		return 0;
 	}
 
-	public static void changePlaybackMode() {
+	public static void cyclePlaybackMode() {
 		playback_mode++;
 		if (playback_mode > 3) playback_mode = 0;
 		
