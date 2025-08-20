@@ -9,7 +9,9 @@ import musicplayer.gui.enums.Alignment;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.UUID;
+import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
+import musicplayer.utility.Utility;
 
 public class G_Song extends G_Element {
 	
@@ -67,6 +69,7 @@ public class G_Song extends G_Element {
 	int number_x;
 	int index = 0;
 	int visualizer_left;
+	float visualizer_average_fill = 0;
 	
 	@Override
 	public void draw(int depth) {
@@ -93,12 +96,31 @@ public class G_Song extends G_Element {
 			int slice_w 	 		= 2;
 			int slices = target_width/slice_w;
 			int offset_per_pixel	= 1;
+			
+			// averaging
+			int combined_levels 	= 0; 
+			int level_count			= 0;
+			
+			int visualizer_height 	= height() / 4;
+			
 			for (int i = 0; i < slices; i++) {
-				float hh = MusicPlayer.level_offset(MusicPlayer.songTime(), (short) ((slice_w*i) * offset_per_pixel)) / ((float) Short.MAX_VALUE / 32f);
+				short level = MusicPlayer.level_offset(MusicPlayer.songTime(), (short) ((slice_w*i) * offset_per_pixel));
+				combined_levels += Math.abs(level);
+				level_count++;
+				int hh = (int) ((level / visualizer_average_fill) * visualizer_height);
+				Log.send("' " + (level / visualizer_average_fill) + ", " + level);
 				//hh = hh/hh;
-				hh += (bottom-top)/2;
-				GraphicsAPI.rect(left+(slice_w*i), bottom-((int) hh), left+(slice_w*(i+1)), bottom, depth + 1);
+				//hh += (bottom-top)/2;
+				int hhoffset = (bottom-top)/2;;
+				GraphicsAPI.rect(
+						 left   			+(slice_w * (i+0) ), 
+						(bottom -hhoffset)	- hh, 
+						 left   			+(slice_w * (i+1) ), 
+						 bottom -hhoffset, 
+						depth + 1);
 			}
+			Log.send((combined_levels / (float) level_count), combined_levels, level_count);
+			visualizer_average_fill = (float) Utility.lerp(visualizer_average_fill, (combined_levels / (float) level_count), 0.25);
 			GraphicsAPI.color(MainProgram.ACCENT_COLOR);
 		}
 
