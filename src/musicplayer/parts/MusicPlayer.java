@@ -31,9 +31,16 @@ public class MusicPlayer {
 	static public void set_current_playlist(String name) {
 		MainProgram.playlist_header.set_playlist(name);
 		playlist = name;
-		MainProgram.playlist_gui = new G_List().verticalify().scrollable(true);
+		MainProgram.set_playlist_list(new G_List().verticalify());
 		for (Song song : Library.getPlaylist(playlist).listSongs()) {
-			MainProgram.playlist_gui.add(new G_Song(song.uuid()));
+			MainProgram.playlist_gui_list.add(new G_Song(song.uuid()));
+			
+			MainProgram.playlist_gui_list.add(new G_Song(song.uuid()));
+			MainProgram.playlist_gui_list.add(new G_Song(song.uuid()));
+			MainProgram.playlist_gui_list.add(new G_Song(song.uuid()));
+			MainProgram.playlist_gui_list.add(new G_Song(song.uuid()));
+			MainProgram.playlist_gui_list.add(new G_Song(song.uuid()));
+
 		}
 	}
 	

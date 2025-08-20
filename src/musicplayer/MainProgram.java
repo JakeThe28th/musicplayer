@@ -10,6 +10,7 @@ import musicplayer.audio.AudioDevice;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_List;
 import musicplayer.gui.G_PlaylistHeader;
+import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Song;
 import musicplayer.gui.G_SongControls;
 import musicplayer.parts.Library;
@@ -101,7 +102,13 @@ public class MainProgram {
 		
 	}
 	
-	public static G_List playlist_gui;
+	public static void set_playlist_list(G_List newlist) {
+		playlist_gui_list = newlist;
+		playlist_gui_scroll = new G_Scrollable(newlist);
+	}
+	
+	public static G_Scrollable playlist_gui_scroll;
+	public static G_List playlist_gui_list;
 	public static G_PlaylistHeader playlist_header = new G_PlaylistHeader();
 	static public void draw_playlist_view(int xx) {		
 		playlist_header.recalculate_size();
@@ -110,10 +117,10 @@ public class MainProgram {
 		playlist_header.input();
 		
 		
-		playlist_gui.recalculate_size();
-		playlist_gui.layout(xx, playlist_header.height(), GraphicsAPI.width() + xx, GraphicsAPI.height()-controls.height());
-		playlist_gui.draw(0);
-		playlist_gui.input();
+		playlist_gui_scroll.recalculate_size();
+		playlist_gui_scroll.layout(xx, playlist_header.height(), GraphicsAPI.width() + xx, GraphicsAPI.height()-controls.height());
+		playlist_gui_scroll.draw(0);
+		playlist_gui_scroll.input();
 		
 		//GraphicsAPI.text(GraphicsAPI.mouseX(), GraphicsAPI.mouseY(), 0, "Hello!");
 	}
