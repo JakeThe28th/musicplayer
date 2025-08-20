@@ -9,7 +9,7 @@ public class G_Icon extends G_Element {
 		icon_name = name;
 	}
 	
-	String icon_name = "stop";
+	public String icon_name = "stop";
 	int icon_size = 20;
 
 	@Override

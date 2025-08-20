@@ -14,14 +14,14 @@ import musicplayer.utility.Log;
 /** Handles most stuff regarding music playback */
 public class MusicPlayer {
 	
-	public boolean shuffle = false;
 	public boolean paused = false;
 	
-	public static int loop_mode = 2;
+	public static int playback_mode = 2;
 	public static final int LOOP_NONE = 0; // Don't loop
-	public static final int LOOP_SONG = 1; // 
+	public static final int LOOP_SONG = 1; // Loop the song
 	public static final int LOOP_LIST = 2; // Loop the playlist
-	
+	public static final int SHUFFLE   = 3; // Shuffle
+
 	// Variables for the current playlist
 	public static String playlist = "default";
 	public static String view_playlist = "default";
@@ -64,7 +64,7 @@ public class MusicPlayer {
 	public static void update() { 
 		current_song.update();
 		if (current_song.stopped() && playing) {
-			if (loop_mode == LOOP_SONG) {
+			if (playback_mode == LOOP_SONG) {
 				seek(0);
 				play();
 			} else {
@@ -76,9 +76,11 @@ public class MusicPlayer {
 	public static void next() { 
 		song_index++;
 		ArrayList<Song> songs = Library.getPlaylist(playlist).listSongs();
-		if (song_index >= songs.size() && loop_mode == LOOP_LIST) {
+		if (song_index >= songs.size() && playback_mode == LOOP_LIST) {
 			song_index = 0;
-		} else if (loop_mode != LOOP_LIST) {
+		} else if (playback_mode == SHUFFLE) {
+			song_index = (int) (Math.random() * (songs.size()));
+		} else if (playback_mode != LOOP_LIST) {
 			song_index --;
 			return;
 		}
@@ -142,5 +144,18 @@ public class MusicPlayer {
 			return current_song.sample(current_song.msToSamples(time) + sample_offset);
 		}
 		return 0;
+	}
+
+	public static void changePlaybackMode() {
+		playback_mode++;
+		if (playback_mode > 3) playback_mode = 0;
+		
+		MainProgram.controls.shuffle.icon_name = switch (playback_mode) {
+			case LOOP_NONE -> "x";
+			case LOOP_SONG -> "pause";		// TODO
+			case LOOP_LIST -> "home";		// TODO
+			case SHUFFLE   -> "shuffle";
+			default -> "";
+		};
 	}
 }

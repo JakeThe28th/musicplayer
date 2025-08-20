@@ -127,7 +127,8 @@ class Icons {
 					// Icons are made centered in Blender, 
 				    // so they're offset by 0.5
 					.translate(x + (scale/2f), y+(scale/2f), z) 
-					.scale(size),
+					 // negative size cuz i didn't realize i was modeling the icons upside down....
+					.scale(size, -size, size),
 				Shapes.color, Shapes.white);
 	}
 
