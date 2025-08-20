@@ -1,7 +1,5 @@
 package musicplayer.gui;
 
-import java.util.ArrayList;
-
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
@@ -11,9 +9,6 @@ import musicplayer.parts.UUID;
 import musicplayer.utility.Rectangle;
 
 public class G_SongControls extends G_Element {
-	
-	@Override public ArrayList<G_Element> sub_elements() { return subelements; }
-	ArrayList<G_Element> subelements = new ArrayList<G_Element>();
 	
 	boolean should_unpause_after_seek = true;
 	
@@ -68,11 +63,11 @@ public class G_SongControls extends G_Element {
 
 		center_icons.halign(Alignment.MIDDLE);
 		
-		subelements.add(title);
-		subelements.add(progress_bar);
-		subelements.add(center_icons);
-		subelements.add(left_icons);
-		subelements.add(right_icons);
+		addSubElement(title);
+		addSubElement(progress_bar);
+		addSubElement(center_icons);
+		addSubElement(left_icons);
+		addSubElement(right_icons);
 	}
 	
 	@Override

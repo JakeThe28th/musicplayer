@@ -1,7 +1,5 @@
 package musicplayer.gui;
 
-import java.util.ArrayList;
-
 import org.joml.Vector4f;
 
 import musicplayer.MainProgram;
@@ -9,9 +7,7 @@ import musicplayer.graphics.GraphicsAPI;
 import musicplayer.utility.Rectangle;
 
 public class G_Slider extends G_Element {
-	
-	@Override public ArrayList<G_Element> sub_elements() { return G_Element.EMPTY; }
-	
+		
 	// TODO instead of adding top/bottom for vertical probably just swap out x and y  in draw and in mouse check
 
 	@Override
@@ -42,7 +38,7 @@ public class G_Slider extends G_Element {
 		this.draw_amount = (int) (amount * (this.right - this.left));
 
 		//amount = (Math.sin(System.currentTimeMillis()/1000.0) + 1) / 2 ;
-		int cx = left + draw_amount;
+		// int cx = left + draw_amount;
 		hover_rectangle = new Rectangle(this.left, y-dot_size, this.right, y+dot_size);
 	}
 

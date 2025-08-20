@@ -5,13 +5,10 @@ import java.util.ArrayList;
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
-import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
 public class G_List extends G_Element {
-	
-	@Override public ArrayList<G_Element> sub_elements() { return elements; }
-	
+		
 	public G_List(G_Element...elements) {
 		for (G_Element e : elements) {
 			this.elements.add(e);
@@ -39,6 +36,8 @@ public class G_List extends G_Element {
 	
 	ArrayList<G_Element> elements = new ArrayList<G_Element>();
 	
+	{	sub_elements = elements;	}
+
 	boolean vertical = false;
 	boolean scrollable = false;
 	

@@ -1,7 +1,5 @@
 package musicplayer.gui;
 
-import java.util.ArrayList;
-
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.graphics.RenderQueue;
@@ -12,9 +10,6 @@ import musicplayer.parts.UUID;
 import musicplayer.utility.Rectangle;
 
 public class G_Song extends G_Element {
-	
-	@Override public ArrayList<G_Element> sub_elements() { return subelements; }
-	ArrayList<G_Element> subelements = new ArrayList<G_Element>();
 
 	UUID song;
 	String name;
@@ -26,7 +21,7 @@ public class G_Song extends G_Element {
 		menu.base_color = MainProgram.SEMIDARK_COLOR;
 		menu.halign(Alignment.MIDDLE);
 		menu.icon_size = 10;
-		subelements.add(menu);
+		addSubElement(menu);
 	}
 	
 	public G_Song(UUID n) {

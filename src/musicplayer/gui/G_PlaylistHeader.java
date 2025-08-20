@@ -1,7 +1,5 @@
 package musicplayer.gui;
 
-import java.util.ArrayList;
-
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
@@ -24,7 +22,6 @@ public class G_PlaylistHeader extends G_Element {
 		title.recalculate_size();
 	}
 
-	ArrayList<G_Element> subelements = new ArrayList<G_Element>();
 	{
 		base_color = MainProgram.LIGHT_COLOR;
 		
@@ -32,9 +29,9 @@ public class G_PlaylistHeader extends G_Element {
 		left_margin = 30;
 		top_margin = 10;
 
-		subelements.add(title);
-		subelements.add(home);
-		subelements.add(menu);
+		addSubElement(title);
+		addSubElement(home);
+		addSubElement(menu);
 		
 		title.text = MusicPlayer.playlist;
 		title.halign(Alignment.MIDDLE);
@@ -72,11 +69,6 @@ public class G_PlaylistHeader extends G_Element {
 		title.draw(depth+1);
 		home.draw(depth+1);
 		menu.draw(depth+1);
-	}
-
-	@Override
-	public ArrayList<G_Element> sub_elements() {
-		return subelements;
 	}
 
 }

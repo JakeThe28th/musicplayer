@@ -1,14 +1,10 @@
 package musicplayer.gui;
 
-import java.util.ArrayList;
-
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.utility.Rectangle;
 
 public class G_Icon extends G_Element {
-	
-	@Override public ArrayList<G_Element> sub_elements() { return G_Element.EMPTY; }
-	
+		
 	public G_Icon(String name) {
 		icon_name = name;
 	}

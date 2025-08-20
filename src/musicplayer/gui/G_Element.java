@@ -19,6 +19,16 @@ import musicplayer.utility.Rectangle;
 public abstract class G_Element {
 		
 	public static final ArrayList<G_Element> EMPTY = new ArrayList<G_Element>();
+	
+	protected ArrayList<G_Element> sub_elements = new ArrayList<G_Element>();
+	
+	public void addSubElement(G_Element element) {
+		sub_elements.add(element);
+	}
+	
+	public void removeSubElement(G_Element element) {
+		sub_elements.remove(element);
+	}
 
 	public int width() 		{ return left_margin + unpadded_width + right_margin; }
 	public int height()  	{ return top_margin + unpadded_height + bottom_margin; };
@@ -46,15 +56,12 @@ public abstract class G_Element {
 	// Actually draws the element
 	public abstract void draw(int depth);
 	
-	// Returns all sub-elements of this element
-	public abstract ArrayList<G_Element> sub_elements();
-	
 	// Interaction //
 	Rectangle hover_rectangle = new Rectangle(0,0,0,0);
 	
 	public boolean input() {
 		
-		for (G_Element e : sub_elements()) {
+		for (G_Element e : sub_elements) {
 			if (e.input()) return true;
 		}
 		
