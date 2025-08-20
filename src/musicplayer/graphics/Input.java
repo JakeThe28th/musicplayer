@@ -86,8 +86,8 @@ class Input {
 	}
 
 	private static void setMouseScroll(double xoffset, double yoffset) {
-		// TODO Auto-generated method stub
-		
+		mouse_scroll_x = xoffset;
+		mouse_scroll_y = yoffset;
 	}
 
 	private static void setMouseButton(int button, int action, int mods) {
@@ -118,4 +118,6 @@ class Input {
 		return current_mouse_buttons[button].action == GLFW.GLFW_RELEASE;
 	}
 
+	public static double scrollX() { return mouse_scroll_x; }
+	public static double scrollY() { return mouse_scroll_y; }
 }

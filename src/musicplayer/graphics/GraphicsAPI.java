@@ -136,4 +136,6 @@ public class GraphicsAPI {
 		setFadeColumn(0,0,0,0);
 	}
 
+	public static double scrollX() { return Input.scrollX(); }
+	public static double scrollY() { return Input.scrollY() * 25; }
 }

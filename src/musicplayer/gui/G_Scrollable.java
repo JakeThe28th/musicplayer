@@ -2,6 +2,7 @@ package musicplayer.gui;
 
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
 public class G_Scrollable extends G_Element {
@@ -53,9 +54,14 @@ public class G_Scrollable extends G_Element {
 
 	int scrollbar_height;
 	void calculate_scrollbar_position() {
-		if (root.height() <= scissor_box.height() && !allow_lower_align_when_not_full) scroll_y = 0; 
-
 		Rectangle b = scissor_box;
+
+		int hh2 = root.height()-(b.bottom()-b.top());
+		if (scroll_y < 0) scroll_y = 0;
+		if (scroll_y > hh2) scroll_y = hh2;
+		
+		if (root.height() <= scissor_box.height() && !allow_lower_align_when_not_full) scroll_y = 0; 
+		
 		double hh = root.height();
 		double real_height = b.bottom()-b.top();
 		if (hh < real_height) hh = real_height;
@@ -75,6 +81,7 @@ public class G_Scrollable extends G_Element {
 				b.left()+15,
 				b.top()+scrollbar_offset+scrollbar_size - 10
 				);
+		
 	}
 	
 	@Override
@@ -136,11 +143,8 @@ public class G_Scrollable extends G_Element {
 			scroll_y = initial_scroll_y + (mouse_difference * ratio);
 			//Log.send(mouse_difference, ratio, root.height(), (scroll_area.bottom()-scroll_area.top()));
 			
-			if (scroll_y < 0) scroll_y = 0;
-			if (scroll_y > hh) scroll_y = hh;
-			
 			calculate_scrollbar_position();
-			
+
 			if (GraphicsAPI.left_click_released()) {
 				scrolling = false;
 				grabbed_handle = false;
@@ -148,6 +152,11 @@ public class G_Scrollable extends G_Element {
 				
 			return true;
 		}
+		
+		scroll_y -= GraphicsAPI.scrollY();
+		calculate_scrollbar_position();
+
+		
 		return super.input();
 	}
 
