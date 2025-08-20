@@ -23,6 +23,7 @@ public class GraphicsAPI {
 	public static final Vector4f TRANSPARENT_RED 	= new Vector4f(1, 0, 0, 0.25f);
 	public static final Vector4f BLACK 				= new Vector4f(0,0,0,1);
 	public static final Vector4f WHITE 				= new Vector4f(1,1,1,1);
+	public static final Vector4f TRANSLUCENT_BLACK 	= new Vector4f(0, 0, 0, 0.5f);
 
 	static int width = 512;
 	static int height = 8*96;
@@ -66,8 +67,16 @@ public class GraphicsAPI {
 		Shapes.rect(left, top, right, bottom, depth);
 	}
 	
+	public static void rect(int left, int top, int right, int bottom, int depth, Texture texture) {
+		Shapes.rect(left, top, right, bottom, depth, texture);
+	}
+	
 	public static void rect(Rectangle rect, int depth) {
 		rect(rect.left(), rect.top(), rect.right(), rect.bottom(), depth);
+	}
+	
+	public static void rect(Rectangle rect, int depth,  Texture texture) {
+		rect(rect.left(), rect.top(), rect.right(), rect.bottom(), depth, texture);
 	}
 	
 	public static void dot(int x, int y, int z, int radius) {

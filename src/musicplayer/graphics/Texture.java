@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
 
-class Texture {
+public class Texture {
 	
 	int texture;
 	

@@ -6,6 +6,7 @@ import java.awt.image.Raster;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
 
+import musicplayer.utility.Log;
 import musicplayer.utility.Utility;
 
 class Shapes {
@@ -83,6 +84,11 @@ class Shapes {
 	public static void rect(int left, int top, int right, int bottom, int depth) {
 		Matrix4f transform = new Matrix4f().translate(left, top, depth).scale(right-left, bottom-top, 1);
 		RenderQueue.queue(unit_square, transform, color, white);
+	}
+	
+	public static void rect(int left, int top, int right, int bottom, int depth, Texture texture) {
+		Matrix4f transform = new Matrix4f().translate(left, top, depth).scale(right-left, bottom-top, 1);
+		RenderQueue.queue(unit_square, transform, color, texture);
 	}
 
 	public static void dot(int x, int y, int z, int radius) {

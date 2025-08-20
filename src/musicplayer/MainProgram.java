@@ -37,6 +37,8 @@ public class MainProgram {
 	
 	public static void main(String[] args) throws IOException, ParseException {
 		
+		GraphicsAPI.init();
+		
 		// TODO: this is scuffed... i need to refactor audio
 		AudioDevice d = new AudioDevice(AudioDevice.defaultDevice()); 
 		
@@ -48,7 +50,6 @@ public class MainProgram {
 		MusicPlayer.current("defaultalbum", "awesomedefaultsong");
 		//Library.play();
 		
-		GraphicsAPI.init();
 		
 		// Main loop
 		while (GraphicsAPI.isOpen()) {

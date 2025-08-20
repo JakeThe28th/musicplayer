@@ -4,13 +4,20 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
+import musicplayer.graphics.Texture;
+
 public class Playlist {
 	
 	boolean locked = false; // True for auto-generated album playlists
+	
+	Texture cover;
+	String name;
 
 	public Playlist(Album album) {
 		// TODO load playlist image and metadata and stuff from album
 		locked = true;
+		name = album.getName();
+		cover = album.cover();
 	}
 	
 	public Playlist(File directory) {
@@ -29,6 +36,14 @@ public class Playlist {
 
 	public void add(UUID uuid) {
 		songs.add(uuid);
+	}
+
+	public Texture cover() {
+		return cover;
+	}
+
+	public String name() {
+		return name;
 	}
 
 }

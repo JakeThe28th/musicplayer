@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
+import musicplayer.graphics.Texture;
 import musicplayer.utility.Log;
 
 public class Album {
@@ -20,6 +21,8 @@ public class Album {
 	// You should never actually view "albums" in the UI directly,
 	// only playlists matching those albums.
 	public Playlist linked_playlist;
+	
+	Texture cover;
 	
 	HashMap<String, Song> songs = new HashMap<String, Song>();
 	
@@ -36,7 +39,17 @@ public class Album {
 			}
 		}
 		
+		File cover = new File(album_directory.getPath() + "/cover.png");
+		if (!cover.exists()) { cover = new File(album_directory.getPath() + "/cover.jpg"); }	
+		
+		if (cover.exists()) {
+			this.cover = new Texture(cover.getPath());
+		} else {
+			this.cover = new Texture(new byte[] { (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF }, 1, 1);
+		}
+		
 		linked_playlist = new Playlist(this);
+		
 		File song_order = new File(album_directory.getPath() + "/song_order.txt");
 		// If the song order exists, just add the songs listed there to the playlist
 		if (song_order.exists()) {
@@ -51,7 +64,6 @@ public class Album {
 				linked_playlist.add(songs.get(song_name).uuid());
 			}
 		}
-		Log.send(linked_playlist.songs.get(0).identifier);
 
 	}
 
@@ -70,6 +82,10 @@ public class Album {
 			set.add(songs.get(identifier));
 		}
 		return set;
+	}
+
+	public Texture cover() {
+		return cover;
 	}
 
 }
