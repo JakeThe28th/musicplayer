@@ -24,23 +24,21 @@ public class MusicPlayer {
 	
 	// Variables for the current playlist
 	public static String playlist = "default";
+	public static String view_playlist = "default";
 	public static int song_index = 0;
 
 	private static AudioSource current_song;
 	
 	static public void set_current_playlist(String name) {
-		MainProgram.playlist_header.set_playlist(name);
 		playlist = name;
+	}
+	
+	static public void set_current_view_playlist(String name) {
+		view_playlist = name;
+		MainProgram.playlist_header.set_playlist(name);
 		MainProgram.set_playlist_list(new G_List().verticalify());
-		for (Song song : Library.getPlaylist(playlist).listSongs()) {
+		for (Song song : Library.getPlaylist(view_playlist).listSongs()) {
 			MainProgram.playlist_gui_list.add(new G_Song(song.uuid()));
-			
-			MainProgram.playlist_gui_list.add(new G_Song(song.uuid()));
-			MainProgram.playlist_gui_list.add(new G_Song(song.uuid()));
-			MainProgram.playlist_gui_list.add(new G_Song(song.uuid()));
-			MainProgram.playlist_gui_list.add(new G_Song(song.uuid()));
-			MainProgram.playlist_gui_list.add(new G_Song(song.uuid()));
-
 		}
 	}
 	

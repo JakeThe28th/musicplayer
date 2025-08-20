@@ -66,13 +66,15 @@ public class G_Song extends G_Element {
 	@Override
 	public void draw(int depth) {
 		
+		boolean this_is_the_current_song = index == MusicPlayer.song_index && MusicPlayer.view_playlist.equals(MusicPlayer.playlist);
+		
 		if (index % 2 == 1) {
 			GraphicsAPI.color(MainProgram.DARKER_COLOR);
 			GraphicsAPI.rect(hover_rectangle, depth);
 		}
 		
 		GraphicsAPI.color(MainProgram.SEMIDARK_COLOR);
-		if (index == MusicPlayer.song_index) {
+		if (this_is_the_current_song) {
 			GraphicsAPI.color(base_color);
 		}
 		GraphicsAPI.text(number_x, top, depth, index + "");
@@ -82,7 +84,7 @@ public class G_Song extends G_Element {
 		int text_width = this.unpadded_width;
 		
 		// visualizer thing
-		if (index == MusicPlayer.song_index) {
+		if (this_is_the_current_song) {
 			GraphicsAPI.color(MainProgram.TRANSPARENT_ACCENT_COLOR);
 			int target_width 		= right - left;
 			int slice_w 	 		= 2;
@@ -106,6 +108,7 @@ public class G_Song extends G_Element {
 	@Override
 	public void onClick() {
 		MusicPlayer.current(song);
+		MusicPlayer.set_current_playlist(MusicPlayer.view_playlist);
 		MusicPlayer.seek(0);
 		MusicPlayer.play();
 		MusicPlayer.song_index = index;

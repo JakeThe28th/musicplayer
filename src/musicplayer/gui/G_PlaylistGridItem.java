@@ -69,7 +69,7 @@ public class G_PlaylistGridItem extends G_Element {
 		MainProgram.last_view = MainProgram.current_view;
 		MainProgram.current_view = MainProgram.VIEW_PLAYLIST;
 		MainProgram.view_transition_timer = System.currentTimeMillis();
-		MusicPlayer.set_current_playlist(playlist.identifier());
+		MusicPlayer.set_current_view_playlist(playlist.identifier());
 	}
 
 }
