@@ -1,7 +1,9 @@
 package musicplayer.gui;
 
+import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.graphics.Texture;
+import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.Playlist;
 import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
@@ -38,13 +40,20 @@ public class G_PlaylistGridItem extends G_Element {
 		int text_top = (bottom-bottom_margin)-name.height();
 		name_area = new Rectangle(left+left_margin, text_top, right-right_margin, bottom-bottom_margin);
 		name.layout(name_area.left(), name_area.top(), name_area.right(), name_area.bottom());
+		
+		Rectangle b = GraphicsAPI.scissor();
+		this.hover_rectangle = new Rectangle(
+				left, 
+				(top > b.top()) ? top : b.top(), 
+				right,
+				(bottom < b.bottom()) ? bottom : b.bottom());
 	}
 
 	@Override
 	public void draw(int depth) {
 		if (cover == null) {
 			cover = playlist.cover();
-			Log.send("cover " +  cover);
+			//Log.send("cover " +  cover);
 		}
 		GraphicsAPI.color(GraphicsAPI.WHITE);
 		GraphicsAPI.rect(area, depth, cover);
@@ -53,6 +62,14 @@ public class G_PlaylistGridItem extends G_Element {
 		GraphicsAPI.rect(name_area, depth + 1);
 		
 		name.draw(depth+2);
+	}
+	
+	@Override
+	public void onClick() {
+		MainProgram.last_view = MainProgram.current_view;
+		MainProgram.current_view = MainProgram.VIEW_PLAYLIST;
+		MainProgram.view_transition_timer = System.currentTimeMillis();
+		MusicPlayer.set_current_playlist(playlist.identifier());
 	}
 
 }

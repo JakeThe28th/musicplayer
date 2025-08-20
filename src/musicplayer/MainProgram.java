@@ -50,6 +50,8 @@ public class MainProgram {
 		MusicPlayer.current("defaultalbum", "awesomedefaultsong");
 		//Library.play();
 		
+//		MusicPlayer.set_current_playlist("awesome-other-album");
+//		MusicPlayer.current("awesome-other-album", "wowow");
 		
 		// Main loop
 		while (GraphicsAPI.isOpen()) {
@@ -100,6 +102,9 @@ public class MainProgram {
 	
 	public static G_Grid albums_grid = new G_Grid();
 	public static G_Scrollable albums_scroll = new G_Scrollable(albums_grid);
+
+	public static G_Grid playlists_grid = new G_Grid();
+	public static G_Scrollable playlists_scroll = new G_Scrollable(playlists_grid);
 	
 	static public void draw_library_view(int x_offset) {
 		
@@ -112,13 +117,22 @@ public class MainProgram {
 		GraphicsAPI.color(GraphicsAPI.WHITE);
 		GraphicsAPI.text(x_offset+left_margin, top, 0, "Albums");
 		
+		int yy = top+header_height;
+		
 		albums_scroll.recalculate_size();
-		albums_scroll.layout(x_offset, top+header_height, x_offset+GraphicsAPI.width(), top+header_height+section_height);
+		albums_scroll.layout(x_offset, yy, x_offset+GraphicsAPI.width(), yy+section_height);
 		albums_scroll.draw(0);
 		albums_scroll.input();
 		
 		GraphicsAPI.color(GraphicsAPI.WHITE);
 		GraphicsAPI.text(x_offset+left_margin, top+section_height+header_height, 0, "Playlists");
+		
+		yy += section_height + header_height;
+		
+		playlists_scroll.recalculate_size();
+		playlists_scroll.layout(x_offset, yy, x_offset+GraphicsAPI.width(), yy+section_height);
+		playlists_scroll.draw(0);
+		playlists_scroll.input();
 		
 	}
 	

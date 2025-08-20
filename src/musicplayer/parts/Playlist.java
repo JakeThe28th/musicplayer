@@ -12,11 +12,13 @@ public class Playlist {
 	
 	Texture cover;
 	String name;
+	String identifier;
 
 	public Playlist(Album album) {
 		// TODO load playlist image and metadata and stuff from album
 		locked = true;
 		name = album.getName();
+		identifier = album.getIdentifier();
 		cover = album.cover();
 	}
 	
@@ -44,6 +46,10 @@ public class Playlist {
 
 	public String name() {
 		return name;
+	}
+
+	public String identifier() {
+		return identifier;
 	}
 
 }

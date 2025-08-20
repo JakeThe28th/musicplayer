@@ -17,6 +17,10 @@ public class Album {
 		return identifier;
 	}
 	
+	public String getIdentifier() {
+		return identifier;
+	}
+	
 	// Every album has a matching playlist.
 	// You should never actually view "albums" in the UI directly,
 	// only playlists matching those albums.

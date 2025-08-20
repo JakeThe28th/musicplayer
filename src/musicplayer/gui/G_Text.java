@@ -2,6 +2,7 @@ package musicplayer.gui;
 
 import org.joml.Vector2i;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
 public class G_Text extends G_Element {
@@ -32,12 +33,16 @@ public class G_Text extends G_Element {
 		
 		if (can_wrap) {
 			area = new Rectangle(left, top, right, bottom);
-			text_concat = text;
-			while (GraphicsAPI.size(text_concat).x > area.width() && text_concat.length() >= 4) {
-				text_concat = text_concat.substring(0, text_concat.length()-1);
+			if (text.length() <= 3) {
+				text_concat = text;
+			} else {
+				text_concat = text;
+				while (GraphicsAPI.size(text_concat).x > area.width() && text_concat.length() >= 4) {
+					text_concat = text_concat.substring(0, text_concat.length()-1);
+				}
+				text_concat = text_concat.substring(0, text_concat.length()-3);
+				text_concat += "...";
 			}
-			text_concat = text_concat.substring(0, text_concat.length()-3);
-			text_concat += "...";
 		}
 		
 	}
