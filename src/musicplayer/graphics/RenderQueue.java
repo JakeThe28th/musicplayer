@@ -24,6 +24,8 @@ class RenderQueue {
 	
 	static ArrayList<RenderState> queue = new ArrayList<RenderState>();
 	
+	public static boolean delete_queue_after_rendering = true;
+	
 	public static void render() {
 		Graphics.clear();
 		for (RenderState state : queue) {
@@ -55,7 +57,7 @@ class RenderQueue {
 			GL40.glDrawElements(GL_TRIANGLES, state.mesh.count(), GL_UNSIGNED_INT, 0);
 		}
 		temp_integer_uniforms.clear();
-		queue.clear();
+		if (delete_queue_after_rendering) queue.clear();
 		Window.tick();
 	}
 	

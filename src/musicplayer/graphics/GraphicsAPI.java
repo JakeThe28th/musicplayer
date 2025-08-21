@@ -148,7 +148,11 @@ public class GraphicsAPI {
 		GLFW.glfwSetWindowSizeLimits(Window.identifier(), minw, minh, maxw, maxh);
 	}
 
-	public static void center_text(int depth, String string) {
-		text((width/2)-(size(string).x/2), (height/2)-(size(string).y/2), depth, string);
+	public static void center_text(int depth, int y_offset, String string) {
+		text((width/2)-(size(string).x/2), ((height/2)-(size(string).y/2)) + y_offset, depth, string);
+	}
+
+	public static void persistentRendering(boolean b) {
+		RenderQueue.delete_queue_after_rendering = !b;
 	}
 }

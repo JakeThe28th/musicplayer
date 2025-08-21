@@ -13,6 +13,7 @@ import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
 import musicplayer.extensions.Extension;
+import musicplayer.graphics.GraphicsAPI;
 
 public class Utility {
 
@@ -27,6 +28,11 @@ public class Utility {
         for (File file : new File(path).listFiles()) {
         	if (!file.getName().endsWith(".java")) continue;
         	Log.send("Loading extension: " + file.toString());
+        	
+    		GraphicsAPI.center_text(0, 0, "Initializing Extensions...");
+    		GraphicsAPI.center_text(0, 30, "Reading class"+ file.toString() +"...");
+    		GraphicsAPI.render();
+        	
         	JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		    compiler.run(null, null, null, file.getAbsolutePath());
 			

@@ -79,20 +79,22 @@ public class MainProgram {
 		
 		GraphicsAPI.init();
 		GraphicsAPI.title(PROGRAM_TITLE);
-
-		GraphicsAPI.center_text(0, "Initializing Audio...");
+		
+		GraphicsAPI.center_text(0, 0, "Initializing Audio...");
 		GraphicsAPI.render();
 		
 		MusicPlayer.initAudioDevice();
 		
-		GraphicsAPI.center_text(0, "Initializing Extensions...");
+		GraphicsAPI.center_text(0, 0, "Initializing Extensions...");
 		GraphicsAPI.render();
 
 		ExtensionAPI.init();
-		
-		GraphicsAPI.center_text(0, "Loading songs...");
+
+		GraphicsAPI.center_text(0, 0, "Loading songs...");
 		GraphicsAPI.render();
 		Library.init();
+		
+
 		
 //		for (Song song : Library.listSongs()) {
 //			Log.send(song.uuid() + ", name=" + song.name());
