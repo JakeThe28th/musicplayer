@@ -15,6 +15,12 @@ public class G_Text extends G_Element {
 	boolean can_wrap = true;
 	public boolean can_click = false;
 	
+	public G_Text() { }
+	
+	public G_Text(String string) {
+		text(string);
+	}
+
 	public G_Text text(String new_text) { text = new_text; recalculate_size(); return this; }
 
 	@Override

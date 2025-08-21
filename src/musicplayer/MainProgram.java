@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 import org.joml.Vector4f;
 
-import musicplayer.audio.AudioSource;
 import musicplayer.extensions.ExtensionAPI;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
@@ -18,9 +17,6 @@ import musicplayer.gui.screens.G_PlaylistScreen;
 import musicplayer.gui.screens.Screen;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
-import musicplayer.parts.Song;
-import musicplayer.parts.UUID;
-import musicplayer.utility.Log;
 import musicplayer.utility.Utility;
 
 public class MainProgram {
@@ -42,6 +38,10 @@ public class MainProgram {
 	static { 
 		screens.put(G_HomeScreen.IDENTIFIER, G_HomeScreen.INSTANCE);
 		screens.put(G_PlaylistScreen.IDENTIFIER, G_PlaylistScreen.INSTANCE);
+	}
+	
+	public static void registerScreen(Screen screen) {
+		screens.put(screen.identifier(), screen);
 	}
 
 	public static G_PlaylistScreen 	playlist_screen 		= G_PlaylistScreen.INSTANCE;
@@ -151,5 +151,6 @@ public class MainProgram {
 		
 		MusicPlayer.endAudioDevice();
 	}
+
 
 }

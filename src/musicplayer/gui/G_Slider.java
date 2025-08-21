@@ -25,7 +25,7 @@ public class G_Slider extends G_Element {
 	
 	int dot_size	= 7;
 	
-	double amount = 0.5;
+	public double amount = 0.5;
 	
 	boolean dragging = false;
 	boolean bounded = true;

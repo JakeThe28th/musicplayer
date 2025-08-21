@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import musicplayer.audio.AudioSource;
 import musicplayer.extensions.builtin.BuiltinAudioReader;
+import musicplayer.extensions.builtin.ProgramSettings;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.parts.UUID;
 import musicplayer.utility.Utility;
@@ -29,7 +30,8 @@ public class ExtensionAPI {
 	public static void init() throws IOException {
 		
 		loadExtension(new BuiltinAudioReader());
-		
+		loadExtension(new ProgramSettings());
+
 		// Load external extensions
 		for (Object extension : Utility.loadClassesFromFolder("extensions/")) {
 			((Extension) extension).setWorkingDirectory("extensions/" + ((Extension) extension).identifier() + "/");

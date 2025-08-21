@@ -57,15 +57,13 @@ public class G_HomeScreen extends G_Element implements Screen {
 		public static ArrayList<Option> library_menu_options = new ArrayList<Option>();
 		
 		static {
-			library_menu_options.add(new Option("View Sett", () -> {
-				MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
-			}));
-			library_menu_options.add(new Option("Other Test Button (play)", () -> {
-				MusicPlayer.play();
-			}));
-			library_menu_options.add(new Option("Other Test Button (pause)", () -> {
-				MusicPlayer.pause();
-			}));
+//			library_menu_options.add(new Option("Other Test Button (pause)", () -> {
+//				MusicPlayer.pause();
+//			}));
+		}
+		
+		public static void addMenuOption(Option o) {
+			library_menu_options.add(o);
 		}
 
 
