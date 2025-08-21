@@ -2,6 +2,7 @@ package musicplayer.parts;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
@@ -17,8 +18,32 @@ import musicplayer.utility.Log;
 /** Handles most stuff regarding music playback */
 public class MusicPlayer {
 	
-	public boolean paused = false;
-
+	private static HashMap<UUID, Float> load_progress = new HashMap<UUID, Float>();
+	
+	synchronized public static void setLoadProgress(UUID song, float value) {
+		load_progress.put(song, value);
+	}
+	
+	synchronized public static float getLoadProgress(UUID song) {
+		return load_progress.get(song);
+	}
+	
+	synchronized public static boolean hasLoadProgress(UUID song) {
+		return load_progress.containsKey(song);
+	}
+	
+	synchronized public static void finishLoading(UUID song) {
+		load_progress.remove(song);
+		if(song.equals(current_song.uuid())) {
+			seek(0);
+			if (playing) {
+				play();
+			} else {
+				stop();
+			}
+		}
+	}
+		
 	public static int scroll_mode = 1;
 	public static final int SCROLL_PAGE = 0;
 	public static final int SCROLL_SONG = 1;
@@ -95,9 +120,30 @@ public class MusicPlayer {
 	
 	static boolean playing = false;
 	
-	public static void play() { current_song_audio.play(); MainProgram.controls.setPlaying(true); playing = true; }
-	public static void pause() { current_song_audio.pause(); playing = false;  }
-	public static void stop() { current_song_audio.stop(); current_song_audio.seekstop(0); playing = false; }
+	public static void play() { 
+		playing = true; 
+		MainProgram.controls.setPlaying(true); 
+		if (hasLoadProgress(current_song.uuid())) return;
+		current_song_audio.play();
+		}
+	
+	public static void pause() { pause(true); }
+	
+	public static void pause(boolean update_controls) {
+		playing = false;  
+		if (update_controls) MainProgram.controls.setPlaying(false); 
+		if (hasLoadProgress(current_song.uuid())) return;
+		current_song_audio.pause(); 
+		}
+	
+	public static void stop() { 
+		playing = false; 
+		MainProgram.controls.setPlaying(false); 
+		if (hasLoadProgress(current_song.uuid())) return;
+		current_song_audio.stop(); 
+		current_song_audio.seekstop(0); 
+		}
+	
 	public static void update() { 
 		current_song_audio.update();
 		if (current_song_audio.stopped() && playing) {
@@ -154,16 +200,18 @@ public class MusicPlayer {
 	}
 
 	public static boolean playing() {
-		if (current_song_audio != null) {
-			return current_song_audio.playing();
-		} else 
-			return false;
+		return playing;
+//		if (current_song_audio != null) {
+//			return current_song_audio.playing();
+//		} else 
+//			return false;
 	}
 
 	public static void seek(long time) {
+		if (hasLoadProgress(current_song.uuid())) return;
 		if (current_song_audio != null) {
 			current_song_audio.seek(time);
-			if (!playing) pause();
+			if (!playing) pause(false);
 		}
 	}
 	

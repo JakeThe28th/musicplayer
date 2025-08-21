@@ -15,4 +15,17 @@ public class UUID {
 		return album + ":" + identifier;
 	}
 	
+	@Override
+	public boolean equals(Object other) {
+		if ( !(other instanceof UUID) ) return false;
+		return 
+			((UUID) other).album.equals(album) && 
+			((UUID) other).identifier.equals(identifier);
+	}
+	
+	@Override
+	public int hashCode() {
+		return (album + identifier).hashCode();
+	}
+	
 }

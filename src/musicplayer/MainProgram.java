@@ -18,6 +18,7 @@ import musicplayer.gui.screens.Screen;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.Song;
+import musicplayer.parts.UUID;
 import musicplayer.utility.Log;
 import musicplayer.utility.Utility;
 
@@ -86,11 +87,22 @@ public class MainProgram {
 		MusicPlayer.cyclePlaybackMode();
 		//Library.play();
 		
+
+		float pv = 0;
+		
 //		MusicPlayer.set_current_playlist("awesome-other-album");
 //		MusicPlayer.current("awesome-other-album", "wowow");
 		
 		// Main loop
 		while (GraphicsAPI.isOpen()) {
+			if (pv < 1) {
+				MusicPlayer.setLoadProgress(new UUID("album", "test.wav"), pv);
+				pv += 0.0025;
+				Log.send(pv);
+				if (pv >= 1) {
+					MusicPlayer.finishLoading(new UUID("album", "test.wav"));
+				}
+			}
 			//GraphicsHandler.clear();
 			
 			MusicPlayer.update();

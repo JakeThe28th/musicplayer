@@ -24,8 +24,7 @@ public class G_SongControls extends G_Element {
 					if (GraphicsAPI.left_click_pressed()) {
 						should_unpause_after_seek = MusicPlayer.playing();
 					}
-					MusicPlayer.pause();
-					
+					MusicPlayer.pause(false);
 					MusicPlayer.seek((long) (MusicPlayer.songLength() * new_value));
 					
 					if (GraphicsAPI.left_click_released()) {
@@ -41,10 +40,8 @@ public class G_SongControls extends G_Element {
 		G_Icon 		play_pause 		= new G_Icon("play") 
 			{ @Override public void onClick() { 
 				if (MusicPlayer.playing()) {
-					icon_name = "play";
 					MusicPlayer.pause(); 
 				} else {
-					icon_name = "pause";
 					MusicPlayer.play();
 				}
 				}};

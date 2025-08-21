@@ -83,6 +83,15 @@ public class G_Song extends G_Element {
 		
 		int text_width = this.unpadded_width;
 		
+		// Loading bar
+		if (MusicPlayer.hasLoadProgress(song)) {
+			float progress = MusicPlayer.getLoadProgress(song);
+			GraphicsAPI.color(GraphicsAPI.TRANSPARENT_AQUA);
+			int x_fill = (int) ((right-left) * progress);
+			GraphicsAPI.rect(left, top, left+x_fill, bottom, depth + 1);
+		}
+		
+		
 		// visualizer thing
 		if (this_is_the_current_song) {
 			GraphicsAPI.color(MainProgram.TRANSPARENT_ACCENT_COLOR);
