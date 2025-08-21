@@ -18,8 +18,8 @@ public class G_Icon extends G_Element {
 		unpadded_height = icon_size;
 	}
 	
-	int x = 0;
-	int y = 0;
+	protected int x = 0;
+	protected int y = 0;
 
 	@Override
 	public void layout(int left, int top, int right, int bottom) {
