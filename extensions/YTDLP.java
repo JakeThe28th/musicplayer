@@ -7,12 +7,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.json.JSONObject;
 
 import musicplayer.audio.AudioSource;
 import musicplayer.extensions.AudioReaderExtension;
 import musicplayer.extensions.Extension;
 import musicplayer.extensions.ExtensionAPI;
+import musicplayer.parts.Album;
+import musicplayer.parts.Playlist;
+import musicplayer.parts.Song;
+import musicplayer.parts.UUID;
 import musicplayer.utility.Log;
+import musicplayer.utility.Utility;
 
 public class YTDLP extends Extension implements AudioReaderExtension {
 
@@ -47,6 +55,8 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 				cached_url_types.add(lines[(i*2) + 1].strip());
 			}
 		}
+		
+		albumFromPlaylist("https://www.youtube.com/playlist?list=PLQ-AumaVerPcpI809WoHDXohS0kFIvwaQ");
 	}
 	
 	@Override
@@ -87,7 +97,7 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 	private void download(String url, String output_file, String format) throws IOException {
 		Log.send(identifier() + ": Downloading " + url);
 		
-		ProcessBuilder builder = new ProcessBuilder(
+		Utility.runCommand(
 				working_directory + "yt-dlp.exe", 
 				url,
 				"--extract-audio",
@@ -97,16 +107,47 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 				output_file
 				);
 		
-		
-        builder.redirectErrorStream(true);
-        Process p = builder.start();
-        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line;
-        while (true) {
-            line = r.readLine();
-            if (line == null) { break; }
-            System.out.println(line);
-        }
-        
 	}
+	
+	
+	
+	private void albumFromPlaylist(String link) throws IOException {
+		Utility.runCommand(
+				working_directory + "yt-dlp.exe", 
+				link,
+				"--write-info-json",
+				"--skip-download",
+				"-o",
+				working_directory + "temp\\%(playlist_index)s"
+				);
+		
+		JSONObject info = new JSONObject(Files.readString(Paths.get(working_directory + "temp\\0.info.json")));
+		
+		String album_title = info.getString("title");
+		int count = info.getInt("playlist_count");
+		
+		Album album = new Album(album_title);
+		
+		for (int i = 1; i <= count; i++) {
+			JSONObject song_info = new JSONObject(Files.readString(Paths.get(working_directory + "temp\\"+i+".info.json")));
+			
+			String song_title = song_info.getString("title");
+			String song_id = song_info.getString("id");
+			
+			byte[] data = ("https://www.youtube.com/watch?v=" + song_id).getBytes();
+			
+			HashMap<String, String> fields = new HashMap<String, String>();
+			fields.put("file", "song.webloader");
+			fields.put("name", song_title);
+			
+			Song song = new Song(new UUID(album_title, song_id), fields);
+			song.temporary_file = data;
+			album.set(song);
+		}
+		
+		album.save();
+
+	
+	}
+	
 }
