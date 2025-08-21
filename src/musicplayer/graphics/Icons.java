@@ -108,14 +108,15 @@ class Icons {
 					Log.send("NOT SPLIT _ >" + lines[last_name_line]);
 					Log.send("SPLIT ZERO _ >" + lines[last_name_line].split(" ")[0]);
 					Log.send("SPLIT _ >" + lines[last_name_line].split(" ")[1]);
-					icons.put(lines[last_name_line].split(" ")[1], new Mesh(
+					icons.put(lines[last_name_line].split(" ")[1].strip(), new Mesh(
 							mesh_verts, 
 							new float[(current_triangles.size()*3)*2], 
 							mesh_indices)
 							);
 					
-					Log.send("Loaded icon '" + current_object_name + "'");
-					
+					Log.send("Loaded icon '" + current_object_name.strip() + "'");
+					Log.send("2 -- Loaded icon length = '" + current_object_name.length() + "'");
+
 				}
 				// Reset for next object
 				current_triangles = new ArrayList<Triangle>();
@@ -163,6 +164,9 @@ class Icons {
 	// Drawing //
 	
 	public static void icon(int x, int y, int z, String name, int size) {
+		if (Icons.icons.get(name) == null) {
+			throw new Error("Null icon " + name);
+		}
 		float scale = size;
 		RenderQueue.queue(
 				Icons.icons.get(name), 
