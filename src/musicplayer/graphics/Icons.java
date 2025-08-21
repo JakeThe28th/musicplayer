@@ -122,7 +122,7 @@ class Icons {
 				Log.send("11.5 Setting current object to " + current_object_name);
 				last_name_line = line;
 				persistent_test_string = persistent_test_string + line;
-
+	Log.send(last_name_line + "<--- last name line");
 			}
 			
 			if (split[0].equals("v")) { // Vertex
