@@ -159,6 +159,7 @@ public class MusicPlayer {
 			}
 		}
 		if (current_song_audio != null) {
+			if (hasLoadProgress(current_song.uuid())) return;
 			current_song_audio.update();
 			if (current_song_audio.stopped() && playing) {
 				if (playback_mode == LOOP_SONG) {
@@ -251,6 +252,11 @@ public class MusicPlayer {
 
 	public static void cyclePlaybackMode() {
 		playback_mode++;
+		setPlaybackMode(playback_mode);
+	}
+	
+	public static void setPlaybackMode(int mode) {
+		playback_mode = mode;
 		if (playback_mode > 3) playback_mode = 0;
 		
 		MainProgram.controls.shuffle.icon_name = switch (playback_mode) {
