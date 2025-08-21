@@ -42,7 +42,7 @@ class Icons {
 		record Triangle(int[] vertex_indices) {};
 		ArrayList<Triangle> current_triangles = new ArrayList<Triangle>();
 		
-		String current_object_name = null;
+		String current_object_name = "Hello, This Should Not Be Seen!!";
 		
 		Log.send("3. Created Vertex and Triangle arrays");
 

@@ -56,7 +56,7 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 			}
 		}
 		
-		albumFromPlaylist("https://www.youtube.com/playlist?list=PLQ-AumaVerPcpI809WoHDXohS0kFIvwaQ");
+	//	albumFromPlaylist("");
 	}
 	
 	@Override
@@ -112,6 +112,9 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 	
 	
 	private void albumFromPlaylist(String link) throws IOException {
+		
+		Utility.delete(new File(working_directory + "temp"));
+		
 		Utility.runCommand(
 				working_directory + "yt-dlp.exe", 
 				link,
@@ -121,7 +124,10 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 				working_directory + "temp\\%(playlist_index)s"
 				);
 		
-		JSONObject info = new JSONObject(Files.readString(Paths.get(working_directory + "temp\\0.info.json")));
+		int digit_count = new File(working_directory + "temp\\").list()[0].indexOf('.');
+		String num = String.format("%0"+digit_count+"d", 0);
+		
+		JSONObject info = new JSONObject(Files.readString(Paths.get(working_directory + "temp\\" + num + ".info.json")));
 		
 		String album_title = info.getString("title");
 		int count = info.getInt("playlist_count");
@@ -129,7 +135,10 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 		Album album = new Album(album_title);
 		
 		for (int i = 1; i <= count; i++) {
-			JSONObject song_info = new JSONObject(Files.readString(Paths.get(working_directory + "temp\\"+i+".info.json")));
+
+			num = String.format("%0"+digit_count+"d", i);
+
+			JSONObject song_info = new JSONObject(Files.readString(Paths.get(working_directory + "temp\\"+num+".info.json")));
 			
 			String song_title = song_info.getString("title");
 			String song_id = song_info.getString("id");
