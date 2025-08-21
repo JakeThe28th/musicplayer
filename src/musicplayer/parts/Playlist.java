@@ -7,10 +7,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
 import musicplayer.graphics.Texture;
+import musicplayer.utility.Utility;
 
 public class Playlist {
 	
@@ -21,6 +23,8 @@ public class Playlist {
 	String name;
 	String identifier;
 
+	private HashMap<String, String> fields = new HashMap<String, String>();
+
 	public Playlist(File playlist_directory) throws FileNotFoundException, IOException {
 		this(playlist_directory, null);
 	}
@@ -30,7 +34,10 @@ public class Playlist {
 		
 		identifier = playlist_directory.getName();
 		name = playlist_directory.getName();
-
+		
+		this.fields = Utility.readKeyValue(Paths.get(playlist_directory.getPath() + "\\info.txt"));
+		if (fields.containsKey("name")) name = fields.get("name");
+		
 		// Check if this playlist is also an album
 		is_album = album != null; //Library.getAlbum(identifier) != null;
 		
@@ -99,6 +106,11 @@ public class Playlist {
 	public String name() {
 		return name;
 	}
+	
+	public void name(String n) {
+		name = n;
+		fields.put("name", name);
+	}
 
 	public String identifier() {
 		return identifier;
@@ -113,6 +125,9 @@ public class Playlist {
 		
 		// Save album image
 		if (cover != null) ImageIO.write(cover, "png", new File(playlist_folder.toString() + "\\cover.png"));
+		
+		// Save metadata
+		Utility.writeKeyValue(Paths.get(playlist_folder.toString() + "\\info.txt"), fields);
 		
 		// Save song list
 		String order = "";

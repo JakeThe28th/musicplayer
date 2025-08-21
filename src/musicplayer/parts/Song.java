@@ -12,6 +12,7 @@ import musicplayer.audio.AudioSource;
 import musicplayer.audio.io.pcm.WAVFile;
 import musicplayer.extensions.ExtensionAPI;
 import musicplayer.utility.Log;
+import musicplayer.utility.Utility;
 
 public class Song {
 
@@ -19,21 +20,8 @@ public class Song {
 		this.directory = directory;
 		
 		// ... read metadata ... //
-		String file = Files.readString(Paths.get(directory.getPath() + "\\info.txt"));
-		String[] info = file.split("\n");
-		for (String text : info) {
-			text = text.strip();
-			String field = "";
-			int i = 0;
-			while (i < text.length() && text.charAt(i) != '=') {
-				field += text.charAt(i);
-				i++;
-			}
-			String value = text.substring(i+1);
-			fields.put(field, value);
-			
-		}
-		
+		this.fields = Utility.readKeyValue(Paths.get(directory.getPath() + "\\info.txt"));
+
 		this.uuid = uuid;
 	}
 	
@@ -41,6 +29,7 @@ public class Song {
 	public Song(UUID uuid, HashMap<String, String> fields) throws IOException {
 		this.fields = fields;
 		this.uuid = uuid;
+		directory = new File(Library.album_directory + "\\" + uuid.album + "\\" + uuid.identifier + "\\");
 	}
 	
 	File directory;
@@ -81,11 +70,7 @@ public class Song {
 		album_folder.mkdirs();
 		
 		// Save fields
-		String fields_string = "";
-		for (String key : fields.keySet()) {
-			fields_string += key + "=" + fields.get(key) + "\n";
-		}
-		Files.writeString(Paths.get(album_folder.toString() + "\\info.txt"), fields_string);
+		Utility.writeKeyValue(Paths.get(album_folder.toString() + "\\info.txt"), fields);
 		
 		// Save file
 		if (temporary_file != null) {

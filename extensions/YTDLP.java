@@ -13,14 +13,19 @@ import javax.imageio.ImageIO;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
+import musicplayer.MainProgram;
 import musicplayer.audio.AudioSource;
 import musicplayer.extensions.AudioReaderExtension;
 import musicplayer.extensions.Extension;
 import musicplayer.extensions.ExtensionAPI;
+import musicplayer.gui.extra.Popup.Option;
+import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.parts.Album;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
+import musicplayer.parts.Playlist;
 import musicplayer.parts.Song;
 import musicplayer.parts.UUID;
 import musicplayer.utility.Log;
@@ -60,8 +65,7 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 			}
 		}
 		
-		
-		
+		addAlbumHooks();
 		
 	}
 	
@@ -165,7 +169,7 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 	
 	
 	
-	private void albumFromPlaylist(String link) throws IOException {
+	private void albumFromPlaylist(String link, boolean add) throws IOException {
 		
 		Utility.delete(new File(working_directory + "temp"));
 		
@@ -187,7 +191,8 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 		int count = info.getInt("playlist_count");
 
 		
-		Album album = new Album(album_title);
+		Album album = new Album(info.getString("id"));
+		album.linked_playlist.name(album_title);
 		
 		// Album Cover
 		JSONArray thumbnails = info.getJSONArray("thumbnails");
@@ -228,12 +233,32 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 			fields.put("file", "song.webloader");
 			fields.put("name", song_title);
 			
-			Song song = new Song(new UUID(album_title, song_id), fields);
+			Song song = new Song(new UUID(album.getIdentifier(), song_id), fields);
 			song.temporary_file = data;
 			album.set(song);
 		}
 		
 		album.save();
+		
+		if (add) Library.registerAlbum(album);
+		
+	}
+	
+	
+
+	private void addAlbumHooks() {
+		G_HomeScreen.menu_options_album.add(new Option("Import album (YT-DLP)", () -> {
+			String name = TinyFileDialogs.tinyfd_inputBox(
+					MainProgram.PROGRAM_TITLE + " ", 
+					"Import album from playlist: ", 
+					"https://www.youtube.com/playlist?list=PLPzHbv-5noZ9PC7Fp_Ksq3C8x6WB-wVeR");
+			TinyFileDialogs.tinyfd_messageBox(MainProgram.PROGRAM_TITLE, "The program will freeze during this action. You can view progress in the console log.", "ok", "alert", true);
+			if (name != null) {
+				try {
+					albumFromPlaylist(name, true);
+				} catch (IOException e) { e.printStackTrace(); }
+			}
+		}));
 		
 	}
 	

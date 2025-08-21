@@ -64,7 +64,7 @@ public class G_HomeScreen extends G_Element implements Screen {
 
 			menu_options_album.add(new Option("New album", () -> {
 				String name = TinyFileDialogs.tinyfd_inputBox(
-						MainProgram.PROGRAM_NAME + " ", 
+						MainProgram.PROGRAM_TITLE + " ", 
 						"Name of new album", 
 						"album-" + (Math.random() * 10000));
 				if (name != null) {
@@ -78,7 +78,7 @@ public class G_HomeScreen extends G_Element implements Screen {
 			
 			menu_options_playlist.add(new Option("New playlist", () -> {
 				String name = TinyFileDialogs.tinyfd_inputBox(
-						MainProgram.PROGRAM_NAME + " ", 
+						MainProgram.PROGRAM_TITLE + " ", 
 						"Name of new playlist", 
 						"playlist-" + (Math.random() * 10000));
 				if (name != null) {
