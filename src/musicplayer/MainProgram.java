@@ -3,19 +3,14 @@ package musicplayer;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Stack;
-
 import org.joml.Vector4f;
 
-import musicplayer.audio.AudioDevice;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Grid;
 import musicplayer.gui.G_List;
 import musicplayer.gui.G_PlaylistHeader;
 import musicplayer.gui.G_Scrollable;
-import musicplayer.gui.G_Song;
 import musicplayer.gui.G_SongControls;
-import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.extra.Popup;
 import musicplayer.gui.extra.Popup.Option;
 import musicplayer.parts.Library;
