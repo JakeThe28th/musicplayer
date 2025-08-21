@@ -105,7 +105,9 @@ class Icons {
 					
 					Log.send("17. Finished converting vertex array to float array");
 
-					
+					Log.send("NOT SPLIT _ >" + lines[last_name_line]);
+					Log.send("SPLIT ZERO _ >" + lines[last_name_line].split(" ")[0]);
+					Log.send("SPLIT _ >" + lines[last_name_line].split(" ")[1]);
 					icons.put(lines[last_name_line].split(" ")[1], new Mesh(
 							mesh_verts, 
 							new float[(current_triangles.size()*3)*2], 
@@ -120,9 +122,10 @@ class Icons {
 				current_object_name = "" + split[1];
 				Log.send("11. Setting current object to " + split[1]);
 				Log.send("11.5 Setting current object to " + current_object_name);
+				Log.send(last_name_line + "<--- last name line");
+
 				last_name_line = line;
 				persistent_test_string = persistent_test_string + line;
-	Log.send(last_name_line + "<--- last name line");
 			}
 			
 			if (split[0].equals("v")) { // Vertex
