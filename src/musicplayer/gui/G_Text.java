@@ -13,6 +13,7 @@ public class G_Text extends G_Element {
 	int 	y 			= 0;
 	
 	boolean can_wrap = true;
+	public boolean can_click = false;
 	
 	public G_Text text(String new_text) { text = new_text; recalculate_size(); return this; }
 
@@ -30,6 +31,10 @@ public class G_Text extends G_Element {
 		int xoffset = GUIUtility.getAlignmentOffset(left, right, width(), horizontal_align);
 		x = left + left_margin + xoffset;
 		y = top + top_margin;
+		
+		if (can_click) {
+			hover_rectangle = new Rectangle(left, top, right, bottom);
+		}
 		
 		if (can_wrap) {
 			area = new Rectangle(left, top, right, bottom);

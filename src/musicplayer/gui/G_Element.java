@@ -38,12 +38,12 @@ public abstract class G_Element {
 	protected int 			unpadded_width 		= 0;
 	protected int 			unpadded_height 	= 0;
 	
-	protected int 			left_margin 		= 5;
-	protected int 			right_margin 		= 5;
-	protected int 			top_margin 			= 5;
-	protected int 			bottom_margin 		= 5;
+	public int 			left_margin 		= 5;
+	public int 			right_margin 		= 5;
+	public int 			top_margin 			= 5;
+	public int 			bottom_margin 		= 5;
 	
-	protected Vector4f   	base_color			= new Vector4f(1,1,1,1);
+	public Vector4f   	base_color			= new Vector4f(1,1,1,1);
 	
 	public void halign(Alignment align) 		{ this.horizontal_align = align; }
 	
@@ -78,6 +78,11 @@ public abstract class G_Element {
 		}
 		
 		return false;
+	}
+	
+	public void remove_input() {
+		for (G_Element e : sub_elements) { e.remove_input(); }
+		hover_rectangle = new Rectangle(0,0,0,0);
 	}
 
 	public void onClick() {

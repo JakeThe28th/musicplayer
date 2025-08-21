@@ -35,7 +35,7 @@ public class G_Grid extends G_Element {
 		int yy = top + top_margin;
 		int width = ( (right-right_margin) - xx );
 		
-		if (width == 0) width = 1;
+		if (width < 0) return;
 		
 		item_size = width / columns;
 		while (item_size > MAX_ITEM_SIZE) {
