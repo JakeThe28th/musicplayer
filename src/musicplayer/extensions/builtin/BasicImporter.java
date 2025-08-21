@@ -1,4 +1,4 @@
-package musicplayer.extensions.api;
+package musicplayer.extensions.builtin;
 
 /** Built-in extension that handles importing individual songs, playlists, and albums. */
 public class BasicImporter{

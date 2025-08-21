@@ -10,6 +10,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import musicplayer.audio.AudioSource;
 import musicplayer.audio.io.pcm.WAVFile;
+import musicplayer.extensions.ExtensionAPI;
 
 public class Song {
 
@@ -42,10 +43,9 @@ public class Song {
 	public AudioSource audio() throws IOException, UnsupportedAudioFileException { 
 		if (audio == null) {
 			String value = fields.get("file");
-			if (value.endsWith(".wav")) {
-				audio = new AudioSource();
-				audio.addAudio(new WAVFile(directory.getPath() + "\\" + value));
-			}
+			String path 		= directory.getPath() + "\\" + value;
+			String extension 	= value.substring(value.lastIndexOf('.') + 1, value.length());
+			audio 				= ExtensionAPI.readAudio(path, extension);
 		}
 		return audio;
 	}

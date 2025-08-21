@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import org.joml.Vector4f;
 
+import musicplayer.extensions.ExtensionAPI;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_SongControls;
@@ -72,6 +73,8 @@ public class MainProgram {
 		
 		GraphicsAPI.init();
 		MusicPlayer.initAudioDevice();
+		
+		ExtensionAPI.init();
 		
 		for (Song song : Library.listSongs()) {
 			Log.send(song.uuid() + ", name=" + song.name());

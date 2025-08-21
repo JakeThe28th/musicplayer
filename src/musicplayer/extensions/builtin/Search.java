@@ -1,4 +1,4 @@
-package musicplayer.extensions.api;
+package musicplayer.extensions.builtin;
 
 public class Search {
 // TODO todo todo
