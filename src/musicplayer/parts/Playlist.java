@@ -1,5 +1,6 @@
 package musicplayer.parts;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -112,6 +113,12 @@ public class Playlist {
 			order += song.album + ":" + song.identifier + "\n";
 		}
 		Files.writeString(Paths.get(playlist_folder.toString() + "\\song_order.txt"), order);
+	}
+
+
+	public void cover(BufferedImage image) {
+		if (this.cover != null) this.cover.free();
+		this.cover = new Texture(image);
 	}
 	
 }

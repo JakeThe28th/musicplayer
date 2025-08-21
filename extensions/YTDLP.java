@@ -1,14 +1,17 @@
-import java.io.BufferedReader;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import musicplayer.audio.AudioSource;
@@ -16,8 +19,8 @@ import musicplayer.extensions.AudioReaderExtension;
 import musicplayer.extensions.Extension;
 import musicplayer.extensions.ExtensionAPI;
 import musicplayer.parts.Album;
+import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
-import musicplayer.parts.Playlist;
 import musicplayer.parts.Song;
 import musicplayer.parts.UUID;
 import musicplayer.utility.Log;
@@ -57,7 +60,8 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 			}
 		}
 		
-	//	albumFromPlaylist("");
+		
+		
 	}
 	
 	@Override
@@ -180,8 +184,33 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 		
 		String album_title = info.getString("title");
 		int count = info.getInt("playlist_count");
+
 		
 		Album album = new Album(album_title);
+		
+		// Album Cover
+		JSONArray thumbnails = info.getJSONArray("thumbnails");
+		String best_link = "";
+		int res_square = 0;
+		for (int i = 0; i < thumbnails.length(); i++) {
+			JSONObject thumb = thumbnails.getJSONObject(i);
+			// Check to see if this is bigger
+			if (res_square < (thumb.getInt("width")*thumb.getInt("height"))) {
+				String url = thumb.getString("url");
+				if (url.contains("sqp")) best_link = url;
+			}
+		}
+		
+		// If there is a cover...
+		if (best_link != "") {
+			try {
+				URL url = new URL(best_link);
+			    BufferedImage image = ImageIO.read(url);
+			    if (image != null) album.linked_playlist.cover(image);
+			} catch (IOException e) { e.printStackTrace(); }
+		}
+		
+		// Read songs
 		
 		for (int i = 1; i <= count; i++) {
 
@@ -205,6 +234,7 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 		
 		album.save();
 
+		Library.registerAlbum(album);
 	
 	}
 	

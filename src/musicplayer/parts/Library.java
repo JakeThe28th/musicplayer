@@ -39,7 +39,12 @@ public class Library {
 		}
 	}
 	
-	private static void registerAlbum(Album album) {
+	public static void registerAlbum(Album album) {
+		
+		if (albums.get(album.getIdentifier()) != null) {
+			throw new Error("Trying to add an album that already exists");
+		}
+		
 		G_HomeScreen.albums_grid.add(new G_PlaylistGridItem(album.linked_playlist));
 		albums.put(album.getIdentifier(), album);
 		if (playlists.get(album.getIdentifier()) != null) {
