@@ -55,5 +55,13 @@ public class Utility {
             System.out.println(line);
         }
 	}
+
+	public static void delete(File file) {
+		if (file.isDirectory()) {
+			for (File c : file.listFiles()) delete(c);
+		} else {
+			file.delete();
+		}
+	}
 	
 }
