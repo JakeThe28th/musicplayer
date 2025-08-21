@@ -38,7 +38,8 @@ public class Album {
 	
 	/** For creating albums from scratch ONLY */
 	public Album(String identifier) throws IOException {
-		linked_playlist =  new Playlist(identifier, this);
+		this.identifier = identifier;
+		linked_playlist = new Playlist(identifier, this);
 	}
 
 	/** Sets a song in this album. Also sets it on disk. 

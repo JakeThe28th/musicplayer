@@ -18,25 +18,12 @@ public class G_PlaylistHeader extends G_Element {
 			MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
 		}};
 	G_Icon 		menu 			= new G_Icon("hamburger")
-			{ @Override public void onClick() {
-				
-				Option[] options = new Option[G_PlaylistScreen.playlist_menu_options.size()];
-				for (int i = 0; i <  G_PlaylistScreen.playlist_menu_options.size(); i++) {
-					options[i] = G_PlaylistScreen.playlist_menu_options.get(i);
-				}
-				
-				MainProgram.popups.add(
-						new Popup(
-								x + width(), 
-								y + height(), 
-								Alignment.RIGHT, 
-								Alignment.LEFT, 
-								options
-							)
-						);
-			} };
-	
-	
+		{ @Override public void onClick() {
+			Option[] options = Option.from(G_PlaylistScreen.playlist_menu_options);
+			MainProgram.popups.add(new Popup(x + width(), y + height(), Alignment.RIGHT, Alignment.LEFT, options));
+		} };
+
+
 	
 	public void set_playlist(String name) {
 		title.text = name;

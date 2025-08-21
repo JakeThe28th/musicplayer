@@ -1,6 +1,9 @@
 package musicplayer.gui.screens;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
@@ -13,7 +16,10 @@ import musicplayer.gui.G_Text;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.extra.Popup;
 import musicplayer.gui.extra.Popup.Option;
+import musicplayer.parts.Album;
+import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
+import musicplayer.parts.Playlist;
 import musicplayer.utility.Log;
 
 public class G_HomeScreen extends G_Element implements Screen {
@@ -35,38 +41,69 @@ public class G_HomeScreen extends G_Element implements Screen {
 	public static G_Text album_tab_text = new G_Text()
 			{ @Override public void onClick() { current_tab = Tab.ALBUMS; } };
 			
+	public static G_Icon new_collection 	= new G_Icon("+")
+		{ @Override public void onClick() {
+			Option[] options = Option.from(current_tab == Tab.ALBUMS ? menu_options_album : menu_options_playlist);
+			MainProgram.popups.add(new Popup( x, y + height(), Alignment.LEFT, Alignment.LEFT, options ) );
+		} };
+		
 	public static G_Icon menu 			= new G_Icon("hamburger")
-			{ @Override public void onClick() {
-				
-				Option[] options = new Option[library_menu_options.size()];
-				for (int i = 0; i <  library_menu_options.size(); i++) {
-					options[i] = library_menu_options.get(i);
-				}
-				
-				MainProgram.popups.add(
-						new Popup(
-								x + width(), 
-								y + height(), 
-								Alignment.RIGHT, 
-								Alignment.LEFT, 
-								options
-							)
-						);
-			} };
+		{ @Override public void onClick() {
+			Option[] options = Option.from(library_menu_options);
+			MainProgram.popups.add(new Popup(x + width(), y + height(), Alignment.RIGHT, Alignment.LEFT, options));
+		} };
 	
 		public static ArrayList<Option> library_menu_options = new ArrayList<Option>();
+		public static ArrayList<Option> menu_options_album = new ArrayList<Option>();
+		public static ArrayList<Option> menu_options_playlist = new ArrayList<Option>();
 		
 		static {
 //			library_menu_options.add(new Option("Other Test Button (pause)", () -> {
 //				MusicPlayer.pause();
 //			}));
+
+			menu_options_album.add(new Option("New album", () -> {
+				String name = TinyFileDialogs.tinyfd_inputBox(
+						MainProgram.PROGRAM_NAME + " ", 
+						"Name of new album", 
+						"album-" + (Math.random() * 10000));
+				if (name != null) {
+					try {
+						Album n = new Album(name);
+						Library.registerAlbum(n);
+						n.save();
+					} catch (IOException e) { e.printStackTrace(); }
+				}
+			}));
+			
+			menu_options_playlist.add(new Option("New playlist", () -> {
+				String name = TinyFileDialogs.tinyfd_inputBox(
+						MainProgram.PROGRAM_NAME + " ", 
+						"Name of new playlist", 
+						"playlist-" + (Math.random() * 10000));
+				if (name != null) {
+					try {
+						Playlist p = new Playlist(name, null);
+						Library.registerPlaylist(p);
+						p.save();
+					} catch (IOException e) { e.printStackTrace(); }
+				}
+			}));
+			
 		}
 		
 		public static void addMenuOption(Option o) {
 			library_menu_options.add(o);
 		}
 
+		public static void addAlbumMenuOption(Option o) {
+			menu_options_album.add(o);
+		}
 
+		public static void addPlaylistMenuOption(Option o) {
+			menu_options_playlist.add(o);
+		}
+		
 	{
 		playlist_tab_text.text("Playlists");
 		playlist_tab_text.can_click = true;
@@ -76,6 +113,8 @@ public class G_HomeScreen extends G_Element implements Screen {
 		album_tab_text.can_click = true;
 		album_tab_text.left_margin = 15;
 		album_tab_text.right_margin = 15;
+		left_margin = 10;
+		right_margin = 10;
 	}
 	public static G_List tab_selector = new G_List(album_tab_text, playlist_tab_text);
 	{
@@ -87,7 +126,13 @@ public class G_HomeScreen extends G_Element implements Screen {
 	public static final G_HomeScreen INSTANCE = new G_HomeScreen();
 	public static final String IDENTIFIER = "library";
 
-	{ addSubElement(albums_scroll);  addSubElement(playlists_scroll); addSubElement(tab_selector); addSubElement(menu); }
+	{ 
+		addSubElement(albums_scroll);  
+		addSubElement(playlists_scroll); 
+		addSubElement(tab_selector); 
+		addSubElement(menu); 
+		addSubElement(new_collection);
+	}
 	
 	@Override
 	public void recalculate_size() {
@@ -95,6 +140,7 @@ public class G_HomeScreen extends G_Element implements Screen {
 		playlists_scroll.recalculate_size();
 		tab_selector.recalculate_size();
 		menu.recalculate_size();
+		new_collection.recalculate_size();
 	}
 
 	@Override
@@ -111,7 +157,8 @@ public class G_HomeScreen extends G_Element implements Screen {
 		tab_selector.layout(left+icon_width, yy, right-icon_width, yy+header_height);
 		
 		menu.layout(right-icon_width, yy, right, yy+header_height);
-	
+		new_collection.layout(left, yy, left+icon_width, yy+header_height);
+		
 		yy += header_height;
 		
 		albums_scroll.layout(left, yy, right, bottom);
@@ -132,6 +179,7 @@ public class G_HomeScreen extends G_Element implements Screen {
 	public void draw(int depth) {
 		tab_selector.draw(depth);
 		menu.draw(depth);
+		new_collection.draw(depth);
 		if (current_tab == Tab.ALBUMS) {
 			albums_scroll.draw(0);
 		} else {

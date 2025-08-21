@@ -7,13 +7,22 @@ import org.joml.Vector2i;
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
+import musicplayer.gui.extra.Popup.Option;
 import musicplayer.utility.GenericInterface;
 import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
 public class Popup {
 	
-	public record Option(String name, GenericInterface run) {};
+	public record Option(String name, GenericInterface run) {
+
+	public static Option[] from(ArrayList<Option> optionarray) {
+		Option[] options = new Option[optionarray.size()];
+		for (int i = 0; i <  optionarray.size(); i++) {
+			options[i] = optionarray.get(i);
+		}
+		return options;
+	}};
 	
 	ArrayList<Option> options = new ArrayList<Option>();
 	

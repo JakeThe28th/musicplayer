@@ -42,10 +42,7 @@ public class Playlist {
 		
 		if (cover.exists()) {
 			this.cover = ImageIO.read(cover);
-		} else {
-			this.glcover = new Texture(new byte[] { (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF }, 1, 1);
 		}
-		
 		
 		// Add songs
 		
@@ -73,6 +70,7 @@ public class Playlist {
 		is_album = album != null;
 	}
 
+
 	ArrayList<UUID> songs = new ArrayList<UUID>();
 
 	public ArrayList<Song> listSongs() {
@@ -88,7 +86,13 @@ public class Playlist {
 	}
 
 	public Texture glcover() {
-		if (glcover == null) glcover = new Texture(cover);
+		if (glcover == null) {
+			if (cover == null) {
+				glcover = new Texture(new byte[] { (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF }, 1, 1);
+				return glcover;
+			}
+			glcover = new Texture(cover);
+		}
 		return glcover;
 	}
 
