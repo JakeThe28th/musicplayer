@@ -34,6 +34,8 @@ public class G_Slider extends G_Element {
 	public void layout(int left, int top, int right, int bottom) {
 		this.left = left + this.left_margin;
 		this.right = right - this.right_margin;
+		if (this.left > right) this.left = right;
+		if (this.right < left) this.right = left;
 		this.y = top + ((bottom-top) / 2);
 		this.draw_amount = (int) (amount * (this.right - this.left));
 

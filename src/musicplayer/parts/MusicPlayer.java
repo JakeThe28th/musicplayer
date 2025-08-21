@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import musicplayer.MainProgram;
+import musicplayer.audio.AudioDevice;
 import musicplayer.audio.AudioSource;
 import musicplayer.gui.G_List;
 import musicplayer.gui.G_Scrollable;
@@ -191,5 +192,20 @@ public class MusicPlayer {
 			case SHUFFLE   -> "shuffle";
 			default -> "";
 		};
+	}
+
+	public static void volume(float new_value) {
+		device.setListenerVolume(new_value);
+	}
+	
+	static AudioDevice device;
+
+	public static void initAudioDevice() {
+		// TODO: this is scuffed... i need to refactor audio
+		device = new AudioDevice(AudioDevice.defaultDevice()); 
+	}
+	
+	public static void endAudioDevice() {
+		device.end();
 	}
 }

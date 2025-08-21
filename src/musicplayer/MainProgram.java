@@ -58,9 +58,7 @@ public class MainProgram {
 	public static void main(String[] args) throws IOException, ParseException {
 		
 		GraphicsAPI.init();
-		
-		// TODO: this is scuffed... i need to refactor audio
-		AudioDevice d = new AudioDevice(AudioDevice.defaultDevice()); 
+		MusicPlayer.initAudioDevice();
 		
 		for (Song song : Library.listSongs()) {
 			Log.send(song.uuid() + ", name=" + song.name());
@@ -111,7 +109,7 @@ public class MainProgram {
 			//GraphicsHandler.refresh();
 		}
 		
-		d.end();
+		MusicPlayer.endAudioDevice();
 	}
 	
 	public static void change_view(int new_view) {

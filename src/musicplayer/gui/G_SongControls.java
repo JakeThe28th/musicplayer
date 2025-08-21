@@ -7,6 +7,7 @@ import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.UUID;
 import musicplayer.utility.Rectangle;
+import musicplayer.utility.Utility;
 
 public class G_SongControls extends G_Element {
 	
@@ -47,9 +48,18 @@ public class G_SongControls extends G_Element {
 				}};
 		G_Icon 		next 			= new G_Icon("next")
 			{ @Override public void onClick() { MusicPlayer.next(); }};
-		G_Icon 		volume 			= new G_Icon("volume");
+		G_Icon 		volume 			= new G_Icon("volume")
+		{ @Override public void onClick() { 
+			show_volume_slider = !show_volume_slider;
+			volume_slider_transition_timer = System.currentTimeMillis();
+			}};
  public G_Icon 		shuffle 		= new G_Icon("shuffle")
 			{ @Override public void onClick() { MusicPlayer.cyclePlaybackMode(); }};
+			
+	G_Slider 		volume_slider	= new G_Slider() 
+		{ @Override public void onDrag(double new_value) {
+			MusicPlayer.volume((float) new_value);
+		} };
 
 	G_List		center_icons	= new G_List(previous, stop, play_pause, next);
 	G_List		left_icons		= new G_List(volume);
@@ -70,6 +80,8 @@ public class G_SongControls extends G_Element {
 		addSubElement(center_icons);
 		addSubElement(left_icons);
 		addSubElement(right_icons);
+		addSubElement(volume_slider);
+
 	}
 	
 	@Override
@@ -79,8 +91,64 @@ public class G_SongControls extends G_Element {
 		center_icons.recalculate_size();
 		left_icons.recalculate_size();
 		right_icons.recalculate_size();
-		
+		volume_slider.recalculate_size();
 		this.unpadded_height = title.height() + progress_bar.height() + center_icons.height();
+		this.unpadded_height += volume_slider_height();
+	}
+	
+	boolean show_volume_slider = true;
+	long volume_slider_transition_timer = 0;
+	long volume_slider_transition_time = 500;
+
+	private int transition(long start_time, long length, boolean invert, int expanded_size, boolean smooth) {
+		long time = System.currentTimeMillis() - start_time;
+		float t = time / (float) length;
+		if (t < 0) t = 0;
+		if (t > 1) t = 1;
+		if (smooth) t = (float) Utility.lerp(Utility.lerp(t, 1, t), 1, t);
+		if (!invert) t = 1-t;
+		int result = (int) (expanded_size * t);
+		return result;
+	}
+	
+	private int volume_slider_height() {
+		if (!volume_slider_visible()) return 0;
+		return transition(
+				volume_slider_transition_timer, 
+				volume_slider_transition_time,
+				show_volume_slider,
+				volume_slider.height(),
+				true);
+	}
+	
+	private int volume_slider_right(int left, int right) {
+		if (!volume_slider_visible()) return 0;
+		return left + transition(
+				volume_slider_transition_timer, 
+				volume_slider_transition_time,
+				show_volume_slider,
+				right-left,
+				true);
+	}
+	
+	private int volume_slider_dot_size() {
+		long time = System.currentTimeMillis() - volume_slider_transition_timer;
+		if (time > volume_slider_transition_time) return 7;
+		return transition(
+				volume_slider_transition_timer, 
+				volume_slider_transition_time,
+				show_volume_slider,
+				7,
+				true);
+	}
+
+	private boolean volume_slider_visible() {
+		long time = System.currentTimeMillis() - volume_slider_transition_timer;
+		if (time < volume_slider_transition_time) {
+			return true;
+		} else {
+			return show_volume_slider;
+		}
 	}
 	
 	Rectangle draw_area;
@@ -101,6 +169,10 @@ public class G_SongControls extends G_Element {
 			  progress_bar.layout(left, yy, right, yy + progress_bar.height());
 		yy += progress_bar.height();
 		
+			  volume_slider.layout(left, yy, volume_slider_right(left, right), yy+volume_slider_height());
+			  if (!show_volume_slider) volume_slider.hover_rectangle = new Rectangle(-1,-1,-1,-1);
+			  if (volume_slider_visible()) volume_slider.dot_size = volume_slider_dot_size();
+		yy += volume_slider_height();
 		
 		left_icons		.layout(left, 							yy, left +left_icons .width(), 	bottom);
 		center_icons	.layout(left +left_icons.width(), 		yy, right-right_icons.width(), 	bottom);
@@ -121,6 +193,7 @@ public class G_SongControls extends G_Element {
 		center_icons.draw(depth+1);
 		left_icons.draw(depth+1);
 		right_icons.draw(depth+1);
+		if (volume_slider_visible()) volume_slider.draw(depth + 1);
 	}
 	
 	// -- ... -- //
