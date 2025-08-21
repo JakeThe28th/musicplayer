@@ -193,7 +193,8 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 		
 		Album album = new Album(info.getString("id"));
 		album.linked_playlist.name(album_title);
-		
+		album.linked_playlist.metadata("yt-playlist-source", info.getString("id"));
+
 		// Album Cover
 		JSONArray thumbnails = info.getJSONArray("thumbnails");
 		String best_link = "";

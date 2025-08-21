@@ -111,6 +111,14 @@ public class Playlist {
 		name = n;
 		fields.put("name", name);
 	}
+	
+	public String metadata(String key) {
+		return fields.get(key);
+	}
+	
+	public void metadata(String key, String value) {
+		fields.put(key, value);
+	}
 
 	public String identifier() {
 		return identifier;
