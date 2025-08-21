@@ -2,6 +2,6 @@
 shantell_sans.ttf
 /library/albums/deltarune
 /classes
-/src/musicplayer/extensions/workspace
-/extensions
 /library/albums/remote_album
+/extensions/utility;ytdlp/cache
+extensions/utility;ytdlp/cachedsongs.txt
