@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.joml.Vector4f;
 
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Grid;
 import musicplayer.gui.G_List;
 import musicplayer.gui.G_PlaylistHeader;
@@ -13,6 +14,8 @@ import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_SongControls;
 import musicplayer.gui.extra.Popup;
 import musicplayer.gui.extra.Popup.Option;
+import musicplayer.gui.screens.G_HomeScreen;
+import musicplayer.gui.screens.G_PlaylistScreen;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.Song;
@@ -35,6 +38,9 @@ public class MainProgram {
 	
 	public static ArrayList<Option> playlist_menu_options = new ArrayList<Option>();
 	
+	public static G_PlaylistScreen playlist_screen = G_PlaylistScreen.instance;
+	public static G_HomeScreen library_screen = G_HomeScreen.instance;
+
 	static {
 		playlist_menu_options.add(new Option("View Library", () -> {
 			change_view(MainProgram.VIEW_LIBRARY);
@@ -115,8 +121,8 @@ public class MainProgram {
 		
 	private static void draw_view(int view, int offset) {
 		if (view == VIEW_MINIFIED) draw_minified_view();
-		if (view == VIEW_PLAYLIST) draw_playlist_view(offset);
-		if (view == VIEW_LIBRARY) draw_library_view(offset);
+		if (view == VIEW_PLAYLIST) draw_screen(offset, playlist_screen);
+		if (view == VIEW_LIBRARY) draw_screen(offset, library_screen);
 	}
 
 	public static int current_view = 2;
@@ -130,63 +136,13 @@ public class MainProgram {
 	public static long view_transition_timer = 0;
 	public static int last_view = 2;
 	
-	public static G_Grid albums_grid = new G_Grid();
-	public static G_Scrollable albums_scroll = new G_Scrollable(albums_grid);
+	
 
-	public static G_Grid playlists_grid = new G_Grid();
-	public static G_Scrollable playlists_scroll = new G_Scrollable(playlists_grid);
-	
-	static public void draw_library_view(int x_offset) {
-		
-		int bottom = GraphicsAPI.height()-controls.height();
-		int top = 10;
-		int header_height = 20;
-		int section_height = ( (bottom-top)-(header_height*2) ) / 2 ;
-		int left_margin = 20;
-		
-		GraphicsAPI.color(GraphicsAPI.WHITE);
-		GraphicsAPI.text(x_offset+left_margin, top, 0, "Albums");
-		
-		int yy = top+header_height;
-		
-		albums_scroll.recalculate_size();
-		albums_scroll.layout(x_offset, yy, x_offset+GraphicsAPI.width(), yy+section_height);
-		albums_scroll.draw(0);
-		albums_scroll.input();
-		
-		GraphicsAPI.color(GraphicsAPI.WHITE);
-		GraphicsAPI.text(x_offset+left_margin, top+section_height+header_height, 0, "Playlists");
-		
-		yy += section_height + header_height;
-		
-		playlists_scroll.recalculate_size();
-		playlists_scroll.layout(x_offset, yy, x_offset+GraphicsAPI.width(), yy+section_height);
-		playlists_scroll.draw(0);
-		playlists_scroll.input();
-		
-	}
-	
-	public static void set_playlist_list(G_List newlist) {
-		playlist_gui_list = newlist;
-		playlist_gui_scroll = new G_Scrollable(newlist);
-	}
-	
-	public static G_Scrollable playlist_gui_scroll;
-	public static G_List playlist_gui_list;
-	public static G_PlaylistHeader playlist_header = new G_PlaylistHeader();
-	static public void draw_playlist_view(int xx) {		
-		playlist_header.recalculate_size();
-		playlist_header.layout(xx, 0, GraphicsAPI.width() + xx, playlist_header.height());
-		playlist_header.draw(0);
-		playlist_header.input();
-		
-		
-		playlist_gui_scroll.recalculate_size();
-		playlist_gui_scroll.layout(xx, playlist_header.height(), GraphicsAPI.width() + xx, GraphicsAPI.height()-controls.height());
-		playlist_gui_scroll.draw(0);
-		playlist_gui_scroll.input();
-		
-		//GraphicsAPI.text(GraphicsAPI.mouseX(), GraphicsAPI.mouseY(), 0, "Hello!");
+	static public void draw_screen(int xx, G_Element screen) {		
+		screen.recalculate_size();
+		screen.layout(xx, 0, GraphicsAPI.width() + xx, GraphicsAPI.height()-controls.height());
+		screen.draw(0);
+		screen.input();
 	}
 	
 	static public void draw_minified_view() {

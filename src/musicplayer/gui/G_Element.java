@@ -24,6 +24,7 @@ public abstract class G_Element {
 	protected ArrayList<G_Element> sub_elements = new ArrayList<G_Element>();
 	
 	public void addSubElement(G_Element element) {
+		if (element == null) new Error("wat").printStackTrace();
 		sub_elements.add(element);
 	}
 	

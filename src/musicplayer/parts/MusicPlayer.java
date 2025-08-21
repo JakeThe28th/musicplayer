@@ -11,6 +11,7 @@ import musicplayer.audio.AudioSource;
 import musicplayer.gui.G_List;
 import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Song;
+import musicplayer.gui.screens.G_PlaylistScreen;
 import musicplayer.utility.Log;
 
 /** Handles most stuff regarding music playback */
@@ -42,10 +43,10 @@ public class MusicPlayer {
 	
 	static public void set_current_view_playlist(String name) {
 		view_playlist = name;
-		MainProgram.playlist_header.set_playlist(name);
-		MainProgram.set_playlist_list(new G_List().verticalify());
+		G_PlaylistScreen.playlist_header.set_playlist(name);
+		G_PlaylistScreen.set_playlist_list(new G_List().verticalify());
 		for (Song song : Library.getPlaylist(view_playlist).listSongs()) {
-			MainProgram.playlist_gui_list.add(new G_Song(song.uuid()));
+			G_PlaylistScreen.playlist_gui_list.add(new G_Song(song.uuid()));
 		}
 	}
 	
@@ -71,8 +72,8 @@ public class MusicPlayer {
 	
 	public static void scroll_to_current() {
 		if (view_playlist.equals(playlist)) {
-			G_Scrollable scroll = MainProgram.playlist_gui_scroll;
-			int element_height = MainProgram.playlist_gui_list.element(0).height();
+			G_Scrollable scroll = G_PlaylistScreen.playlist_gui_scroll;
+			int element_height = G_PlaylistScreen.playlist_gui_list.element(0).height();
 			int target = (element_height * song_index);
 
 			if (target > scroll.scroll_y && scroll.sheight != 0) {
@@ -84,7 +85,7 @@ public class MusicPlayer {
 				}
 			}
 			}
-			MainProgram.playlist_gui_scroll.scroll_target = target;
+			G_PlaylistScreen.playlist_gui_scroll.scroll_target = target;
 		}
 	}
 
