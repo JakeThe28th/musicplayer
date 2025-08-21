@@ -46,11 +46,9 @@ class Icons {
 		String persistent_test_string = "this is a test string.";
 		Log.send("3. Created Vertex and Triangle arrays");
 
+		int last_name_line = 0;
 		
 		for (int line = 0; line <= lines.length; line++) {
-
-			persistent_test_string = "Hello, 123 " + line;
-
 			//Log.send("4... Looping through lines in icon file");
 
 			
@@ -108,7 +106,7 @@ class Icons {
 					Log.send("17. Finished converting vertex array to float array");
 
 					
-					icons.put(current_object_name, new Mesh(
+					icons.put(lines[last_name_line].split(" ")[1], new Mesh(
 							mesh_verts, 
 							new float[(current_triangles.size()*3)*2], 
 							mesh_indices)
@@ -122,6 +120,8 @@ class Icons {
 				current_object_name = "" + split[1];
 				Log.send("11. Setting current object to " + split[1]);
 				Log.send("11.5 Setting current object to " + current_object_name);
+				last_name_line = line;
+				persistent_test_string = persistent_test_string + line;
 
 			}
 			
