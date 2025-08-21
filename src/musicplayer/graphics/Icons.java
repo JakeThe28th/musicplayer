@@ -49,7 +49,7 @@ class Icons {
 		
 		for (int line = 0; line <= lines.length; line++) {
 
-			persistent_test_string = "Hello, " + line;
+			persistent_test_string = "Hello, 123 " + line;
 
 			//Log.send("4... Looping through lines in icon file");
 
