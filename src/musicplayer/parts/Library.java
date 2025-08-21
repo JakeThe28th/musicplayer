@@ -29,10 +29,16 @@ public class Library {
 	
 	/** Load all of the songs/albums in [library_directory] */
 	static {
-		File library = new File(album_directory);
-		for (File album : library.listFiles()) {
+		for (File album : new File(album_directory).listFiles()) {
 			try {
 				registerAlbum(new Album(album));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		for (File playlist : new File(playlist_directory).listFiles()) {
+			try {
+				registerPlaylist(new Playlist(playlist));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -52,6 +58,16 @@ public class Library {
 		} else {
 			playlists.put(album.getIdentifier(), album.linked_playlist);
 		}
+	}
+	
+	public static void registerPlaylist(Playlist playlist) {
+		if (playlists.get(playlist.identifier()) != null) {
+			throw new Error("Trying to add an album that already exists");
+		}
+		
+		G_HomeScreen.playlists_grid.add(new G_PlaylistGridItem(playlist));
+		playlists.put(playlist.identifier(), playlist);
+
 	}
 	
 	public static Song getSongFromAlbum(String album_name, String identifier) {
