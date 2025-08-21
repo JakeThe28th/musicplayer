@@ -78,13 +78,25 @@ public class MainProgram {
 	public static void main(String[] args) throws IOException, ParseException {
 		
 		GraphicsAPI.init();
+		GraphicsAPI.title(PROGRAM_TITLE);
+
+		GraphicsAPI.center_text(0, "Initializing Audio...");
+		GraphicsAPI.render();
+		
 		MusicPlayer.initAudioDevice();
 		
+		GraphicsAPI.center_text(0, "Initializing Extensions...");
+		GraphicsAPI.render();
+
 		ExtensionAPI.init();
 		
-		for (Song song : Library.listSongs()) {
-			Log.send(song.uuid() + ", name=" + song.name());
-		}
+		GraphicsAPI.center_text(0, "Loading songs...");
+		GraphicsAPI.render();
+		Library.init();
+		
+//		for (Song song : Library.listSongs()) {
+//			Log.send(song.uuid() + ", name=" + song.name());
+//		}
 		
 		//MusicPlayer.set_current_playlist("defaultalbum");
 		//MusicPlayer.set_current_view_playlist("defaultalbum");

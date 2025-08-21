@@ -147,4 +147,8 @@ public class GraphicsAPI {
 	public static void setMinimumWindowSize(int minw, int minh, int maxw, int maxh) {
 		GLFW.glfwSetWindowSizeLimits(Window.identifier(), minw, minh, maxw, maxh);
 	}
+
+	public static void center_text(int depth, String string) {
+		text((width/2)-(size(string).x/2), (height/2)-(size(string).y/2), depth, string);
+	}
 }

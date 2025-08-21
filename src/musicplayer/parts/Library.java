@@ -28,7 +28,7 @@ public class Library {
 	private static HashMap<String, Album> albums = new HashMap<String, Album>();
 	
 	/** Load all of the songs/albums in [library_directory] */
-	static {
+	public static void init() {
 		for (File album : new File(album_directory).listFiles()) {
 			try {
 				registerAlbum(new Album(album));
