@@ -5,3 +5,5 @@ shantell_sans.ttf
 /library/albums/remote_album
 /extensions/utility;ytdlp/cache
 extensions/utility;ytdlp/cachedsongs.txt
+/extensions/utility;ytdlp/temp
+/library/albums

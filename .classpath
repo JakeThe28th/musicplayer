@@ -20,5 +20,6 @@
 	<classpathentry kind="lib" path="lwjgl/lwjgl-stb-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lwjgl/lwjgl-tinyfd.jar"/>
 	<classpathentry kind="lib" path="lwjgl/lwjgl-tinyfd-natives-windows.jar"/>
+	<classpathentry kind="lib" path="external_libs/json-20240205.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
