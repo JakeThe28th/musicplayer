@@ -19,15 +19,17 @@ import musicplayer.utility.Log;
 /** Stores the information for all loaded songs */
 public class Library {
 	
-	public static final String library_directory = "library\\";
-	
+	public static final String library_directory 	= "library\\";
+	public static final String album_directory 		= library_directory + "albums\\";
+	public static final String playlist_directory 	= library_directory + "playlists\\";
+
 	private static HashMap<String, Playlist> playlists = new HashMap<String, Playlist>();
 
 	private static HashMap<String, Album> albums = new HashMap<String, Album>();
 	
 	/** Load all of the songs/albums in [library_directory] */
 	static {
-		File library = new File(library_directory + "albums\\");
+		File library = new File(album_directory);
 		for (File album : library.listFiles()) {
 			try {
 				registerAlbum(new Album(album));
@@ -39,23 +41,14 @@ public class Library {
 	
 	private static void registerAlbum(Album album) {
 		G_HomeScreen.albums_grid.add(new G_PlaylistGridItem(album.linked_playlist));
-		albums.put(album.getName(), album);
-		if (playlists.get(album.getName()) != null) {
+		albums.put(album.getIdentifier(), album);
+		if (playlists.get(album.getIdentifier()) != null) {
 			throw new Error("Trying to add an album which has the same name as a playlist");
 		} else {
-			playlists.put(album.getName(), album.linked_playlist);
+			playlists.put(album.getIdentifier(), album.linked_playlist);
 		}
 	}
 	
-	public static void setSongInAlbum(String album_name, String identifier, Song song) {
-		// Commented out since if the album is null something has gone wrong
-		//if (albums.get(album_name) == null) albums.put(album_name, new Album());
-		Album album = albums.get(album_name);
-		album.put(identifier, song);
-		
-		getPlaylist(album_name).add(new UUID(album_name, identifier));
-	}
-
 	public static Song getSongFromAlbum(String album_name, String identifier) {
 		if (albums.get(album_name) == null) return null;
 		Album album = albums.get(album_name);

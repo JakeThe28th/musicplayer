@@ -3,16 +3,25 @@ package musicplayer.graphics;
 import static org.lwjgl.opengl.GL40.*;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 
 import org.lwjgl.BufferUtils;
 
 public class Texture {
+	
+	BufferedImage loaded_image;
+
+	public void save(String file) throws IOException {
+		if (loaded_image == null) throw new IOException("Only textures loaded from images may be saved.");
+		ImageIO.write(loaded_image, "png", new File(file));
+	}
 	
 	int texture;
 	
@@ -22,6 +31,7 @@ public class Texture {
 	
 	public Texture(BufferedImage image) {
 		this(bufferedImageToTextureData(image), image.getWidth(), image.getHeight());
+		loaded_image = image;
 	}
 	
 	private static byte[] bufferedImageToTextureData(BufferedImage image) {
