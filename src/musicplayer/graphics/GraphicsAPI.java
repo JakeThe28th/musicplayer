@@ -43,6 +43,10 @@ public class GraphicsAPI {
 	
 	public static void 		render() { RenderQueue.render(); }
 	
+	public static void		title(String title) {
+		Window.title(title);
+	}
+	
 	/* -- Drawing stuffs -- */
 	
 	public static Vector2i size(String string) {

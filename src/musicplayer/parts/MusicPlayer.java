@@ -9,6 +9,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import musicplayer.MainProgram;
 import musicplayer.audio.AudioDevice;
 import musicplayer.audio.AudioSource;
+import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_List;
 import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Song;
@@ -50,8 +51,9 @@ public class MusicPlayer {
 	public static final int SHUFFLE   = 3; // Shuffle
 
 	// Variables for the current playlist
-	public static String playlist = "default";
-	public static String view_playlist = "default";
+	private static final String NO_PLAYLIST = "No playlist";
+	public static String playlist = NO_PLAYLIST;
+	public static String view_playlist = NO_PLAYLIST;
 	public static int song_index = 0;
 
 	private static Song current_song;
@@ -71,7 +73,7 @@ public class MusicPlayer {
 	}
 	
 	public static void current(String album, String identifier) {
-		
+				
 		// Maybe bad for loading songs quickly, but also maybe
 		// not wasting 1000s of megabytes is worth that...
 		// Also, even without loading things in advance,
@@ -88,6 +90,9 @@ public class MusicPlayer {
 		}
 		
 		scroll_to_current();
+		
+		GraphicsAPI.title(current_song.name() + " - " + MainProgram.PROGRAM_TITLE);
+
 	}
 	
 	public static void scroll_to_current() {
@@ -118,6 +123,7 @@ public class MusicPlayer {
 	public static void play() { 
 		playing = true; 
 		MainProgram.controls.setPlaying(true); 
+		if (current_song == null) return;
 		if (hasLoadProgress(current_song.uuid())) return;
 		current_song_audio.play();
 		}
@@ -127,6 +133,7 @@ public class MusicPlayer {
 	public static void pause(boolean update_controls) {
 		playing = false;  
 		if (update_controls) MainProgram.controls.setPlaying(false); 
+		if (current_song == null) return;
 		if (hasLoadProgress(current_song.uuid())) return;
 		current_song_audio.pause(); 
 		}
@@ -134,6 +141,7 @@ public class MusicPlayer {
 	public static void stop() { 
 		playing = false; 
 		MainProgram.controls.setPlaying(false); 
+		if (current_song == null) return;
 		if (hasLoadProgress(current_song.uuid())) return;
 		current_song_audio.stop(); 
 		current_song_audio.seekstop(0); 
@@ -150,19 +158,22 @@ public class MusicPlayer {
 				stop();
 			}
 		}
-		
-		current_song_audio.update();
-		if (current_song_audio.stopped() && playing) {
-			if (playback_mode == LOOP_SONG) {
-				seek(0);
-				play();
-			} else {
-				next();
+		if (current_song_audio != null) {
+			current_song_audio.update();
+			if (current_song_audio.stopped() && playing) {
+				if (playback_mode == LOOP_SONG) {
+					seek(0);
+					play();
+				} else {
+					next();
+				}
 			}
 		}
 	}
 	
-	public static void next() { 		
+	public static void next() { 	
+		if (playlist.equals(NO_PLAYLIST)) return;
+		
 		song_index++;
 		ArrayList<Song> songs = Library.getPlaylist(playlist).listSongs();
 		if (song_index >= songs.size() && playback_mode == LOOP_LIST) {
@@ -181,6 +192,8 @@ public class MusicPlayer {
 	}
 	
 	public static void previous() { 
+		if (playlist.equals(NO_PLAYLIST)) return;
+		
 		song_index--;
 		if (song_index < 0) {
 			song_index = 0;

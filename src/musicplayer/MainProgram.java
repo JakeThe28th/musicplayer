@@ -25,6 +25,10 @@ import musicplayer.utility.Utility;
 
 public class MainProgram {
 	
+	public static final String VERSION = "0.1a";
+	public static final String PROGRAM_NAME = "NOW PLAYING";
+	public static final String PROGRAM_TITLE = PROGRAM_NAME + " " + VERSION;
+	
 	public static final Vector4f ACCENT_COLOR = new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 1);
 	public static final Vector4f LIGHT_COLOR = new Vector4f(63 / 255f, 89 / 255f, 84 / 255f, 1);
 	public static final Vector4f DARK_COLOR = new Vector4f(24 / 255f, 55 / 255f, 49 / 255f, 1);
@@ -82,10 +86,12 @@ public class MainProgram {
 			Log.send(song.uuid() + ", name=" + song.name());
 		}
 		
-		MusicPlayer.set_current_playlist("defaultalbum");
-		MusicPlayer.set_current_view_playlist("defaultalbum");
-		MusicPlayer.current("defaultalbum", "awesomedefaultsong");
+		//MusicPlayer.set_current_playlist("defaultalbum");
+		//MusicPlayer.set_current_view_playlist("defaultalbum");
+		//MusicPlayer.current("defaultalbum", "awesomedefaultsong");
+		
 		MusicPlayer.cyclePlaybackMode();
+		
 		//Library.play();
 		
 //		MusicPlayer.set_current_playlist("awesome-other-album");

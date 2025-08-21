@@ -13,7 +13,7 @@ public class G_Grid extends G_Element {
 		elements.add(element);
 	}
 	
-	public static final int MAX_ITEM_SIZE = 300; // Overrides TARGET_COLUMN_COUNT if necessary
+	public static final int MAX_ITEM_SIZE = 500; // Overrides TARGET_COLUMN_COUNT if necessary
 	public static final int MIN_ITEM_SIZE = 150;  // Overrides TARGET_COLUMN_COUNT if necessary
 	public static final int TARGET_COLUMN_COUNT = 3;
 

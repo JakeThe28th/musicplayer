@@ -105,4 +105,8 @@ class Window {
 		return window;
 	}
 
+	public static void title(String title) {
+		GLFW.glfwSetWindowTitle(window, title);
+	}
+
 }
