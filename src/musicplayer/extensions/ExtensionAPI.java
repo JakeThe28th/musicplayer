@@ -1,10 +1,12 @@
 package musicplayer.extensions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import musicplayer.audio.AudioSource;
 import musicplayer.extensions.builtin.BuiltinAudioReader;
+import musicplayer.utility.Utility;
 
 public class ExtensionAPI {
 	
@@ -16,8 +18,15 @@ public class ExtensionAPI {
 		extension.onLoad();
 	}
 	
-	public static void init() {
+	public static void init() throws IOException {
+		
 		loadExtension(new BuiltinAudioReader());
+		
+		// Load external extensions
+		for (Object extension : Utility.loadClassesFromFolder("extensions/")) {
+			loadExtension((Extension) extension);
+		}
+	
 	}
 	
 	public static void registerAudioReader(AudioReaderExtension e) {
