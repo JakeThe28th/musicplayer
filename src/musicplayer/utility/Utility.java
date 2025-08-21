@@ -1,7 +1,9 @@
 package musicplayer.utility;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Paths;
@@ -38,6 +40,20 @@ public class Utility {
         }
         classloader.close();
 		return classes;
+	}
+	
+	public static void runCommand(String... command) throws IOException {
+		ProcessBuilder builder = new ProcessBuilder(command);
+		
+        builder.redirectErrorStream(true);
+        Process p = builder.start();
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        while (true) {
+            line = r.readLine();
+            if (line == null) { break; }
+            System.out.println(line);
+        }
 	}
 	
 }
