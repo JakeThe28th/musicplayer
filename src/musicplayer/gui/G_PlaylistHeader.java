@@ -5,8 +5,9 @@ import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.extra.Popup;
 import musicplayer.gui.extra.Popup.Option;
+import musicplayer.gui.screens.G_HomeScreen;
+import musicplayer.gui.screens.G_PlaylistScreen;
 import musicplayer.parts.MusicPlayer;
-import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
 public class G_PlaylistHeader extends G_Element {
@@ -14,14 +15,14 @@ public class G_PlaylistHeader extends G_Element {
 	G_Text 		title			= new G_Text().text("No Playlist");
 	G_Icon 		home 			= new G_Icon("home")
 		{ @Override public void onClick() { 
-			MainProgram.change_view(MainProgram.VIEW_LIBRARY);
+			MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
 		}};
 	G_Icon 		menu 			= new G_Icon("hamburger")
 			{ @Override public void onClick() {
 				
-				Option[] options = new Option[MainProgram.playlist_menu_options.size()];
-				for (int i = 0; i <  MainProgram.playlist_menu_options.size(); i++) {
-					options[i] = MainProgram.playlist_menu_options.get(i);
+				Option[] options = new Option[G_PlaylistScreen.playlist_menu_options.size()];
+				for (int i = 0; i <  G_PlaylistScreen.playlist_menu_options.size(); i++) {
+					options[i] = G_PlaylistScreen.playlist_menu_options.get(i);
 				}
 				
 				MainProgram.popups.add(

@@ -3,19 +3,17 @@ package musicplayer;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.joml.Vector4f;
 
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
-import musicplayer.gui.G_Grid;
-import musicplayer.gui.G_List;
-import musicplayer.gui.G_PlaylistHeader;
-import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_SongControls;
 import musicplayer.gui.extra.Popup;
-import musicplayer.gui.extra.Popup.Option;
 import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.gui.screens.G_PlaylistScreen;
+import musicplayer.gui.screens.Screen;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.Song;
@@ -31,29 +29,43 @@ public class MainProgram {
 	public static final Vector4f DARKEST_COLOR = new Vector4f(10 / 255f, 24 / 255f, 23 / 255f, 1);
 	public static final Vector4f SEMIDARK_COLOR = new Vector4f(80 / 255f, 100 / 255f, 100 / 255f, 1);
 	public static final Vector4f TRANSPARENT_ACCENT_COLOR = new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 0.25f);
+	
+	// Screens
+	public static HashMap<String, Screen> screens = new HashMap<String, Screen>();
+	static { 
+		screens.put(G_HomeScreen.IDENTIFIER, G_HomeScreen.INSTANCE);
+		screens.put(G_PlaylistScreen.IDENTIFIER, G_PlaylistScreen.INSTANCE);
+	}
 
-	public static ArrayList<Popup> popups = new ArrayList<Popup>();
+	public static G_PlaylistScreen 	playlist_screen 		= G_PlaylistScreen.INSTANCE;
+	public static G_HomeScreen 		library_screen 			= G_HomeScreen.INSTANCE;
+	
+	public static long 				view_transition_time 	= 250;
+	public static long 				view_transition_timer 	= 0;	
+	public static String 			current_screen 			= G_HomeScreen.IDENTIFIER;
+	public static String 			last_screen 			= current_screen;
+
+	public static void change_screen(String view_identifier) {
+		MainProgram.last_screen = MainProgram.current_screen;
+		MainProgram.current_screen = view_identifier;
+		MainProgram.view_transition_timer = System.currentTimeMillis();
+	}
+	
+	static public void draw_screen(int xx, String screen_name) {
+		G_Element screen = screens.get(screen_name).instance();
+		screen.recalculate_size();
+		screen.layout(xx, 0, GraphicsAPI.width() + xx, GraphicsAPI.height()-controls.height());
+		screen.draw(0);
+		screen.input();
+	}
+	
+	// 
 	
 	public static G_SongControls controls = new G_SongControls();
 	
-	public static ArrayList<Option> playlist_menu_options = new ArrayList<Option>();
+	public static ArrayList<Popup> popups = new ArrayList<Popup>();
 	
-	public static G_PlaylistScreen playlist_screen = G_PlaylistScreen.instance;
-	public static G_HomeScreen library_screen = G_HomeScreen.instance;
-
-	static {
-		playlist_menu_options.add(new Option("View Library", () -> {
-			change_view(MainProgram.VIEW_LIBRARY);
-		}));
-		playlist_menu_options.add(new Option("Other Test Button (play)", () -> {
-			MusicPlayer.play();
-		}));
-		playlist_menu_options.add(new Option("Other Test Button (pause)", () -> {
-			MusicPlayer.pause();
-		}));
-	}
-	
-	// ^^^ GUI Objects ^^^ //
+	public boolean pinned = false;
 	
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws IOException, ParseException {
@@ -81,14 +93,16 @@ public class MainProgram {
 			MusicPlayer.update();
 
 			long transition_time = System.currentTimeMillis() - view_transition_timer;
-			float transition_amount = transition_time / (float) view_transition_time;
-			      transition_amount = (float) Utility.lerp(transition_amount, 1, transition_amount);
-			int xoffset = (int) (GraphicsAPI.width() * (transition_amount));
 			if (transition_time < view_transition_time) {
-				draw_view(last_view, xoffset);
-				draw_view(current_view, xoffset-GraphicsAPI.width());
+				// Get offset for sliding screen transition
+				float transition_amount = transition_time / (float) view_transition_time;
+			      transition_amount = (float) Utility.lerp(transition_amount, 1, transition_amount);
+			      int xoffset = (int) (GraphicsAPI.width() * (transition_amount));
+			    // ... //
+				draw_screen(xoffset, last_screen);
+				draw_screen(xoffset-GraphicsAPI.width(), current_screen);
 			} else {
-				draw_view(current_view, 0);
+				draw_screen(0, current_screen);
 			}
 			
 			controls.recalculate_size();
@@ -112,43 +126,5 @@ public class MainProgram {
 		
 		MusicPlayer.endAudioDevice();
 	}
-	
-	public static void change_view(int new_view) {
-		MainProgram.last_view = MainProgram.current_view;
-		MainProgram.current_view = new_view;
-		MainProgram.view_transition_timer = System.currentTimeMillis();
-	}
-		
-	private static void draw_view(int view, int offset) {
-		if (view == VIEW_MINIFIED) draw_minified_view();
-		if (view == VIEW_PLAYLIST) draw_screen(offset, playlist_screen);
-		if (view == VIEW_LIBRARY) draw_screen(offset, library_screen);
-	}
-
-	public static int current_view = 2;
-	public static final int VIEW_MINIFIED = 1; // The condensed music player view
-	public static final int VIEW_PLAYLIST = 2; // Viewing the current list of songs
-	public static final int VIEW_LIBRARY  = 3; // Viewing the list of albums & playlists
-
-	public boolean pinned = false;
-	
-	static long view_transition_time = 250;
-	public static long view_transition_timer = 0;
-	public static int last_view = 2;
-	
-	
-
-	static public void draw_screen(int xx, G_Element screen) {		
-		screen.recalculate_size();
-		screen.layout(xx, 0, GraphicsAPI.width() + xx, GraphicsAPI.height()-controls.height());
-		screen.draw(0);
-		screen.input();
-	}
-	
-	static public void draw_minified_view() {
-		
-	}
-	
-	
 
 }

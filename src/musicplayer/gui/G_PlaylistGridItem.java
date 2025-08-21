@@ -3,6 +3,8 @@ package musicplayer.gui;
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.graphics.Texture;
+import musicplayer.gui.screens.G_HomeScreen;
+import musicplayer.gui.screens.G_PlaylistScreen;
 import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.Playlist;
 import musicplayer.utility.Log;
@@ -67,7 +69,7 @@ public class G_PlaylistGridItem extends G_Element {
 	@Override
 	public void onClick() {
 		MusicPlayer.set_current_view_playlist(playlist.identifier());
-		MainProgram.change_view(MainProgram.VIEW_PLAYLIST);	
+		MainProgram.change_screen(G_PlaylistScreen.IDENTIFIER);
 		MusicPlayer.scroll_to_current();
 	}
 

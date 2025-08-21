@@ -5,7 +5,10 @@ import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Grid;
 import musicplayer.gui.G_Scrollable;
 
-public class G_HomeScreen extends G_Element {
+public class G_HomeScreen extends G_Element implements Screen {
+	
+	@Override public G_Element instance() { return INSTANCE; }
+	@Override public String identifier() { return IDENTIFIER; }
 
 	public static G_Grid albums_grid = new G_Grid();
 	public static G_Scrollable albums_scroll = new G_Scrollable(albums_grid);
@@ -14,8 +17,9 @@ public class G_HomeScreen extends G_Element {
 	public static G_Scrollable playlists_scroll = new G_Scrollable(playlists_grid);
 	
 	private G_HomeScreen() {};
-	public static G_HomeScreen instance = new G_HomeScreen();
-	
+	public static final G_HomeScreen INSTANCE = new G_HomeScreen();
+	public static final String IDENTIFIER = "library";
+
 	{ addSubElement(albums_scroll);  addSubElement(playlists_scroll); }
 	
 	@Override
@@ -40,7 +44,7 @@ public class G_HomeScreen extends G_Element {
 		albums_scroll.layout(left, yy, right, yy+section_height);
 		
 		GraphicsAPI.color(GraphicsAPI.WHITE);
-		GraphicsAPI.text(left+left_margin, (top+section_height+header_height)-10, 0, "Playlists");
+		GraphicsAPI.text(left+left_margin, (top+section_height+header_height)+5, 0, "Playlists");
 		
 		yy += section_height + header_height;
 		
