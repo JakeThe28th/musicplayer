@@ -16,13 +16,6 @@ import org.lwjgl.BufferUtils;
 
 public class Texture {
 	
-	BufferedImage loaded_image;
-
-	public void save(String file) throws IOException {
-		if (loaded_image == null) throw new IOException("Only textures loaded from images may be saved.");
-		ImageIO.write(loaded_image, "png", new File(file));
-	}
-	
 	int texture;
 	
 	public Texture(String filename) throws FileNotFoundException, IOException {
@@ -31,7 +24,6 @@ public class Texture {
 	
 	public Texture(BufferedImage image) {
 		this(bufferedImageToTextureData(image), image.getWidth(), image.getHeight());
-		loaded_image = image;
 	}
 	
 	private static byte[] bufferedImageToTextureData(BufferedImage image) {

@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+
+import javax.imageio.ImageIO;
 
 import musicplayer.graphics.Texture;
 
@@ -15,7 +16,8 @@ public class Playlist {
 	
 	boolean is_album = false; // True for auto-generated album playlists
 	
-	Texture cover;
+	BufferedImage cover;
+	Texture glcover;
 	String name;
 	String identifier;
 
@@ -39,9 +41,9 @@ public class Playlist {
 		if (!cover.exists()) { cover = new File(playlist_directory.getPath() + "/cover.jpg"); }	
 		
 		if (cover.exists()) {
-			this.cover = new Texture(cover.getPath());
+			this.cover = ImageIO.read(cover);
 		} else {
-			this.cover = new Texture(new byte[] { (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF }, 1, 1);
+			this.glcover = new Texture(new byte[] { (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF }, 1, 1);
 		}
 		
 		
@@ -85,8 +87,9 @@ public class Playlist {
 		songs.add(uuid);
 	}
 
-	public Texture cover() {
-		return cover;
+	public Texture glcover() {
+		if (glcover == null) glcover = new Texture(cover);
+		return glcover;
 	}
 
 	public String name() {
@@ -105,7 +108,7 @@ public class Playlist {
 		playlist_folder.mkdirs();
 		
 		// Save album image
-		if (cover != null) cover.save(playlist_folder.toString() + "\\cover.png");
+		if (cover != null) ImageIO.write(cover, "png", new File(playlist_folder.toString() + "\\cover.png"));
 		
 		// Save song list
 		String order = "";
@@ -117,8 +120,8 @@ public class Playlist {
 
 
 	public void cover(BufferedImage image) {
-		if (this.cover != null) this.cover.free();
-		this.cover = new Texture(image);
+		this.cover = image;
+		this.glcover = null;
 	}
 	
 }

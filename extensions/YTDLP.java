@@ -62,6 +62,7 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 		
 		
 		
+		
 	}
 	
 	@Override
@@ -233,9 +234,7 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 		}
 		
 		album.save();
-
-		Library.registerAlbum(album);
-	
+		
 	}
 	
 }
