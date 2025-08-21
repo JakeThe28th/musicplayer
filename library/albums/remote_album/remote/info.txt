@@ -1,2 +1,0 @@
-name=Remote Song
-file=song.webloader
