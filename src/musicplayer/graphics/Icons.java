@@ -120,6 +120,11 @@ class Icons {
 				}
 				// Reset for next object
 				current_triangles = new ArrayList<Triangle>();
+				String bad = "";
+				for (byte b : split[1].getBytes()) {
+					bad += b + ", ";
+				}
+				Log.send("split bad = " + bad);
 				current_object_name = lines[last_name_line].split(" ")[1];
 				Log.send("SPLIT _ >" + lines[last_name_line].split(" ")[1]);
 
