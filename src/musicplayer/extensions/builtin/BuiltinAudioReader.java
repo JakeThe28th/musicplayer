@@ -10,12 +10,11 @@ import musicplayer.extensions.AudioReaderExtension;
 import musicplayer.extensions.Extension;
 import musicplayer.extensions.ExtensionAPI;
 
-public class BuiltinAudioReader implements Extension, AudioReaderExtension {
+public class BuiltinAudioReader extends Extension implements AudioReaderExtension {
 
 	public static final String[] TYPES = new String[] { "wav" };
-
 	
-	@Override public String   identifier() 		{ return "builtin:audioreader"; }
+	@Override public String   identifier() 		{ return "builtin;audioreader"; }
 	@Override public String[] supportedTypes() 	{ return TYPES; }
 	
 	@Override
@@ -35,5 +34,6 @@ public class BuiltinAudioReader implements Extension, AudioReaderExtension {
 		}
 		return null;
 	}
+	
 
 }

@@ -23,6 +23,8 @@ public class Utility {
         URLClassLoader classloader = new URLClassLoader(new URL[] { Paths.get(path).toUri().toURL() });
         
         for (File file : new File(path).listFiles()) {
+        	if (!file.getName().endsWith(".java")) continue;
+        	Log.send("Loading extension: " + file.toString());
         	JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		    compiler.run(null, null, null, file.getAbsolutePath());
 			
@@ -32,7 +34,7 @@ public class Utility {
 			try {
 				extension = (Extension) classloader.loadClass(name).getConstructor().newInstance();
 				classes.add(extension);
-			} catch (Exception e) { Log.send("Failed to load a class: " + file.toString()); e.printStackTrace(); }
+			} catch (Exception e) { Log.send("Failed to load an extension: " + file.toString()); e.printStackTrace(); }
         }
         classloader.close();
 		return classes;
