@@ -194,18 +194,25 @@ public class MusicPlayer {
 		};
 	}
 
-	public static void volume(float new_value) {
-		device.setListenerVolume(new_value);
-	}
+	static float volume = 1;
 	
 	static AudioDevice device;
 
 	public static void initAudioDevice() {
 		// TODO: this is scuffed... i need to refactor audio
-		device = new AudioDevice(AudioDevice.defaultDevice()); 
+		device = new AudioDevice(AudioDevice.defaultDevice());
 	}
 	
 	public static void endAudioDevice() {
 		device.end();
+	}
+	
+	public static void volume(float new_value) {
+		device.setListenerVolume(new_value);
+		volume = new_value;
+	}
+	
+	public static float volume() {
+		return volume;
 	}
 }

@@ -83,6 +83,8 @@ public class G_SongControls extends G_Element {
 		addSubElement(left_icons);
 		addSubElement(right_icons);
 		addSubElement(volume_slider);
+		
+		volume_slider.amount = MusicPlayer.volume();
 
 	}
 	
