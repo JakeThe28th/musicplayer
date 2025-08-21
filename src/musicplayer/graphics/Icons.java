@@ -117,8 +117,9 @@ class Icons {
 				}
 				// Reset for next object
 				current_triangles = new ArrayList<Triangle>();
-				current_object_name = split[1];
+				current_object_name = "" + split[1];
 				Log.send("11. Setting current object to " + split[1]);
+				Log.send("11.5 Setting current object to " + current_object_name);
 
 			}
 			
