@@ -1,5 +1,7 @@
 package musicplayer.gui;
 
+import org.lwjgl.glfw.GLFW;
+
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
@@ -94,6 +96,9 @@ public class G_SongControls extends G_Element {
 		volume_slider.recalculate_size();
 		this.unpadded_height = title.height() + progress_bar.height() + center_icons.height();
 		this.unpadded_height += volume_slider_height();
+		this.unpadded_width = left_icons.width() + center_icons.width() + right_icons.width();
+		
+		GraphicsAPI.setMinimumWindowSize(this.width(), this.height(), GLFW.GLFW_DONT_CARE, GLFW.GLFW_DONT_CARE);
 	}
 	
 	boolean show_volume_slider = true;

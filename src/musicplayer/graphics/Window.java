@@ -100,5 +100,9 @@ class Window {
 		glfwFreeCallbacks(window);
 		glfwDestroyWindow(window);
 	}
+	
+	protected static long identifier() {
+		return window;
+	}
 
 }
