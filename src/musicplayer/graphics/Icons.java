@@ -42,7 +42,7 @@ class Icons {
 		record Triangle(int[] vertex_indices) {};
 		ArrayList<Triangle> current_triangles = new ArrayList<Triangle>();
 		
-		String current_object_name = "Hello, This Should Not Be Seen!!";
+		String current_object_name = null;
 		String persistent_test_string = "this is a test string.";
 		Log.send("3. Created Vertex and Triangle arrays");
 
@@ -120,7 +120,9 @@ class Icons {
 				}
 				// Reset for next object
 				current_triangles = new ArrayList<Triangle>();
-				current_object_name = "" + split[1];
+				current_object_name = lines[last_name_line].split(" ")[1];
+				Log.send("SPLIT _ >" + lines[last_name_line].split(" ")[1]);
+
 				Log.send("11. Setting current object to " + split[1]);
 				Log.send("11.5 Setting current object to " + current_object_name);
 				Log.send(last_name_line + "<--- last name line");
