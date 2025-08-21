@@ -7,6 +7,7 @@ import musicplayer.gui.extra.Popup;
 import musicplayer.gui.extra.Popup.Option;
 import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.gui.screens.G_PlaylistScreen;
+import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
 import musicplayer.utility.Rectangle;
 
@@ -26,7 +27,7 @@ public class G_PlaylistHeader extends G_Element {
 
 	
 	public void set_playlist(String name) {
-		title.text = name;
+		title.text = Library.getPlaylist(name).name();
 		title.recalculate_size();
 	}
 

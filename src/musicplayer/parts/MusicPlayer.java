@@ -91,7 +91,7 @@ public class MusicPlayer {
 		
 		scroll_to_current();
 		
-		GraphicsAPI.title(current_song.name() + " (" + current_song.uuid().album + ") - " + MainProgram.PROGRAM_TITLE);
+		GraphicsAPI.title(current_song.name() + " (" + Library.getAlbum(current_song.uuid().album).linked_playlist.name + ") - " + MainProgram.PROGRAM_TITLE);
 
 	}
 	
