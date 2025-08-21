@@ -42,7 +42,7 @@ public class Utility {
 		return classes;
 	}
 	
-	public static void runCommand(String... command) throws IOException {
+	public static void runCommand(GenericSingleStringInterface tick, GenericInterface finish, String...command) throws IOException {
 		ProcessBuilder builder = new ProcessBuilder(command);
 		
         builder.redirectErrorStream(true);
@@ -53,9 +53,11 @@ public class Utility {
             line = r.readLine();
             if (line == null) { break; }
             System.out.println(line);
+            if (tick != null) tick.run(line);
         }
+        if (finish != null) finish.run();
 	}
-
+	
 	public static void delete(File file) {
 		if (file.isDirectory()) {
 			for (File c : file.listFiles()) delete(c);

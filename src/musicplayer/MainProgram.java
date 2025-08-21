@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import org.joml.Vector4f;
 
+import musicplayer.audio.AudioSource;
 import musicplayer.extensions.ExtensionAPI;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
@@ -87,22 +88,11 @@ public class MainProgram {
 		MusicPlayer.cyclePlaybackMode();
 		//Library.play();
 		
-
-		float pv = 0;
-		
 //		MusicPlayer.set_current_playlist("awesome-other-album");
 //		MusicPlayer.current("awesome-other-album", "wowow");
 		
 		// Main loop
 		while (GraphicsAPI.isOpen()) {
-			if (pv < 1) {
-				MusicPlayer.setLoadProgress(new UUID("album", "test.wav"), pv);
-				pv += 0.0025;
-				Log.send(pv);
-				if (pv >= 1) {
-					MusicPlayer.finishLoading(new UUID("album", "test.wav"));
-				}
-			}
 			//GraphicsHandler.clear();
 			
 			MusicPlayer.update();

@@ -16,6 +16,7 @@ import musicplayer.extensions.AudioReaderExtension;
 import musicplayer.extensions.Extension;
 import musicplayer.extensions.ExtensionAPI;
 import musicplayer.parts.Album;
+import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.Playlist;
 import musicplayer.parts.Song;
 import musicplayer.parts.UUID;
@@ -60,23 +61,31 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 	}
 	
 	@Override
-	public AudioSource read(String filename) {
+	public AudioSource read(String filename, UUID song) {
 		try { 
 			String url = Files.readString(Paths.get(filename)).strip();
 			
-			if (!cached_urls.contains(url)) cache(url);
-			
-			int index = cached_urls.indexOf(url);
-			String type = cached_url_types.get(index);
-			return ExtensionAPI.readAudio(cached_song_directory + index + "." + type, type);
+			if (!cached_urls.contains(url)) {
+				if (MusicPlayer.hasLoadProgress(song)) return MusicPlayer.EMPTY;
+				MusicPlayer.setLoadProgress(song, 0.02f);
+				Thread download = new Thread() {
+				    public void run() { try { cache(url, song); } catch(IOException v) { v.printStackTrace(); } }  
+				};
+				download.start();
+				return MusicPlayer.EMPTY;
+			} else {
+				int index = cached_urls.indexOf(url);
+				String type = cached_url_types.get(index);
+				return ExtensionAPI.readAudio(cached_song_directory + index + "." + type, type, song);
+			}
 			
 		} catch (IOException e) { e.printStackTrace(); }
 		return null;
 	}
 	
-	private void cache(String url) throws IOException {
+	private void cache(String url, UUID song) throws IOException {
 		String location = cached_song_directory + cached_urls.size() + "." + download_file_type;
-		download(url, location, download_file_type); 
+		download(url, location, download_file_type, song); 
 		cached_urls.add(url);
 		cached_url_types.add(download_file_type);
 		
@@ -91,13 +100,53 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 			Files.delete(Paths.get(cached_song_list_filename));
 		}
 		Files.writeString(Paths.get(cached_song_list_filename), cachestring, StandardOpenOption.CREATE);
+		
+		MusicPlayer.finishLoading(song);
+
 	}
 	
+	long sleeping_start_time = 0;
+	long sleeping_length = 6 * 1000;
+	boolean downloaded = false;
+	String last_line = "";
+	
 	/** Download w/ YT-DLP on the command line*/
-	private void download(String url, String output_file, String format) throws IOException {
+	private void download(String url, String output_file, String format, UUID song) throws IOException {
 		Log.send(identifier() + ": Downloading " + url);
 		
 		Utility.runCommand(
+				(line) -> {
+					downloaded = false;
+					float progress = 0.5f;
+					
+					// Forced progress at the "sleeping 6.0 seconds" step so there's
+					// at least SOME indication the program is working.
+					float base_progress = 0.15f;
+					float pre_sleep_progress = 0.05f;
+					if (line.contains("Sleeping")) {
+						sleeping_start_time = System.currentTimeMillis();
+						long sleeping_progress_ms = 0;
+						while (sleeping_progress_ms < sleeping_length) {
+							sleeping_progress_ms = System.currentTimeMillis()-sleeping_start_time;
+							float sleeping_progress = sleeping_progress_ms / ((float) sleeping_length);
+								  sleeping_progress *= (base_progress-pre_sleep_progress);
+							MusicPlayer.setLoadProgress(song, pre_sleep_progress + sleeping_progress);
+						}
+					} else if (line.contains("%") && line.startsWith("[download]")) {
+						downloaded = true;
+						line = line.substring(line.indexOf("]") + 1);
+						line = line.substring(0, line.indexOf("%"));
+						line = line.strip();
+						progress = Float.parseFloat(line) / 100f;
+						progress = progress * (1-base_progress);
+						progress += base_progress;
+						MusicPlayer.setLoadProgress(song, progress);
+					} else {
+						if (!downloaded) MusicPlayer.setLoadProgress(song, pre_sleep_progress);
+					}
+				},
+				() -> {
+				},
 				working_directory + "yt-dlp.exe", 
 				url,
 				"--extract-audio",
@@ -115,7 +164,7 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 		
 		Utility.delete(new File(working_directory + "temp"));
 		
-		Utility.runCommand(
+		Utility.runCommand(null, null,
 				working_directory + "yt-dlp.exe", 
 				link,
 				"--write-info-json",

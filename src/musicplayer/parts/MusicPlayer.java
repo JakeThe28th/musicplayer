@@ -13,11 +13,13 @@ import musicplayer.gui.G_List;
 import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Song;
 import musicplayer.gui.screens.G_PlaylistScreen;
-import musicplayer.utility.Log;
 
 /** Handles most stuff regarding music playback */
 public class MusicPlayer {
 	
+	public static AudioSource EMPTY;
+	static boolean restart = false;
+
 	private static HashMap<UUID, Float> load_progress = new HashMap<UUID, Float>();
 	
 	synchronized public static void setLoadProgress(UUID song, float value) {
@@ -34,14 +36,7 @@ public class MusicPlayer {
 	
 	synchronized public static void finishLoading(UUID song) {
 		load_progress.remove(song);
-		if(song.equals(current_song.uuid())) {
-			seek(0);
-			if (playing) {
-				play();
-			} else {
-				stop();
-			}
-		}
+		if(song.equals(current_song.uuid())) restart = true;
 	}
 		
 	public static int scroll_mode = 1;
@@ -145,6 +140,17 @@ public class MusicPlayer {
 		}
 	
 	public static void update() { 
+		if (restart) {
+			restart = false;
+			current(current_song.uuid());
+			seek(0);
+			if (playing) {
+				play();
+			} else {
+				stop();
+			}
+		}
+		
 		current_song_audio.update();
 		if (current_song_audio.stopped() && playing) {
 			if (playback_mode == LOOP_SONG) {
@@ -250,6 +256,7 @@ public class MusicPlayer {
 	public static void initAudioDevice() {
 		// TODO: this is scuffed... i need to refactor audio
 		device = new AudioDevice(AudioDevice.defaultDevice());
+		MusicPlayer.EMPTY = new AudioSource();
 	}
 	
 	public static void endAudioDevice() {

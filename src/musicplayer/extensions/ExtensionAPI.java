@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import musicplayer.audio.AudioSource;
 import musicplayer.extensions.builtin.BuiltinAudioReader;
+import musicplayer.parts.UUID;
 import musicplayer.utility.Utility;
 
 public class ExtensionAPI {
@@ -35,10 +36,10 @@ public class ExtensionAPI {
 		audioreaders.add(e);
 	}
 	
-	public static AudioSource readAudio(String filename, String extension) {
+	public static AudioSource readAudio(String filename, String extension, UUID song) {
 		for (AudioReaderExtension e : audioreaders) {
 			for (String type : e.supportedTypes()) if (type.equals(extension)) {
-				return e.read(filename);
+				return e.read(filename, song);
 			}
 		}
 		throw new Error("Failed to read audio file " + filename + ", " + extension);

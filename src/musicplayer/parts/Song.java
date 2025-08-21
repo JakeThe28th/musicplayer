@@ -54,14 +54,14 @@ public class Song {
 			String value = fields.get("file");
 			String path 		= directory.getPath() + "\\" + value;
 			String extension 	= value.substring(value.lastIndexOf('.') + 1, value.length());
-			audio 				= ExtensionAPI.readAudio(path, extension);
+			audio 				= ExtensionAPI.readAudio(path, extension, uuid());
 		}
 		return audio;
 	}
 	
 	public void free_audio() { 
 		if (audio != null) {
-			audio.end();
+			if (audio != MusicPlayer.EMPTY) audio.end();
 			audio = null;
 		}
 	}

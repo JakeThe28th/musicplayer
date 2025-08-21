@@ -9,6 +9,7 @@ import musicplayer.audio.io.pcm.WAVFile;
 import musicplayer.extensions.AudioReaderExtension;
 import musicplayer.extensions.Extension;
 import musicplayer.extensions.ExtensionAPI;
+import musicplayer.parts.UUID;
 
 public class BuiltinAudioReader extends Extension implements AudioReaderExtension {
 
@@ -24,7 +25,7 @@ public class BuiltinAudioReader extends Extension implements AudioReaderExtensio
 	}
 
 	@Override
-	public AudioSource read(String filename) {
+	public AudioSource read(String filename, UUID song) {
 		try {
 			AudioSource audio = new AudioSource();
 			audio.addAudio(new WAVFile(filename));
