@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="joml-1.10.5-sources" level="project" />
+    <orderEntry type="library" name="json-20240205" level="project" />
   </component>
 </module>

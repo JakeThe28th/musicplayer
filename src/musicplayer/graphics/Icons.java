@@ -43,13 +43,13 @@ class Icons {
 		ArrayList<Triangle> current_triangles = new ArrayList<Triangle>();
 		
 		String current_object_name = "Hello, This Should Not Be Seen!!";
-		
+		String persistent_test_string = "this is a test string.";
 		Log.send("3. Created Vertex and Triangle arrays");
 
 		
 		for (int line = 0; line <= lines.length; line++) {
 			
-			Log.send("4... Looping through lines in icon file");
+			//Log.send("4... Looping through lines in icon file");
 
 			
 			String[] split;
@@ -62,20 +62,21 @@ class Icons {
 				split = new String[] {"o", "DUMMY_OBJECT"};
 			} else {
 				split = lines[line].split(" ");
-				Log.send("6. Splitting line");
+				//Log.send("6. Splitting line");
 
 			}
 			
 			if (split[0].startsWith("#")) continue; // Comment
-			Log.send("7. Not a comment, so checking line contents");
+			//Log.send("7. Not a comment, so checking line contents");
 			if (split[0].equals("o")) {
 				Log.send("8. Line is an object name");
+				Log.send(persistent_test_string + " & " + line);
 				if (line < lines.length) Log.send("9. Line = " + lines[line]);
 
 				if (current_object_name != null) {
 					// Last object is done being defined, 
 					// so convert it to a Mesh
-					Log.send("10. Converting the previous object '" + current_object_name + "'" + "to a mesh");
+					Log.send("10. Converting the previous object '" + current_object_name + "'" + " to a mesh");
 					// 3 vertices per triangle, 3 coordinates per vertex
 					ArrayList<Vertex> mesh_verts_temp = new ArrayList<Vertex>();
 					int[]   mesh_indices = new int  [ (current_triangles.size() * 3)];
@@ -122,7 +123,7 @@ class Icons {
 			}
 			
 			if (split[0].equals("v")) { // Vertex
-				Log.send("12. Reading a vertex");
+				//Log.send("12. Reading a vertex");
 
 				vertices.add(new Vertex(
 						Float.parseFloat(split[1]),
@@ -132,7 +133,7 @@ class Icons {
 			}
 			
 			if (split[0].equals("f")) { // Face
-				Log.send("13. Reading a face");
+				//Log.send("13. Reading a face");
 
 				current_triangles.add(new Triangle(new int[] {
 						// Only the first part of the v/vt/n is taken
@@ -144,7 +145,7 @@ class Icons {
 						}));
 			}
 			
-			Log.send("14. Continuing loop");
+			//Log.send("14. Continuing loop");
 
 		}
 		
