@@ -90,7 +90,7 @@ public class MainProgram {
 		//MusicPlayer.set_current_view_playlist("defaultalbum");
 		//MusicPlayer.current("defaultalbum", "awesomedefaultsong");
 		
-		MusicPlayer.cyclePlaybackMode();
+		MusicPlayer.setPlaybackMode(MusicPlayer.LOOP_LIST);
 		
 		//Library.play();
 		
