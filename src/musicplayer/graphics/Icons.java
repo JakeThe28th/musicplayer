@@ -113,6 +113,8 @@ class Icons {
 							new float[(current_triangles.size()*3)*2], 
 							mesh_indices)
 							);
+
+					Log.send(lines[last_name_line].split(" ")[1].strip() + ", set = " + icons.containsKey(lines[last_name_line].split(" ")[1].strip()));
 					
 					Log.send("Loaded icon '" + current_object_name.strip() + "'");
 					Log.send("2 -- Loaded icon length = '" + current_object_name.length() + "'");
