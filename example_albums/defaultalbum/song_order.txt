@@ -1,0 +1,4 @@
+defaultalbum:awesomedefaultsong
+defaultalbum:pumpkin
+defaultalbum:redshift
+defaultalbum:lowes
