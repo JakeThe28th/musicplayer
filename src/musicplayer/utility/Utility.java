@@ -52,7 +52,12 @@ public class Utility {
 	}
 	
 	public static void runCommand(GenericSingleStringInterface tick, GenericInterface finish, String...command) throws IOException {
+		runCommand(null, tick, finish, command);
+	}
+	
+	public static void runCommand(File directory, GenericSingleStringInterface tick, GenericInterface finish, String...command) throws IOException {
 		ProcessBuilder builder = new ProcessBuilder(command);
+		if (directory != null) builder.directory(directory);
 		
         builder.redirectErrorStream(true);
         Process p = builder.start();

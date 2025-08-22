@@ -8,8 +8,8 @@ public class UUID {
 		this.identifier = identifier;
 	}
 	
-	String album = "unknown";
-	String identifier = "unknown";
+	public String album = "unknown";
+	public String identifier = "unknown";
 	
 	public String toString() {
 		return album + ":" + identifier;
