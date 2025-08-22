@@ -1,5 +1,7 @@
 package musicplayer.parts;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,6 +20,7 @@ public class Playlist {
 	
 	boolean is_album = false; // True for auto-generated album playlists
 	
+	BufferedImage cover_raw;
 	BufferedImage cover;
 	Texture glcover;
 	String name;
@@ -44,11 +47,12 @@ public class Playlist {
 		
 		// Get playlist cover
 		
-		File cover = new File(playlist_directory.getPath() + "/cover.png");
+		File cover = Utility.getIfExists(playlist_directory.getPath() + "/cover", ".png", ".jpg");
+		
 		if (!cover.exists()) { cover = new File(playlist_directory.getPath() + "/cover.jpg"); }	
 		
 		if (cover.exists()) {
-			this.cover = ImageIO.read(cover);
+			cover(ImageIO.read(cover));
 		}
 		
 		// Add songs
@@ -133,7 +137,8 @@ public class Playlist {
 		
 		// Save album image
 		if (cover != null) ImageIO.write(cover, "png", new File(playlist_folder.toString() + "\\cover.png"));
-		
+		if (cover_raw != null) ImageIO.write(cover, "png", new File(playlist_folder.toString() + "\\cover_raw.png"));
+
 		// Save metadata
 		Utility.writeKeyValue(Paths.get(playlist_folder.toString() + "\\info.txt"), fields);
 		
@@ -147,7 +152,30 @@ public class Playlist {
 
 
 	public void cover(BufferedImage image) {
+		this.cover_raw = image;
 		this.cover = image;
+		
+		if (image.getWidth() != image.getHeight()) {
+			int ww = image.getWidth();
+			int hh =image.getHeight();
+			
+			int larger_axis = (ww < hh) ? hh : ww;
+			
+			BufferedImage square = new BufferedImage(larger_axis, larger_axis, BufferedImage.TYPE_INT_ARGB);
+			Graphics g = square.getGraphics();
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, larger_axis, larger_axis);
+			int left = 0;
+			if (hh > ww) left = (larger_axis/2) - (ww/2);
+			int top = 0;
+			if (hh < ww) top = (larger_axis/2) - (hh/2);
+			int right = left+ww;
+			int bottom = top+hh;
+			g.drawImage(image, left, top, right, bottom, 0, 0, ww, hh, null);
+			g.dispose();
+			this.cover = square;
+		}
+		
 		this.glcover = null;
 	}
 	

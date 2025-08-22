@@ -106,5 +106,13 @@ public class Utility {
 		}
 		Files.writeString(path, fields_string);
 	}
+
+	public static File getIfExists(String path, String... extensions) {
+		for (String ext : extensions) {
+			File get = new File(path + ext);
+			if (get.exists()) return get;
+		}
+		return null;
+	}
 	
 }
