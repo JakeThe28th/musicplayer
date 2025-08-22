@@ -100,7 +100,7 @@ public class G_SongControls extends G_Element {
 		GraphicsAPI.setMinimumWindowSize(this.width(), this.height(), GLFW.GLFW_DONT_CARE, GLFW.GLFW_DONT_CARE);
 	}
 	
-	boolean show_volume_slider = true;
+	boolean show_volume_slider = false;
 	long volume_slider_transition_timer = 0;
 	long volume_slider_transition_time = 500;
 
