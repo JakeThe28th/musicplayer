@@ -16,7 +16,7 @@ import musicplayer.utility.Utility;
 
 public class FFMPEG extends Extension implements AudioReaderExtension {
 
-	public static final String[] TYPES = new String[] { "oga", "ogg", "m4a" };
+	public static final String[] TYPES = new String[] { "oga", "ogg", "m4a", "mp3" };
 	
 	@Override public String   identifier() 		{ return "utility;ffmpeg"; }
 	@Override public String[] supportedTypes() 	{ return TYPES; }
