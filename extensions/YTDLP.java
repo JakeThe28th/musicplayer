@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Stack;
 
 import javax.imageio.ImageIO;
 
@@ -45,11 +46,32 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 	ArrayList<String> cached_urls = new ArrayList<String>();
 	ArrayList<String> cached_url_types = new ArrayList<String>();
 
+	// Download Thread //
+	static record QueuedDownload(String url, UUID song) {}
+	private static ArrayList<QueuedDownload> queue = new ArrayList<>();
+	
+	public static synchronized void 			DLqueue	(QueuedDownload download) 	{ queue.add(download); }
+	public static synchronized boolean 			DLhasnext	() 						{ return queue.size() > 0; }
+	public static synchronized QueuedDownload 	DLpop		() 						{ return queue.getFirst(); }
+	
+	Thread download_thread = new Thread() {
+	    public void run() { 
+			Log.send("Starting download thread");
+			while (!interrupted()) try {
+	    		if (DLhasnext()) {
+	    			QueuedDownload q = DLpop();
+	    			cache(q.url, q.song);
+	    		} 
+	    	} catch(IOException v) { v.printStackTrace(); } 
+	    }  
+	};
+	// ... //
+
 	@Override
 	public void onLoad() throws IOException {
 		// TODO Auto-generated method stub
 		ExtensionAPI.registerAudioReader(this);
-		
+
 		new File(working_directory).mkdirs();
 		
 		cached_song_directory = working_directory + "cache/";
@@ -67,6 +89,13 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 		
 		addAlbumHooks();
 		
+		download_thread.start();
+		
+	}
+	
+	@Override
+	public void onClose() {
+		download_thread.interrupt();
 	}
 	
 	@Override
@@ -77,10 +106,7 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 			if (!cached_urls.contains(url)) {
 				if (MusicPlayer.hasLoadProgress(song)) return MusicPlayer.EMPTY;
 				MusicPlayer.setLoadProgress(song, 0.02f);
-				Thread download = new Thread() {
-				    public void run() { try { cache(url, song); } catch(IOException v) { v.printStackTrace(); } }  
-				};
-				download.start();
+				DLqueue(new QueuedDownload(url, song));
 				return MusicPlayer.EMPTY;
 			} else {
 				int index = cached_urls.indexOf(url);
@@ -116,8 +142,7 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 	
 	long sleeping_start_time = 0;
 	long sleeping_length = 6 * 1000;
-	boolean downloaded = false;
-	String last_line = "";
+
 	
 	/** Download w/ YT-DLP on the command line*/
 	private void download(String url, String output_file, String format, UUID song) throws IOException {
@@ -125,7 +150,6 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 		
 		Utility.runCommand(
 				(line) -> {
-					downloaded = false;
 					float progress = 0.5f;
 					
 					// Forced progress at the "sleeping 6.0 seconds" step so there's
@@ -142,7 +166,6 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 							MusicPlayer.setLoadProgress(song, pre_sleep_progress + sleeping_progress);
 						}
 					} else if (line.contains("%") && line.startsWith("[download]")) {
-						downloaded = true;
 						line = line.substring(line.indexOf("]") + 1);
 						line = line.substring(0, line.indexOf("%"));
 						line = line.strip();
@@ -151,7 +174,7 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 						progress += base_progress;
 						MusicPlayer.setLoadProgress(song, progress);
 					} else {
-						if (!downloaded) MusicPlayer.setLoadProgress(song, pre_sleep_progress);
+						if (line.contains("Extracting URL")) MusicPlayer.setLoadProgress(song, pre_sleep_progress);
 					}
 				},
 				() -> {

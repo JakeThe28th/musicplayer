@@ -10,6 +10,7 @@ import musicplayer.extensions.builtin.BuiltinAudioReader;
 import musicplayer.extensions.builtin.ProgramSettings;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.parts.UUID;
+import musicplayer.utility.Log;
 import musicplayer.utility.Utility;
 
 public class ExtensionAPI {
@@ -38,6 +39,13 @@ public class ExtensionAPI {
 			loadExtension((Extension) extension);
 		}
 	
+	}
+	
+	public static void end() {
+		for (String extension : extensions.keySet()) {
+			Log.send("Closing extension " + extension);
+			extensions.get(extension).onClose();
+		}
 	}
 	
 	public static void registerAudioReader(AudioReaderExtension e) {

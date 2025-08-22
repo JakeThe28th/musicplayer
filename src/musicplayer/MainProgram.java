@@ -149,7 +149,10 @@ public class MainProgram {
 			//GraphicsHandler.refresh();
 		}
 		
+		ExtensionAPI.end();
+		
 		MusicPlayer.endAudioDevice();
+		
 	}
 
 
