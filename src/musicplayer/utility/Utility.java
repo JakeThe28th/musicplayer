@@ -33,7 +33,7 @@ public class Utility {
         	Log.send("Loading extension: " + file.toString());
         	
     		GraphicsAPI.center_text(0, 0, "Initializing Extensions...");
-    		GraphicsAPI.center_text(0, 30, "Reading class"+ file.toString() +"...");
+    		GraphicsAPI.center_text(0, 30, "Reading class "+ file.toString() +"...");
     		GraphicsAPI.render();
         	
         	JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
