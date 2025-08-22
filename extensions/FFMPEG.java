@@ -16,7 +16,7 @@ import musicplayer.utility.Utility;
 
 public class FFMPEG extends Extension implements AudioReaderExtension {
 
-	public static final String[] TYPES = new String[] { "oga", "ogg" };
+	public static final String[] TYPES = new String[] { "oga", "ogg", "m4a" };
 	
 	@Override public String   identifier() 		{ return "utility;ffmpeg"; }
 	@Override public String[] supportedTypes() 	{ return TYPES; }
@@ -24,7 +24,7 @@ public class FFMPEG extends Extension implements AudioReaderExtension {
 	public static String conversion_file_type = "wav";
 	
 	// Conversion Thread //
-	static record QueuedConversion(UUID song, File dest) {}
+	static record QueuedConversion(UUID song, File dest, File source) {}
 	private static ArrayList<QueuedConversion> queue = new ArrayList<>();
 	
 	public static synchronized void 		CVqueue	  (QueuedConversion download) 	{ queue.add(download); }
@@ -41,7 +41,7 @@ public class FFMPEG extends Extension implements AudioReaderExtension {
 			while (!interrupted()) try {
 	    		if (CVhasnext()) {
 	    			QueuedConversion q = CVpop();
-	    			convert(q.song, q.dest);
+	    			convert(q.source, q.song, q.dest);
 	    		} 
 	    	} catch(IOException v) { v.printStackTrace(); } 
 	    }  
@@ -89,7 +89,7 @@ public class FFMPEG extends Extension implements AudioReaderExtension {
 		if (!target.exists()) {
 			if (MusicPlayer.hasLoadProgress(uuid)) return MusicPlayer.EMPTY;
 			MusicPlayer.setLoadProgress(uuid, 0.02f);
-			CVqueue(new QueuedConversion(uuid, target));
+			CVqueue(new QueuedConversion(uuid, target, new File(filename)));
 			return MusicPlayer.EMPTY;
 		} else {
 			return ExtensionAPI.readAudio(target.getPath(), "wav", uuid);
@@ -98,13 +98,14 @@ public class FFMPEG extends Extension implements AudioReaderExtension {
 	}
 	
 	/** Convert w/ffmpeg on the command line*/
-	private void convert(UUID song, File dest) throws IOException {
+	private void convert(File source, UUID song, File dest) throws IOException {
 		Log.send(identifier() + ": Converting " + song);
 		
 		String destination_file = dest.getAbsolutePath();
-		String song_file = Library.getSongFromAlbum(song).field("file");
-		String source_file = new File(Library.album_directory + song.album + "\\" + song.identifier + "\\" + song_file).getAbsolutePath();
-		
+		//String song_file = Library.getSongFromAlbum(song).field("file");
+		//String source_file = new File(Library.album_directory + song.album + "\\" + song.identifier + "\\" + song_file).getAbsolutePath();
+		String source_file = source.getAbsolutePath();
+
 		Utility.runCommand(
 				new File(working_directory + "ffmpeg\\bin\\"),
 				(line) -> {

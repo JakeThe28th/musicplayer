@@ -43,7 +43,7 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 	@Override public String   identifier() 		{ return "utility;ytdlp"; }
 	@Override public String[] supportedTypes() 	{ return TYPES; }
 	
-	public static String download_file_type = "wav";
+	public static String download_file_type = "m4a";
 	
 	String cached_song_directory;
 	String cached_song_list_filename;
