@@ -8,3 +8,6 @@ extensions/utility;ytdlp/cachedsongs.txt
 /extensions/utility;ytdlp/temp
 /library/albums
 /box
+extensions/YTDLP.class
+extensions/YTDLP$2.class
+extensions/YTDLP$1.class
