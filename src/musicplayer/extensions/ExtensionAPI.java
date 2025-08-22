@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import musicplayer.MainProgram;
 import musicplayer.audio.AudioSource;
 import musicplayer.extensions.builtin.BasicImporter;
 import musicplayer.extensions.builtin.BuiltinAudioReader;
@@ -65,8 +66,8 @@ public class ExtensionAPI {
 				return e.read(filename, song);
 			}
 		}
-		throw new Error("Failed to read audio file " + filename + ", " + extension);
-		//return null;
+		MainProgram.showError("Unknown format '" + extension + "', Failed to read audio file '" + filename + "'");
+		return null;
 	}
 
 	public static void registerGUIModifier(GUIModifierExtension e) {

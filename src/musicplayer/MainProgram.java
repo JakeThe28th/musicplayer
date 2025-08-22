@@ -33,6 +33,15 @@ public class MainProgram {
 	public static final Vector4f SEMIDARK_COLOR = new Vector4f(80 / 255f, 100 / 255f, 100 / 255f, 1);
 	public static final Vector4f TRANSPARENT_ACCENT_COLOR = new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 0.25f);
 	
+	// Error print
+	record ErrorMessage(String msg, long time) {}
+	static ArrayList<ErrorMessage> errors = new ArrayList<>();
+	
+	public static void showError(String string) {
+		errors.add(new ErrorMessage(string, System.currentTimeMillis()));
+	}
+
+	
 	// Screens
 	public static HashMap<String, Screen> screens = new HashMap<String, Screen>();
 	static { 
@@ -144,6 +153,20 @@ public class MainProgram {
 			}
 			if (should_close_popups) popups.clear();
 			
+			// Error messages
+			int yy = 10; int error_height = 30; long time = 5000;
+			for (ErrorMessage e : (ArrayList<ErrorMessage>) errors.clone()) {
+				long t = System.currentTimeMillis() - e.time;
+				GraphicsAPI.color(GraphicsAPI.BLACK);
+				GraphicsAPI.rect(10, yy, GraphicsAPI.width()-10, yy+error_height, 200);
+				GraphicsAPI.color(GraphicsAPI.TRANSPARENT_WHITE);
+				GraphicsAPI.rect(10, yy, (int) (10 + ((GraphicsAPI.width()-20) * (t/(float)time))), yy+error_height, 200);
+				GraphicsAPI.color(GraphicsAPI.WHITE);
+				GraphicsAPI.text(15, yy+5, 220, e.msg());
+				yy += error_height + 5;
+				if (t > time) errors.remove(e);
+			}
+			
 			GraphicsAPI.render();
 						
 			//GraphicsHandler.refresh();
@@ -154,6 +177,5 @@ public class MainProgram {
 		MusicPlayer.endAudioDevice();
 		
 	}
-
 
 }

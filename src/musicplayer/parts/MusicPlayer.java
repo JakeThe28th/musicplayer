@@ -92,6 +92,10 @@ public class MusicPlayer {
 			if (current_song_audio != null) current_song_audio.stop();
 			current_song = Library.getSongFromAlbum(album, identifier);
 			current_song_audio = current_song.audio();
+			if (current_song_audio == null) {
+				current_song_audio = EMPTY;
+				stop();
+			}
 			MainProgram.controls.current(new UUID(album, identifier));
 		} catch (IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();
@@ -171,7 +175,7 @@ public class MusicPlayer {
 			}
 		}
 		if (current_song_audio != null) {
-			if (hasLoadProgress(current_song.uuid())) return;
+			if (current_song_audio == EMPTY|| hasLoadProgress(current_song.uuid())) return;
 			current_song_audio.update();
 			if (current_song_audio.stopped() && playing) {
 				if (playback_mode == LOOP_SONG) {
