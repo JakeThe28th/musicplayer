@@ -49,9 +49,7 @@ public class Playlist {
 		
 		File cover = Utility.getIfExists(playlist_directory.getPath() + "/cover", ".png", ".jpg");
 		
-		if (!cover.exists()) { cover = new File(playlist_directory.getPath() + "/cover.jpg"); }	
-		
-		if (cover.exists()) {
+		if (cover != null) {
 			cover(ImageIO.read(cover));
 		}
 		

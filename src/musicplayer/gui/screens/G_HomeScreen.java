@@ -107,12 +107,12 @@ public class G_HomeScreen extends G_Element implements Screen {
 	{
 		playlist_tab_text.text("Playlists");
 		playlist_tab_text.can_click = true;
-		playlist_tab_text.left_margin = 15;
-		playlist_tab_text.right_margin = 15;
+		playlist_tab_text.left_margin = 10;
+		playlist_tab_text.right_margin = 10;
 		album_tab_text.text("Albums");
 		album_tab_text.can_click = true;
-		album_tab_text.left_margin = 15;
-		album_tab_text.right_margin = 15;
+		album_tab_text.left_margin = 10;
+		album_tab_text.right_margin = 10;
 		left_margin = 10;
 		right_margin = 10;
 	}

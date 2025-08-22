@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import musicplayer.audio.AudioSource;
+import musicplayer.extensions.builtin.BasicImporter;
 import musicplayer.extensions.builtin.BuiltinAudioReader;
 import musicplayer.extensions.builtin.ProgramSettings;
 import musicplayer.extensions.types.AudioReaderExtension;
@@ -24,6 +25,8 @@ public class ExtensionAPI {
 
 	public static void loadExtension(Extension extension) throws IOException {
 		
+		((Extension) extension).setWorkingDirectory("extensions/" + ((Extension) extension).identifier() + "/");
+		
 		GraphicsAPI.center_text(0, 0, "Initializing Extensions...");
 		GraphicsAPI.center_text(0, 30, "Loaded "+ extension.identifier() +"...");
 		GraphicsAPI.render();
@@ -36,10 +39,10 @@ public class ExtensionAPI {
 		
 		loadExtension(new BuiltinAudioReader());
 		loadExtension(new ProgramSettings());
-
+		loadExtension(new BasicImporter());
+		
 		// Load external extensions
 		for (Object extension : Utility.loadClassesFromFolder("extensions/")) {
-			((Extension) extension).setWorkingDirectory("extensions/" + ((Extension) extension).identifier() + "/");
 			loadExtension((Extension) extension);
 		}
 	
