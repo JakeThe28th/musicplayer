@@ -8,8 +8,11 @@ import musicplayer.utility.Utility;
 
 public class G_Scrollable extends G_Element {
 	
-	public int scroll_target = -1;
+	private double scroll_target = -1;
 	
+	public void scroll_target(double v) { scroll_target = v; }
+	public double scroll_target() { return scroll_target; }
+
 	public G_Scrollable(G_Element r) {
 		root(r);
 	}
@@ -135,8 +138,7 @@ public class G_Scrollable extends G_Element {
 			
 		}
 		if (scrolling) {
-			
-			scroll_target = -1;
+			scroll_target(-1);
 			
 			if (!grabbed_handle) {
 				initial_mouse_y = scissor_box.top();
@@ -162,7 +164,7 @@ public class G_Scrollable extends G_Element {
 		
 		if (GraphicsAPI.scrollY() != 0) {
 			scroll_y -= GraphicsAPI.scrollY();
-			scroll_target = -1;
+			scroll_target(-1);
 		}
 		
 		if (scroll_target != -1) {
