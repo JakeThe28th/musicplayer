@@ -28,25 +28,36 @@ public class Utility {
 		ArrayList<Object> classes = new ArrayList<Object>();
         URLClassLoader classloader = new URLClassLoader(new URL[] { Paths.get(path).toUri().toURL() });
         
+        // Compile .java files
         for (File file : new File(path).listFiles()) {
         	if (!file.getName().endsWith(".java")) continue;
-        	Log.send("Loading extension: " + file.toString());
         	
+        	Log.send("Compiling extension: " + file.toString());
     		GraphicsAPI.center_text(0, 0, "Initializing Extensions...");
-    		GraphicsAPI.center_text(0, 30, "Reading class "+ file.toString() +"...");
+    		GraphicsAPI.center_text(0, 30, "Reading source "+ file.toString() +"...");
     		GraphicsAPI.render();
         	
         	JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		    compiler.run(null, null, null, file.getAbsolutePath());
-			
+        }
+        
+        // Load classes (Since source files can generate more than one class, this is a separate step)
+        for (File file : new File(path).listFiles()) {
+        	if (!file.getName().endsWith(".class")) continue;
+        	
+        	Log.send("Loading extension class: " + file.toString());
+    		GraphicsAPI.center_text(0, 0, "Initializing Extensions...");
+    		GraphicsAPI.center_text(0, 30, "Loading class "+ file.toString() +"...");
+    		GraphicsAPI.render();
+    		
 			String name = file.getName().toString();
 			name = name.substring(0, name.lastIndexOf('.'));
-			Extension extension;
 			try {
-				extension = (Extension) classloader.loadClass(name).getConstructor().newInstance();
-				classes.add(extension);
-			} catch (Exception e) { Log.send("Failed to load an extension: " + file.toString()); e.printStackTrace(); }
+				Object object = classloader.loadClass(name).getConstructor().newInstance();
+				classes.add(object);
+			} catch (Exception e) { Log.send("Failed to load an extension class: " + file.toString()); e.printStackTrace(); }
         }
+        
         classloader.close();
 		return classes;
 	}

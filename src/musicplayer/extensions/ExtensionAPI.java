@@ -44,7 +44,7 @@ public class ExtensionAPI {
 		
 		// Load external extensions
 		for (Object extension : Utility.loadClassesFromFolder("extensions/")) {
-			loadExtension((Extension) extension);
+			if (Extension.class.isAssignableFrom(extension.getClass())) loadExtension((Extension) extension);
 		}
 	
 	}
