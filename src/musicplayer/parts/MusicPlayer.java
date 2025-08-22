@@ -71,6 +71,7 @@ public class MusicPlayer {
 		view_playlist = name;
 		G_PlaylistScreen.playlist_header.set_playlist(name);
 		double scroll_y = G_PlaylistScreen.playlist_gui_scroll.scroll_y;
+		double scroll_target = G_PlaylistScreen.playlist_gui_scroll.scroll_target();
 		G_PlaylistScreen.set_playlist_list(new G_List().verticalify());
 		for (Song song : Library.getPlaylist(view_playlist).listSongs()) {
 			G_Song song_element = new G_Song(song.uuid());
@@ -78,6 +79,9 @@ public class MusicPlayer {
 			ExtensionAPI.modifyGUI(song_element);
 		}
 		G_PlaylistScreen.playlist_gui_scroll.scroll_y = scroll_y;
+		G_PlaylistScreen.playlist_gui_scroll.scroll_target(scroll_target);
+
+		MainProgram.recalculateScreenSize(G_PlaylistScreen.IDENTIFIER);
 	}
 	
 	public static void current(String album, String identifier) {
@@ -109,20 +113,21 @@ public class MusicPlayer {
 	
 	public static void scroll_to_current() {
 		if (view_playlist.equals(playlist)) {
-			G_Scrollable scroll = G_PlaylistScreen.playlist_gui_scroll;
-			int element_height = G_PlaylistScreen.playlist_gui_list.element(0).height();
-			int target = (element_height * song_index);
+			
+			G_Scrollable scroll 	= G_PlaylistScreen.playlist_gui_scroll;
+			int element_height 		= G_PlaylistScreen.playlist_gui_list.element(0).height();
 
-			if (target > scroll.scroll_y && scroll.sheight != 0) {
-			if (target < scroll.scroll_y + (scroll.sheight-element_height)) {
-				target = -1;
-			} else {
-				if (scroll_mode == SCROLL_SONG) {
-					target = target - (scroll.sheight-(element_height+10));
-				}
+			double page_height		= (scroll.sheight-(element_height*1.25));
+			double screen_top 		= scroll.scroll_y;
+			double screen_bottom	= scroll.scroll_y + page_height;
+			double target 			= (element_height * song_index);
+
+			if (target > screen_top) {
+				if 		(target < screen_bottom) 		{ target = -1; } 
+				else if (scroll_mode == SCROLL_SONG) 	{ target = target - page_height; }
 			}
-			}
-			G_PlaylistScreen.playlist_gui_scroll.scroll_target = target;
+			
+			if (target > 1) G_PlaylistScreen.playlist_gui_scroll.scroll_target(target);
 		}
 	}
 

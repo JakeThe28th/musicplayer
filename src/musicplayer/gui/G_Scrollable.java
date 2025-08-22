@@ -68,7 +68,7 @@ public class G_Scrollable extends G_Element {
 		int hh2 = fixed_sheight;
 		if (scroll_y < 0) scroll_y = 0;
 		if (scroll_y > hh2) scroll_y = hh2;
-		if (scroll_target > hh2) scroll_target = hh2;
+		if (scroll_target() > hh2) scroll_target(hh2);
 		
 		if (root.height() <= scissor_box.height() && !allow_lower_align_when_not_full) scroll_y = 0; 
 		
@@ -167,8 +167,8 @@ public class G_Scrollable extends G_Element {
 			scroll_target(-1);
 		}
 		
-		if (scroll_target != -1) {
-			scroll_y = Utility.lerp(scroll_y, scroll_target, 0.15);
+		if (scroll_target() != -1) {
+			scroll_y = Utility.lerp(scroll_y, scroll_target(), 0.15);
 			calculate_scrollbar_position();
 		}
 		

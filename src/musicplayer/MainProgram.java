@@ -75,6 +75,13 @@ public class MainProgram {
 		screen.input();
 	}
 	
+
+	public static void recalculateScreenSize(String screen_name) {
+		G_Element screen = screens.get(screen_name).instance();
+		screen.recalculate_size();
+		screen.layout(0, 0, GraphicsAPI.width(), GraphicsAPI.height()-controls.height());
+	}
+	
 	// 
 	
 	public static G_SongControls controls = new G_SongControls();

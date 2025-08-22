@@ -13,3 +13,5 @@ extensions/YTDLP$2.class
 extensions/YTDLP$1.class
 /extensions/utility;ffmpeg/ffmpeg
 /extensions/utility;ffmpeg/cache
+extensions/FFMPEG.class
+*.class
