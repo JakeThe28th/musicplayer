@@ -7,7 +7,7 @@ import musicplayer.utility.Rectangle;
 
 public class G_Text extends G_Element {
 		
-	String 	text 		= "Unset Text";
+	public String 	text 		= "Unset Text";
 	String  text_concat = "Unset T...";
 	int 	x 			= 0;
 	int 	y 			= 0;

@@ -18,9 +18,13 @@ import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import musicplayer.MainProgram;
 import musicplayer.audio.AudioSource;
-import musicplayer.extensions.AudioReaderExtension;
 import musicplayer.extensions.Extension;
 import musicplayer.extensions.ExtensionAPI;
+import musicplayer.extensions.types.AudioReaderExtension;
+import musicplayer.extensions.types.GUIModifierExtension;
+import musicplayer.graphics.GraphicsAPI;
+import musicplayer.gui.G_Element;
+import musicplayer.gui.G_Song;
 import musicplayer.gui.extra.Popup.Option;
 import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.parts.Album;
@@ -32,7 +36,7 @@ import musicplayer.parts.UUID;
 import musicplayer.utility.Log;
 import musicplayer.utility.Utility;
 
-public class YTDLP extends Extension implements AudioReaderExtension {
+public class YTDLP extends Extension implements AudioReaderExtension, GUIModifierExtension {
 
 	public static final String[] TYPES = new String[] { "webloader" };
 	
@@ -50,13 +54,17 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 	static record QueuedDownload(String url, UUID song) {}
 	private static ArrayList<QueuedDownload> queue = new ArrayList<>();
 	
-	public static synchronized void 			DLqueue	(QueuedDownload download) 	{ queue.add(download); }
-	public static synchronized boolean 			DLhasnext	() 						{ return queue.size() > 0; }
-	public static synchronized QueuedDownload 	DLpop		() 						{ return queue.getFirst(); }
+	public static synchronized void 		DLqueue	(QueuedDownload download) 	{ queue.add(download); }
+	public static synchronized boolean 		DLhasnext() 						{ return queue.size() > 0; }
+	public static synchronized QueuedDownload DLpop() { 
+		QueuedDownload q = queue.getFirst(); 
+		queue.removeFirst(); 
+		return q; 
+	}
 	
 	Thread download_thread = new Thread() {
 	    public void run() { 
-			Log.send("Starting download thread");
+			Log.send("(YT-DLP) Starting download thread");
 			while (!interrupted()) try {
 	    		if (DLhasnext()) {
 	    			QueuedDownload q = DLpop();
@@ -71,7 +79,8 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 	public void onLoad() throws IOException {
 		// TODO Auto-generated method stub
 		ExtensionAPI.registerAudioReader(this);
-
+		ExtensionAPI.registerGUIModifier(this);
+		
 		new File(working_directory).mkdirs();
 		
 		cached_song_directory = working_directory + "cache/";
@@ -284,6 +293,27 @@ public class YTDLP extends Extension implements AudioReaderExtension {
 			}
 		}));
 		
+	}
+	
+	@Override
+	public void modify(G_Element element) {
+		if (element instanceof G_Song) {
+			G_Song song = ((G_Song) element);
+			Song real_song = Library.getSongFromAlbum(song.song);
+			if (real_song.file_extension() != null)
+			if (real_song.file_extension().equals(TYPES[0])) {
+				try {
+					String url = Files.readString(Paths.get(real_song.directory + "\\" + real_song.field("file"))).strip();
+					if (!cached_urls.contains(url)) {
+						song.name.base_color = GraphicsAPI.TRANSLUCENT_WHITE;
+					}
+				} catch (IOException e) { e.printStackTrace(); }				
+			}
+			if (real_song.file_extension() == null) {
+				song.name.base_color = GraphicsAPI.TRANSPARENT_RED;
+				Log.send("(YT-DLP) null file extensions????");
+			}
+		}
 	}
 	
 }

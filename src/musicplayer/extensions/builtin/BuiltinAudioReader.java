@@ -6,9 +6,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import musicplayer.audio.AudioSource;
 import musicplayer.audio.io.pcm.WAVFile;
-import musicplayer.extensions.AudioReaderExtension;
 import musicplayer.extensions.Extension;
 import musicplayer.extensions.ExtensionAPI;
+import musicplayer.extensions.types.AudioReaderExtension;
 import musicplayer.parts.UUID;
 
 public class BuiltinAudioReader extends Extension implements AudioReaderExtension {

@@ -9,17 +9,20 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import musicplayer.MainProgram;
 import musicplayer.audio.AudioDevice;
 import musicplayer.audio.AudioSource;
+import musicplayer.extensions.ExtensionAPI;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_List;
 import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Song;
 import musicplayer.gui.screens.G_PlaylistScreen;
+import musicplayer.utility.Log;
 
 /** Handles most stuff regarding music playback */
 public class MusicPlayer {
 	
 	public static AudioSource EMPTY;
-	static boolean restart = false;
+	static boolean restart_song = false;
+	static boolean reload_playlist_gui = false;
 
 	private static HashMap<UUID, Float> load_progress = new HashMap<UUID, Float>();
 	
@@ -37,7 +40,8 @@ public class MusicPlayer {
 	
 	synchronized public static void finishLoading(UUID song) {
 		load_progress.remove(song);
-		if(song.equals(current_song.uuid())) restart = true;
+		reload_playlist_gui = true;
+		if(song.equals(current_song.uuid())) restart_song = true;
 	}
 		
 	public static int scroll_mode = 1;
@@ -66,10 +70,14 @@ public class MusicPlayer {
 	static public void set_current_view_playlist(String name) {
 		view_playlist = name;
 		G_PlaylistScreen.playlist_header.set_playlist(name);
+		double scroll_y = G_PlaylistScreen.playlist_gui_scroll.scroll_y;
 		G_PlaylistScreen.set_playlist_list(new G_List().verticalify());
 		for (Song song : Library.getPlaylist(view_playlist).listSongs()) {
-			G_PlaylistScreen.playlist_gui_list.add(new G_Song(song.uuid()));
+			G_Song song_element = new G_Song(song.uuid());
+			G_PlaylistScreen.playlist_gui_list.add(song_element);
+			ExtensionAPI.modifyGUI(song_element);
 		}
+		G_PlaylistScreen.playlist_gui_scroll.scroll_y = scroll_y;
 	}
 	
 	public static void current(String album, String identifier) {
@@ -148,8 +156,12 @@ public class MusicPlayer {
 		}
 	
 	public static void update() { 
-		if (restart) {
-			restart = false;
+		if (reload_playlist_gui) {
+			reload_playlist_gui = false;
+			set_current_view_playlist(view_playlist); // reload playlist gui
+		}
+		if (restart_song) {
+			restart_song = false;
 			current(current_song.uuid());
 			seek(0);
 			if (playing) {

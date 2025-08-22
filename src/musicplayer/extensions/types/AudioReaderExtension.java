@@ -1,4 +1,4 @@
-package musicplayer.extensions;
+package musicplayer.extensions.types;
 
 import musicplayer.audio.AudioSource;
 import musicplayer.parts.UUID;

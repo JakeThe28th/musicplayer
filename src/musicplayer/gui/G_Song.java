@@ -10,8 +10,8 @@ import musicplayer.utility.Rectangle;
 
 public class G_Song extends G_Element {
 
-	UUID song;
-	G_Text name = new G_Text();
+	public UUID song;
+	public G_Text name = new G_Text();
 	
 	G_Icon menu = new G_Icon("hamburger");
 	

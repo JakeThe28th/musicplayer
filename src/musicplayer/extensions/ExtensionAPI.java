@@ -8,15 +8,19 @@ import java.util.HashMap;
 import musicplayer.audio.AudioSource;
 import musicplayer.extensions.builtin.BuiltinAudioReader;
 import musicplayer.extensions.builtin.ProgramSettings;
+import musicplayer.extensions.types.AudioReaderExtension;
+import musicplayer.extensions.types.GUIModifierExtension;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.gui.G_Element;
 import musicplayer.parts.UUID;
 import musicplayer.utility.Log;
 import musicplayer.utility.Utility;
 
 public class ExtensionAPI {
 	
-	static HashMap<String, Extension> 				extensions 	 = new HashMap<>();
-	static ArrayList<AudioReaderExtension> 			audioreaders = new ArrayList<>();
+	static HashMap<String, Extension> 				extensions 	  = new HashMap<>();
+	static ArrayList<AudioReaderExtension> 			audioreaders  = new ArrayList<>();
+	static ArrayList<GUIModifierExtension> 			guimodifiers = new ArrayList<>();
 
 	public static void loadExtension(Extension extension) throws IOException {
 		
@@ -62,5 +66,14 @@ public class ExtensionAPI {
 		//return null;
 	}
 
+	public static void registerGUIModifier(GUIModifierExtension e) {
+		guimodifiers.add(e);
+	}
+	
+	public static void modifyGUI(G_Element element) {
+		for (GUIModifierExtension e : guimodifiers) {
+			e.modify(element);
+		}
+	}
 	
 }

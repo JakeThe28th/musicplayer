@@ -2,6 +2,7 @@ package musicplayer.parts;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class Song {
 		directory = new File(Library.album_directory + "\\" + uuid.album + "\\" + uuid.identifier + "\\");
 	}
 	
-	File directory;
+	public File directory;
 	HashMap<String, String> fields = new HashMap<String, String>();
 	AudioSource audio;
 	
@@ -53,6 +54,17 @@ public class Song {
 			if (audio != MusicPlayer.EMPTY) audio.end();
 			audio = null;
 		}
+	}
+	
+	public String file_extension() { 
+		String value 		= fields.get("file");
+		String extension 	= value.substring(value.lastIndexOf('.') + 1, value.length());
+		return extension;
+	}
+	
+
+	public String field(String key) {
+		return fields.get(key);
 	}
 
 	private UUID uuid;
