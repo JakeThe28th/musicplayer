@@ -73,7 +73,8 @@ public class G_List extends G_Element {
 			int yy = top + top_margin + GUIUtility.getAlignmentOffset(top, bottom, height(), Alignment.LEFT);
 			int index = 0;
 			for (G_Element e : elements) {
-				if (yy+e.height() < top || (yy) > bottom) {
+				if (yy+e.height() < top || (yy) > bottom 
+				 || yy+e.height() < GraphicsAPI.scissor().top() || (yy) > GraphicsAPI.scissor().bottom()) {
 					e.hover_rectangle = new Rectangle(-1,-1,-1,-1);
 					index++;
 					yy+=e.height();
