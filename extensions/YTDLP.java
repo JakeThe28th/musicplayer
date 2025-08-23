@@ -208,12 +208,20 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 		Utility.runCommand(null, null,
 				working_directory + "yt-dlp.exe", 
 				link,
-				"--write-info-json",
-				"--skip-download",
-				"-o",
-				working_directory + "temp\\%(playlist_index)s"
+				"--write-info-json",	// Save playlist metadata
+				"--skip-download",		// Don't download the video
+				"--yes-playlist",		// Prefer playlists to videos if the link is ambiguous
+				"--flat-playlist",		// Don't write metadata json for each song (..slow..)
+				"-o",					// vvv Playlist metadata output file
+				working_directory + "temp\\%(playlist_index)s",
+				"--print-to-file",		// vvv Print video ID to file
+				"id",
+				working_directory + "temp\\%(playlist_index)s_id.txt",
+				"--print-to-file",		// vvv Print video title to file
+				"title",
+				working_directory + "temp\\%(playlist_index)s_title.txt"
 				);
-		
+				
 		int digit_count = new File(working_directory + "temp\\").list()[0].indexOf('.');
 		String num = String.format("%0"+digit_count+"d", 0);
 		
@@ -254,11 +262,9 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 		for (int i = 1; i <= count; i++) {
 
 			num = String.format("%0"+digit_count+"d", i);
-
-			JSONObject song_info = new JSONObject(Files.readString(Paths.get(working_directory + "temp\\"+num+".info.json")));
 			
-			String song_title = song_info.getString("title");
-			String song_id = song_info.getString("id");
+			String song_title = Files.readString(Paths.get(working_directory + "temp\\"+num+"_title.txt")).strip();
+			String song_id = Files.readString(Paths.get(working_directory + "temp\\"+num+"_id.txt")).strip();
 			
 			byte[] data = ("https://www.youtube.com/watch?v=" + song_id).getBytes();
 			
