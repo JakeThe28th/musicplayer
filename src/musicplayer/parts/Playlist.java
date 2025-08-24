@@ -135,7 +135,7 @@ public class Playlist {
 		
 		// Save album image
 		if (cover != null) ImageIO.write(cover, "png", new File(playlist_folder.toString() + "\\cover.png"));
-		if (cover_raw != null) ImageIO.write(cover, "png", new File(playlist_folder.toString() + "\\cover_raw.png"));
+		if (cover_raw != null) ImageIO.write(cover_raw, "png", new File(playlist_folder.toString() + "\\cover_raw.png"));
 
 		// Save metadata
 		Utility.writeKeyValue(Paths.get(playlist_folder.toString() + "\\info.txt"), fields);
