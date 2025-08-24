@@ -1,6 +1,8 @@
 package musicplayer;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +22,8 @@ import musicplayer.parts.MusicPlayer;
 import musicplayer.utility.Utility;
 
 public class MainProgram {
+	
+	public static final boolean SHOW_FPS = false;
 	
 	public static final String VERSION = "0.1a";
 	public static final String PROGRAM_NAME = "NOW PLAYING";
@@ -110,7 +114,7 @@ public class MainProgram {
 		GraphicsAPI.render();
 		Library.init();
 		
-
+		try {
 		
 //		for (Song song : Library.listSongs()) {
 //			Log.send(song.uuid() + ", name=" + song.name());
@@ -174,15 +178,50 @@ public class MainProgram {
 				if (t > time) errors.remove(e);
 			}
 			
+			if (SHOW_FPS) draw_FPS();
+			
 			GraphicsAPI.render();
 						
 			//GraphicsHandler.refresh();
 		}
 		
-		ExtensionAPI.end();
-		
-		MusicPlayer.endAudioDevice();
-		
+		} finally {
+			ExtensionAPI.end();
+			MusicPlayer.endAudioDevice();
+		}
+
+	}
+
+	static long last_frame_time = 0;
+	static int frames_counted = 0;
+	static long frame_time_cumulative = 0;
+	static long last_reset = Long.MIN_VALUE;
+	private static void draw_FPS() {
+		if (SHOW_FPS) {
+			
+			if (last_reset + 5000 < System.currentTimeMillis()) {
+				last_reset = System.currentTimeMillis();
+				frames_counted = 0;
+				frame_time_cumulative = 0;
+			}
+			
+			long frame_time = System.currentTimeMillis() - last_frame_time;
+			last_frame_time = System.currentTimeMillis();
+			
+			frame_time_cumulative += frame_time;
+			frames_counted ++;
+			
+			GraphicsAPI.color(GraphicsAPI.BLACK75);
+			GraphicsAPI.rect(5, 5, 200, (35) * 3, 999);
+			GraphicsAPI.color(GraphicsAPI.WHITE);
+			NumberFormat f = DecimalFormat.getInstance();
+			f.setMinimumIntegerDigits(3);
+			f.setMinimumFractionDigits(3);
+			float t = (frame_time_cumulative /  (float) frames_counted);
+			GraphicsAPI.text(10, 10, 1000, "    mspt: " 	+ f.format(t));
+			GraphicsAPI.text(10, 40, 1000, "raw mspt: " 	+ f.format(frame_time));
+			GraphicsAPI.text(10, 70, 1000, "     fps: " 	+ f.format(1000 / t));
+		}
 	}
 
 }
