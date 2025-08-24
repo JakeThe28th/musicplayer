@@ -143,7 +143,7 @@ public class GraphicsAPI {
 	}
 
 	public static double scrollX() { return Input.scrollX(); }
-	public static double scrollY() { return Input.scrollY() * 25; }
+	public static double scrollY() { return Input.scrollY() * 35; }
 
 	public static void setMinimumWindowSize(int minw, int minh, int maxw, int maxh) {
 		GLFW.glfwSetWindowSizeLimits(Window.identifier(), minw, minh, maxw, maxh);
