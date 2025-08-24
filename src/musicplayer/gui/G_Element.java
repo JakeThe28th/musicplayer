@@ -85,6 +85,13 @@ public abstract class G_Element {
 		for (G_Element e : sub_elements) { e.remove_input(); }
 		hover_rectangle = new Rectangle(0,0,0,0);
 	}
+	
+	public void allmargins(int i) {
+		left_margin = i;
+		right_margin = i;
+		bottom_margin = i;
+		top_margin = i;
+	}
 
 	public void onClick() { }
 	public void onLeftMousePress() { }

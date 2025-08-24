@@ -135,8 +135,9 @@ public class Utility {
 	}
 
 	public static String asValidIdentifier(String string) {
+		string = string.replace(' ', '_');
 		String normailize = Normalizer.normalize(string, Normalizer.Form.NFD);
-		return normailize.replaceAll("[^a-zA-Z \\-;]", "");
+		return normailize.replaceAll("[^a-zA-Z\\-;0-9_]", "");
 	}
 	
 }

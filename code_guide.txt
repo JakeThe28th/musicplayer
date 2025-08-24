@@ -1,0 +1,97 @@
+adding to playlists--
+  Search screen (<term> album:identifier example)
+  you can enter search with addto:playlist_identifier and a little
+  plus will appear, which appends the song to end end of the playlist
+
+
+
+Musicplayer Source Guide
+  
+  I figured I should probably write a rough outline of how this program is organized, in case you wanted to start making some changes... (Last updated 8/22/2025, so probably outdated if you're reading this after then...)
+
+  There are a few main parts to this program, which correspond with the packages under `musicplayer`:
+
+  graphics--
+    This package handles interfacing with OpenGL and GLFW to set up the window, draw graphics, and get input. Every class in this package except two are hidden: GraphicsAPI and Texture.
+
+    Texture is visible because you need it to use... textures.
+    GraphicsAPI is the main way you interface with the graphics package. Despite its name, it also handles input.
+    It's pretty abstracted, so it should be relatively easy to use. The gist is: If you want to draw a rectangle to the screen, call GraphicsAPI.rect(<coordinates>) and then GraphicsAPI.render(). 
+    Note: render() clears the screen. Drawing two rectangles would be `rect(<...>); rect(<...>); render()`, NOT `rect(<...>); render(); rect(<...>); render();`
+
+  audio--
+  This package handles everything OpenAL related. It's just a bunch of old code I copied from projects made... Oh, we'll I guess over a year ago by now. It's been a year since GMTK Game Jam 2024......
+  Audio stuff in this program should be routed through MusicPlayer though, so unless you're editing that class, you also shouldn't be messing with stuff in the audio package.
+
+  utility--
+  Misc methods that didn't fit anywhere else.
+
+  gui--
+  Contains all* classes relating to drawing the GUI. 
+  *MainProgram is what draws the screens directly though, so not <all> classes...
+
+  Classes prefixed `G_` all extend G_Element. They're named that to prevent conflicts (Ex: Song as in the GUI element or Song as in the object holding song data?). I would have prefixed them GUI, like GUISong, but I started this project while working in another project and already had classes following that naming scheme which would have the same names, and I never got around to renaming everything.
+  You can reliably draw any G_Element by calling, in sequence:
+    element.recalculate_size() // Recalculate the intrinsic size of the element
+    element.layout(left, top, right, bottom) // Where those define a rectangle the element is drawn within
+    element.draw(depth) // Actually draws the element
+    element.input() // Get input, for running callbacks like onClick
+    (...)
+    GraphicsAPI.render() // Renders everything drawn so far to the screen
+  
+  The `gui.screens` package contains code for drawing the two builtin screens, the playlist screen which displays all of the songs in a playlist, and the library screen (which I need to rename HomeScreen to), which draws the library that you get to by clicking the house icon.
+
+  Also, I use Alignment.left for top and Alignment.right for bottom sometimes. I'll probably adress that eventually...
+
+
+
+  Now, onto the most important parts of the program:
+
+  parts--
+  This package contains classes for important concepts in the program:
+
+    Albums are collections of songs. They're what contain the actual song files, and every song is associated with an album. In fact, you can uniquely identify every song in the program by pairing an album identifier with a song identifier, which is what the UUID class does.
+
+    In the filesystem, songs are stored in `library/albums/<identifier of album>/<idenfitier of song>/...`
+
+    Unlike the next two things I'll cover, Albums only have identifiers, and not names.
+    Albums also have a linked playlist, which is mandatory.
+
+    
+    Playlists are ordered lists of songs. They don't actually contain any song data, just reference albums.  But, they do contain metadata. Each playlist has: 
+    An identifier, which is the same as its album's identifier if this playlist is linked to an album.
+    A display name, (optional, defaults to identifier)
+    A cover image, (optional, defaults to a white square)
+    and probably more metadata I'll add later.
+ 
+    Currently, playlists are stored with the following format:
+    (in a folder for the playlist)
+    song_order.txt - A list of album:song_identifier pairs, which is the playlist itself.
+      NOTE: If this file isn't present, and this is a playlist linked to an album, a song order will be chosen by default, which will just be some random ordering of the contents of the album. I don't know where this ordering comes from... but it's consistent... and it scares me.....
+    info.txt - Contains metadata stored in the format `key=value`. Keys and values can have any value except if they include the character '=' it'll probably break i only thought of that right now ;-;
+    cover.png/cover.jpg - The cover of the album. If it's not square, it will be made square with letterboxing.
+
+
+    Playlists linked to albums are stored in the same folder as the album. So, in `library/albums/<album>/...`, you'll probably find `info.txt`, `cover.png`, etc.
+ 
+    Playlists not linked to albums are stored in `library/playlists/<playlist_identifer>/...`
+  
+    Note: song_order can include songs in any album, meaning that technically an playlist linked to an album can be edited to include songs from other albums. There is no reason to do this, but it's not a bug...
+
+     
+    Songs represent individual audio files. They're stored in albums and have the format:
+    info.txt - Song name, and name of the audio file. Maybe more metadata later...
+    <a file with the name specified in info.txt> - Contains the song or information the program uses to obtain the song
+
+    
+    the Library stores and manages all of the Albums and Playlists in the program.
+
+    the MusicPlayer handles playback of audio. 
+
+   
+  extensions--
+   
+    A lot of the basic functionality of this program is provided with extensions.
+    TODO
+
+

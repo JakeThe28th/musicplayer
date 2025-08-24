@@ -1,17 +1,24 @@
 package musicplayer.extensions.builtin;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+
+import org.joml.Vector4f;
 
 import musicplayer.MainProgram;
 import musicplayer.extensions.Extension;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
+import musicplayer.gui.G_WrappedList;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.gui.screens.G_PlaylistScreen;
 import musicplayer.gui.screens.Screen;
 import musicplayer.parts.MusicPlayer;
+import musicplayer.utility.Log;
+import musicplayer.utility.Rectangle;
 
 public class Search extends Extension  {
 	
@@ -56,82 +63,184 @@ public class Search extends Extension  {
 	At the end, rank by number of keywords.
 	 */
 	
-	static String playlist_to_add_to = null;
-
-	static String[] search_query;
-	static String search_text;
-
-	private void search(String[] query) {
-		search_query = query;
-		search_text = "";
-		for (String part : search_query) search_text += part + " ";
-		MainProgram.change_screen(search.identifier()); 
-	}
+	static record SearchTerm(SearchTermType type, String extra) {}
 	
-//S	record SearchResult
-	
-	private void evaluate() {
-		//search_query = query;
-		search_text = "";
-		for (String part : search_query) search_text += part + " ";
-		MainProgram.change_screen(search.identifier()); 
-	}
-	
-	static class G_SearchScreen extends G_Element implements Screen {
+	enum SearchTermType {
+		// NOTE: these need to be defined from most specific to least
+		// since parsing searches uses the iterator order with that assumption
+		IN_PLAYLIST("playlist:"),
+		TYPE_ALBUM("type:", "album"),
+		TYPE_SONG("type:", "song"),
+		TYPE_PLAYLIST("type:", "playlist"),
+		KEYWORD("");
 		
-		G_Icon 		home 			= new G_Icon("home")
-		{ @Override public void onClick() { 
-			MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
-		}};
-		
-		{ 
-			home.halign(Alignment.MIDDLE);
+		String[] segments;
+		String match_string;
+		SearchTermType(String...segments) {
+			this.segments = segments;
+			this.match_string = "";
+			for (String segment : segments) {
+				match_string += segment;
+			}
 		}
+	}
+	
+	static class G_SearchTerm extends G_Element {
 		
-		{ addSubElement(home); }
-
-		public static final G_SearchScreen INSTANCE = new G_SearchScreen();
+		{ allmargins(3); }
+		
+		static Vector4f[] colors = new Vector4f[] {
+			new Vector4f(30 / 255f, 30 / 255f, 31 / 255f, 1),
+			new Vector4f(129 / 255f, 217 / 255f, 227 / 255f, 1),
+			new Vector4f(72 / 255f, 232 / 255f, 96 / 255f, 1),
+			new Vector4f(232 / 255f, 184 / 255f, 72 / 255f, 1)
+		};
+		
+		SearchTermType type;
+		String extra;
+		
+		public G_SearchTerm(SearchTerm term) {
+			type = term.type;
+			extra = term.extra;
+		}
 
 		@Override
 		public void recalculate_size() {
-			home.recalculate_size();
+			this.unpadded_height = GraphicsAPI.size("to find out").y + (top_margin) + (bottom_margin);
+			
+			int count = type.segments.length + (extra.isEmpty() ? 0 : 1);
+			this.unpadded_width = (left_margin * count) + (right_margin * count);
+			for (String segment : type.segments) this.unpadded_width += GraphicsAPI.size(segment).x;
+			if (!extra.isEmpty()) this.unpadded_width += GraphicsAPI.size(extra).x;
 		}
 		
-		int query_y;
-		int left, right, top, bottom;
-		
+		Rectangle[] segments;
+
 		@Override
 		public void layout(int left, int top, int right, int bottom) {
-			
 			left += left_margin;
 			right -= right_margin;
 			top += top_margin;
 			bottom -= bottom_margin;
+
+			segments = new Rectangle[type.segments.length + (extra.isEmpty() ? 0 : 1)];
+			int xx = left;
+			for (int i = 0; i < type.segments.length; i++) {
+				int width = left_margin + right_margin + GraphicsAPI.size(type.segments[i]).x;
+				segments[i] = new Rectangle(xx, top, xx+width, bottom);
+				xx += width;
+			}
+			if (!extra.isEmpty()) {
+				int width = left_margin + right_margin + GraphicsAPI.size(extra).x;
+				segments[segments.length-1] = new Rectangle(xx, top, xx+width, bottom);
+			}
+		}
+
+		@Override
+		public void draw(int depth) {
+		  for (int i = 0; i < segments.length; i++) {
+			Rectangle r = segments[i];
+			GraphicsAPI.color(colors[i]);
+			GraphicsAPI.rect(r, depth);
 			
-			this.left = left;
-			this.right = right;
-			this.top = top;
-			this.bottom = bottom;
+			GraphicsAPI.color(GraphicsAPI.WHITE);
+			if (i < type.segments.length) {
+				GraphicsAPI.text(r.left() + left_margin, r.top() + top_margin, depth + 2, type.segments[i]);
+			} else {
+				GraphicsAPI.text(r.left() + left_margin, r.top() + top_margin, depth + 2, extra);
+			}
+		  }
+		}
+	}
+	
+	static class G_SearchScreen extends G_Element implements Screen {
+		
+		G_WrappedList terms = new G_WrappedList();
+		{
+			terms.add(new G_SearchTerm( new SearchTerm(SearchTermType.TYPE_PLAYLIST, "Hello!" )));
+			terms.add(new G_SearchTerm( new SearchTerm(SearchTermType.IN_PLAYLIST, "Jello?!" )));
+			terms.add(new G_SearchTerm( new SearchTerm(SearchTermType.KEYWORD, "Rello!" )));
+			terms.add(new G_SearchTerm( new SearchTerm(SearchTermType.KEYWORD, "Mosaic" )));
+			terms.add(new G_SearchTerm( new SearchTerm(SearchTermType.KEYWORD, "Staring blankly down at me.." )));
+			terms.add(new G_SearchTerm( new SearchTerm(SearchTermType.TYPE_PLAYLIST, "Hello!" )));
+		}
+		
+		public void terms(G_WrappedList newterms) {
+			removeSubElement(terms);
+			terms = newterms;
+			addSubElement(terms);
+		}
+		
+		G_Icon home = new G_Icon("home")
+		{ @Override public void onClick() { 
+			MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
+		}};
+		
+		{ home.halign(Alignment.MIDDLE);  addSubElement(home); addSubElement(terms); }
+
+		public static final G_SearchScreen INSTANCE = new G_SearchScreen();
+		
+		@Override public G_Element instance() { return INSTANCE; }
+		@Override public String identifier() { return "builtin;search";}
+
+		@Override
+		public void recalculate_size() {
+			home.recalculate_size();
+			terms.recalculate_size();
+		}
+				
+		@Override
+		public void layout(int left, int top, int right, int bottom) {
+			
+			left += left_margin; right -= right_margin; top += top_margin; bottom -= bottom_margin;
 		
 			int yy = top;
 			home.layout(left, top, right, top+home.height());
 			yy += home.height();
 			
-			int query_height = 30;
-			query_y = yy;
-			yy += query_height;
-			
+			terms.layout(left, yy, right, bottom);
 		}
 
 		@Override
 		public void draw(int depth) {
 			home.draw(depth);
-			GraphicsAPI.text(left, query_y, depth, search_text);
+			terms.draw(depth);
 		}
-
-		@Override public G_Element instance() { return INSTANCE; }
-		@Override public String identifier() { return "builtin;search";}
 		
+	}
+	
+	// ^^^ GUI Stuff ^^^ //
+	
+	ArrayList<SearchTerm> search_query = new ArrayList<SearchTerm>();
+	
+	static String playlist_to_add_to = null;
+
+	private void search(String query) {
+		search_query.clear();
+
+		String[] parts = query.split(" ");
+		for (String part : parts) {
+			for (SearchTermType type : SearchTermType.values()) {
+				if (part.startsWith(type.match_string)) {
+					String remainder = part.replaceFirst(Pattern.quote(type.match_string), "");
+					search_query.add(new SearchTerm(type, remainder));
+					break;
+				}
+			}
+		}
+		
+//		for (SearchTerm ob : search_query) {
+//			Log.send(ob.type + " : " + ob.extra);
+//		}
+		
+		G_WrappedList GUI_terms = new G_WrappedList();
+		for (SearchTerm term : search_query) {
+			GUI_terms.add(new G_SearchTerm(term));
+		}
+		G_SearchScreen.INSTANCE.terms(GUI_terms);
+		
+		
+		MainProgram.change_screen(search.identifier()); 
 	}
 	
 	G_SearchScreen search = G_SearchScreen.INSTANCE;
@@ -142,7 +251,7 @@ public class Search extends Extension  {
 	{ @Override public void onClick() { } };
 	G_Icon 		search_in_playlist_icon 			= new G_Icon("magnifying_glass")
 	{ @Override public void onClick() { 
-		search(new String[] { "playlist:" + MusicPlayer.view_playlist });
+		search("playlist:" + MusicPlayer.view_playlist );
 	} };
 	G_Icon 		search_in_home_icon 				= new G_Icon("magnifying_glass")
 	{ @Override public void onClick() { } };
