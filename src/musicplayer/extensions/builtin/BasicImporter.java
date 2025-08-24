@@ -13,6 +13,7 @@ import musicplayer.gui.extra.Popup.Option;
 import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.parts.Album;
 import musicplayer.parts.Library;
+import musicplayer.utility.Utility;
 
 /** Built-in extension that handles importing individual songs, playlists, and albums. */
 public class BasicImporter extends Extension {
@@ -40,17 +41,17 @@ public class BasicImporter extends Extension {
 	private void addAlbumHooks() {
 		G_HomeScreen.menu_options_album.add(new Option("Import album from folder of audio files", () -> {
 			
-			String album_identifier = "album-importedfolder-" + ((int) (Math.random() * 10000));
+			String folder = TinyFileDialogs.tinyfd_selectFolderDialog("Folder with audio to import", "");
+			if (folder == null) return;
+						
 			String album_name = TinyFileDialogs.tinyfd_inputBox(
 					MainProgram.PROGRAM_TITLE + " ", 
 					"Name of imported album", 
-					"album-" + (Math.random() * 10000));
+					new File(folder).getName());
 			if (album_name == null) return;
 			
-			
-			String folder = TinyFileDialogs.tinyfd_selectFolderDialog("Folder with audio to import", "");
-			if (folder == null) return;
-					
+			String album_identifier = Utility.asValidIdentifier(album_name + ";importedfolder" + ((int) (Math.random() * 10000)));
+	
 			String root = Library.album_directory + album_identifier + "\\";
 			
 			try { Files.list(Paths.get(folder)).forEach((f) -> {

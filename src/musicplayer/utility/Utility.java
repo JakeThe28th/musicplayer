@@ -9,6 +9,7 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -129,6 +130,11 @@ public class Utility {
 			if (get.exists()) return get;
 		}
 		return null;
+	}
+
+	public static String asValidIdentifier(String string) {
+		String normailize = Normalizer.normalize(string, Normalizer.Form.NFD);
+		return normailize.replaceAll("[^a-zA-Z \\-;]", "");
 	}
 	
 }

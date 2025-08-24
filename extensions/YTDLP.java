@@ -230,8 +230,8 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 		String album_title = info.getString("title");
 		int count = info.getInt("playlist_count");
 
-		
-		Album album = new Album(info.getString("id"));
+		String album_identifier = Utility.asValidIdentifier(album_title + ";" + info.getString("id"));
+		Album album = new Album(album_identifier);
 		album.linked_playlist.name(album_title);
 		album.linked_playlist.metadata("yt-playlist-source", info.getString("id"));
 
@@ -290,7 +290,7 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 			String name = TinyFileDialogs.tinyfd_inputBox(
 					MainProgram.PROGRAM_TITLE + " ", 
 					"Import album from playlist: ", 
-					"https://www.youtube.com/playlist?list=PLPzHbv-5noZ9PC7Fp_Ksq3C8x6WB-wVeR");
+					"https://www.youtube.com/playlist?list=");
 			TinyFileDialogs.tinyfd_messageBox(MainProgram.PROGRAM_TITLE, "The program will freeze during this action. You can view progress in the console log.", "ok", "alert", true);
 			if (name != null) {
 				try {
