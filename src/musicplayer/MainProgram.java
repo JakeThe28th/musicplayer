@@ -18,8 +18,10 @@ import musicplayer.gui.extra.Popup;
 import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.gui.screens.G_PlaylistScreen;
 import musicplayer.gui.screens.Screen;
+import musicplayer.parts.Album;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
+import musicplayer.parts.Playlist;
 import musicplayer.utility.Utility;
 
 public class MainProgram {
@@ -202,7 +204,21 @@ public class MainProgram {
 		}
 		
 		} finally {
+			
+			GraphicsAPI.center_text(10, 0, "Saving playlists");
+			GraphicsAPI.render();
+			for (Playlist p : Library.listPlaylists()) { p.save(); }
+			
+			GraphicsAPI.center_text(10, 0, "Saving albums");
+			GraphicsAPI.render();
+			for (Album a : Library.listAlbums()) { a.linked_playlist.save(); }
+
+			GraphicsAPI.center_text(10, 0, "Closing extensions");
+			GraphicsAPI.render();
 			ExtensionAPI.end();
+			
+			GraphicsAPI.center_text(10, 0, "Closing audio device");
+			GraphicsAPI.render();
 			MusicPlayer.endAudioDevice();
 		}
 

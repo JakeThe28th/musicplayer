@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import musicplayer.MainProgram;
 import musicplayer.graphics.Texture;
 import musicplayer.utility.Utility;
 
@@ -50,6 +51,10 @@ public class Playlist {
 		File cover = Utility.getIfExists(playlist_directory.getPath() + "/cover", ".png", ".jpg");
 		
 		if (cover != null) {
+			if (Utility.getIfExists(playlist_directory.getPath() + "/cover_raw", ".png", ".jpg") == null) {
+				this.cover_raw = ImageIO.read(cover);
+			}
+
 			cover(ImageIO.read(cover));
 		}
 		
@@ -150,10 +155,17 @@ public class Playlist {
 		}
 		Files.writeString(Paths.get(playlist_folder.toString() + "\\song_order.txt"), order);
 	}
-
+	
+	public void trysave() {
+		try {
+			save();
+		} catch (IOException e) {
+			MainProgram.showError("Failed to save playlist/or/album to disk");
+			e.printStackTrace();
+		}
+	}
 
 	public void cover(BufferedImage image) {
-		this.cover_raw = image;
 		this.cover = image;
 		
 		if (image.getWidth() != image.getHeight()) {
