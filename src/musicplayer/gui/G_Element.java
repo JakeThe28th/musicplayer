@@ -73,6 +73,7 @@ public abstract class G_Element {
 			GraphicsAPI.color(GraphicsAPI.TRANSPARENT_WHITE);
 			if (GraphicsAPI.left_click_down()) { GraphicsAPI.color(GraphicsAPI.TRANSLUCENT_WHITE); }
 			if (GraphicsAPI.left_click_released()) { onClick(); return true; }
+			if (GraphicsAPI.left_click_pressed()) { onLeftMousePress(); return true; }
 
 			GraphicsAPI.rect(hover_rectangle, 0);
 		}
@@ -85,8 +86,7 @@ public abstract class G_Element {
 		hover_rectangle = new Rectangle(0,0,0,0);
 	}
 
-	public void onClick() {
-		
-	}
+	public void onClick() { }
+	public void onLeftMousePress() { }
 	
 }

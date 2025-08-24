@@ -43,7 +43,7 @@ public class Playlist {
 		
 		// Check if this playlist is also an album
 		is_album = album != null; //Library.getAlbum(identifier) != null;
-		
+		locked = is_album;
 		
 		// Get playlist cover
 		
@@ -77,10 +77,13 @@ public class Playlist {
 		this.name = identifier;
 		this.identifier = identifier;
 		is_album = album != null;
+		locked = is_album;
 	}
 
 
 	ArrayList<UUID> songs = new ArrayList<UUID>();
+
+	public boolean locked;
 
 	public ArrayList<Song> listSongs() {
 		ArrayList<Song> set = new ArrayList<Song>();
@@ -175,6 +178,15 @@ public class Playlist {
 		}
 		
 		this.glcover = null;
+	}
+
+
+	public void remove(int index) {
+		songs.remove(index);
+	}
+
+	public void add(UUID song, int new_index) {
+		songs.add(new_index, song);
 	}
 	
 }

@@ -21,9 +21,6 @@ public class G_List extends G_Element {
 	}
 	
 	public void add(G_Element e) {
-		if (e instanceof G_Song) {
-			((G_Song) e).index(elements.size());
-		}
 		this.elements.add(e);
 		this.recalculate_size();
 	}
@@ -59,24 +56,31 @@ public class G_List extends G_Element {
 		
 	}
 	
+	public int top = 0;
+	public int left = 0;
+
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
-				
+	public void layout(int left, int top, int right, int bottom) {	
+		int index = 0;
 		if (!vertical) {
+			this.top = top;
 			int xx = left + left_margin + GUIUtility.getAlignmentOffset(left, right, width(), horizontal_align);
+			this.left = xx;
 			for (G_Element e : elements) {
+				if (e instanceof G_Song) ((G_Song) e).draw_index = index;
 				e.layout(xx, top, xx+e.width(), bottom);
 				xx+=e.width();
+				index++;
 			}
 		} else {
 			
 			int yy = top + top_margin + GUIUtility.getAlignmentOffset(top, bottom, height(), Alignment.LEFT);
-			int index = 0;
+			this.top = yy;
+			this.left = left;
 			for (G_Element e : elements) {
 				if (yy+e.height() < top || (yy) > bottom 
 				 || yy+e.height() < GraphicsAPI.scissor().top() || (yy) > GraphicsAPI.scissor().bottom()) {
 					e.hover_rectangle = new Rectangle(-1,-1,-1,-1);
-					index++;
 					yy+=e.height();
 					continue;
 				}
@@ -84,15 +88,13 @@ public class G_List extends G_Element {
 				int top_y = yy;
 				if (top_y < GraphicsAPI.scissor().top()) top_y = GraphicsAPI.scissor().top();
 				if (bottom_y > GraphicsAPI.scissor().bottom()) bottom_y = GraphicsAPI.scissor().bottom();
+				if (e instanceof G_Song) ((G_Song) e).draw_index = index;
 				e.layout(left, yy, right, bottom_y);
 				e.hover_rectangle = new Rectangle(
 						e.hover_rectangle.left(), 
 						(e.hover_rectangle.top() > GraphicsAPI.scissor().top()) ? e.hover_rectangle.top() : GraphicsAPI.scissor().top(), 
 						e.hover_rectangle.right(), 
 						e.hover_rectangle.bottom());
-				if (e instanceof G_Song) {
-					((G_Song) e).index(index);
-				}
 				yy+=e.height();
 				index++;
 			}
@@ -110,6 +112,10 @@ public class G_List extends G_Element {
 
 	public G_Element element(int i) {
 		return elements.get(i);
+	}
+
+	public void remove(G_Element e) {
+		elements.remove(e);
 	}
 
 }

@@ -3,23 +3,36 @@ package musicplayer.gui;
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
+import musicplayer.gui.screens.G_PlaylistScreen;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
+import musicplayer.parts.Playlist;
 import musicplayer.parts.UUID;
+import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
-public class G_Song extends G_Element {
+public class G_Song extends G_Element implements I_DraggableElement {
 
 	public UUID song;
 	public G_Text name = new G_Text();
 	
-	G_Icon menu = new G_Icon("hamburger");
+	public boolean temporary_highlight = false;
 	
-	{ 
+	Playlist playlist;
+	
+	G_Icon menu = new G_Icon("hamburger");
+	G_Icon drag = new G_Icon("up_down_arrow")
+			{ @Override public void onLeftMousePress() { MainProgram.pickup(G_Song.this ); } };
+	
+	G_List icons = new G_List(drag, menu);
+
+	{
 		menu.base_color = MainProgram.SEMIDARK_COLOR;
-		menu.halign(Alignment.MIDDLE);
 		menu.icon_size = 10;
-		addSubElement(menu);
+		drag.base_color = MainProgram.SEMIDARK_COLOR;
+		drag.icon_size = 10;
+		icons.halign(Alignment.MIDDLE);
+		addSubElement(icons);
 		addSubElement(name);
 		name.bottom_margin = 0;
 		name.top_margin = 0;
@@ -28,32 +41,83 @@ public class G_Song extends G_Element {
 		name.recalculate_size();
 	}
 	
-	public G_Song(UUID n) {
+	boolean being_dragged = false;
+	
+	public int calculate_target_index() {
+		int y = GraphicsAPI.mouseY();
+		y = y - G_PlaylistScreen.playlist_gui_list.top;
+		int element_height = G_PlaylistScreen.playlist_gui_list.elements.get(0).height();
+		int new_index = y / element_height;
+		int length = G_PlaylistScreen.playlist_gui_list.elements.size();
+		if (new_index > length) new_index = length;
+		return new_index;
+	}
+
+	@Override
+	public void drop() {
+
+		playlist.remove(index);
+		playlist.add(song, calculate_target_index());
+		MusicPlayer.reload_view_playlist();
+	}
+	
+	@Override public void while_dragging() { 
+		int left = G_PlaylistScreen.playlist_gui_list.left;
+		int right = left + G_PlaylistScreen.playlist_gui_list.width();
+		int y = GraphicsAPI.mouseY();
+		layout(left, y,right, y+height());
+		GraphicsAPI.color(GraphicsAPI.BLACK75);
+		GraphicsAPI.rect(left, y,right, y+height(), 99);
+		draw(100);
+		
+		for (G_Element e : G_PlaylistScreen.playlist_gui_list.elements) {
+			G_Song element = (G_Song) e;
+			if (element.draw_index == calculate_target_index()) element.temporary_highlight = true;
+			}
+		}
+
+	@Override
+	public void pickup() {
+		being_dragged = true;
+		G_PlaylistScreen.playlist_gui_list.remove(this);
+	}
+	
+	public G_Song(UUID n, int i, Playlist p) {
 		song = n;
 		name.text(Library.getSongFromAlbum(song).name());
+		playlist = p;
+		if (playlist == null) icons.remove(drag);
+		if (playlist.locked) icons.remove(drag);
+
+		index = i;
 	}
 	
 	@Override
 	public void recalculate_size() {
 		this.unpadded_height = name.height();
-		this.unpadded_width = name.width();
-		menu.recalculate_size();
+		this.unpadded_width = name.width() + icons.width() + number_width;
+		icons.recalculate_size();
 		name.recalculate_size();
 	}
-
+	
+	Rectangle song_rectangle;
+	int number_width = 40;
+	
 	@Override
 	public void layout(int left, int top, int right, int bottom) {
-		this.left = left + this.left_margin + 40;
+		this.left = left + this.left_margin + number_width;
 		this.number_x = left + this.left_margin;
 		this.top = top + this.top_margin;
 		this.right = right - this.right_margin;
 		this.bottom = bottom - this.bottom_margin;
-		this.hover_rectangle = new Rectangle(left, top, this.right, bottom);
-		
-		this.right -= 30;
+		this.song_rectangle = new Rectangle(left, top, this.right, bottom);
+
+		this.right -= icons.width();
+		this.hover_rectangle = new Rectangle(this.left-this.left_margin, top, this.right, bottom);
+
 		
 		visualizer_left = this.right;
-		menu.layout(this.right, this.top, this.right+30, this.bottom);
+		icons.layout(this.right, this.top, this.right+icons.width(), this.bottom);
 		
 		name.layout(this.left, this.top, this.right, this.bottom);
 	}
@@ -62,15 +126,26 @@ public class G_Song extends G_Element {
 	int number_x;
 	int index = 0;
 	int visualizer_left;
+	public int draw_index = 0;;
 	
 	@Override
 	public void draw(int depth) {
 		
 		boolean this_is_the_current_song = index == MusicPlayer.song_index && MusicPlayer.view_playlist.equals(MusicPlayer.playlist);
 		
-		if (index % 2 == 1) {
+		if (draw_index % 2 == 1 && !being_dragged) {
 			GraphicsAPI.color(MainProgram.DARKER_COLOR);
-			GraphicsAPI.rect(hover_rectangle, depth);
+			GraphicsAPI.rect(song_rectangle, depth);
+		}
+		
+		if (temporary_highlight) {
+			GraphicsAPI.color(GraphicsAPI.WHITE);
+			GraphicsAPI.rect(
+					song_rectangle.left(), 
+					song_rectangle.top(), 
+					song_rectangle.right(),
+					song_rectangle.top() + 3,
+					depth);
 		}
 		
 		GraphicsAPI.color(MainProgram.SEMIDARK_COLOR);
@@ -110,7 +185,9 @@ public class G_Song extends G_Element {
 
 		name.draw(depth+2);
 		
-		menu.draw(depth+1);
+		icons.draw(depth+1);
+		
+		temporary_highlight = false;
 		
 	}
 
@@ -122,8 +199,5 @@ public class G_Song extends G_Element {
 		MusicPlayer.seek(0);
 		MusicPlayer.play();
 	}
-
-	public void index(int index) {
-		this.index  = index;
-	}
+	
 }

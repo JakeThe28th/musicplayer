@@ -73,15 +73,21 @@ public class MusicPlayer {
 		double scroll_y = G_PlaylistScreen.playlist_gui_scroll.scroll_y;
 		double scroll_target = G_PlaylistScreen.playlist_gui_scroll.scroll_target();
 		G_PlaylistScreen.set_playlist_list(new G_List().verticalify());
+		int index = 0;
 		for (Song song : Library.getPlaylist(view_playlist).listSongs()) {
-			G_Song song_element = new G_Song(song.uuid());
+			G_Song song_element = new G_Song(song.uuid(), index, Library.getPlaylist(view_playlist));
 			G_PlaylistScreen.playlist_gui_list.add(song_element);
 			ExtensionAPI.modifyGUI(song_element);
+			index++;
 		}
 		G_PlaylistScreen.playlist_gui_scroll.scroll_y = scroll_y;
 		G_PlaylistScreen.playlist_gui_scroll.scroll_target(scroll_target);
 
 		MainProgram.recalculateScreenSize(G_PlaylistScreen.IDENTIFIER);
+	}
+	
+	public static void reload_view_playlist() {
+		MusicPlayer.set_current_view_playlist(MusicPlayer.view_playlist);
 	}
 	
 	public static void current(String album, String identifier) {
@@ -311,4 +317,5 @@ public class MusicPlayer {
 	public static float volume() {
 		return volume;
 	}
+
 }

@@ -13,6 +13,7 @@ import musicplayer.extensions.ExtensionAPI;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_SongControls;
+import musicplayer.gui.I_DraggableElement;
 import musicplayer.gui.extra.Popup;
 import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.gui.screens.G_PlaylistScreen;
@@ -76,7 +77,7 @@ public class MainProgram {
 		screen.recalculate_size();
 		screen.layout(xx, 0, GraphicsAPI.width() + xx, GraphicsAPI.height()-controls.height());
 		screen.draw(0);
-		screen.input();
+		if (input) screen.input();
 	}
 	
 
@@ -93,6 +94,8 @@ public class MainProgram {
 	public static ArrayList<Popup> popups = new ArrayList<Popup>();
 	
 	public boolean pinned = false;
+	
+	public static boolean input = true;
 	
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws IOException, ParseException {
@@ -133,10 +136,15 @@ public class MainProgram {
 		
 		// Main loop
 		while (GraphicsAPI.isOpen()) {
+			
+			input = true;
+			
 			//GraphicsHandler.clear();
 			
 			MusicPlayer.update();
-
+			
+			if (held_element != null) { input = false; }
+			
 			long transition_time = System.currentTimeMillis() - view_transition_timer;
 			if (transition_time < view_transition_time) {
 				// Get offset for sliding screen transition
@@ -150,10 +158,18 @@ public class MainProgram {
 				draw_screen(0, current_screen);
 			}
 			
+			if (held_element != null) {
+				held_element.while_dragging();
+				if (GraphicsAPI.left_click_released()) {
+					held_element.drop();
+					held_element = null;
+				}
+			}
+			
 			controls.recalculate_size();
 			controls.layout(0, GraphicsAPI.height() - controls.height(), GraphicsAPI.width(), GraphicsAPI.height());
 			controls.draw(0);
-			controls.input();
+			if (input) controls.input();
 			
 			int i = 10;
 			boolean should_close_popups = true;
@@ -191,7 +207,19 @@ public class MainProgram {
 		}
 
 	}
+	
+	// Dragging stuff
+	static I_DraggableElement held_element = null;
+	
+	public static boolean pickup(I_DraggableElement candidate) {
+		if (held_element == null) {
+			held_element = candidate;
+			held_element.pickup();
+			return true;
+		} else return false;
+	}
 
+	// Frame rate 
 	static long last_frame_time = 0;
 	static int frames_counted = 0;
 	static long frame_time_cumulative = 0;
