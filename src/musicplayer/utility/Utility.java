@@ -99,6 +99,8 @@ public class Utility {
 		String string = Files.readString(path);
 		
 		String file = string; //Files.readString(Paths.get(directory.getPath() + "\\info.txt"));
+		if (file.isBlank()) return fields;
+		
 		String[] info = file.split("\n");
 		for (String text : info) {
 			text = text.strip();

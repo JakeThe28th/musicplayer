@@ -10,6 +10,7 @@ import musicplayer.audio.AudioSource;
 import musicplayer.extensions.builtin.BasicImporter;
 import musicplayer.extensions.builtin.BuiltinAudioReader;
 import musicplayer.extensions.builtin.ProgramSettings;
+import musicplayer.extensions.builtin.Search;
 import musicplayer.extensions.types.AudioReaderExtension;
 import musicplayer.extensions.types.GUIModifierExtension;
 import musicplayer.graphics.GraphicsAPI;
@@ -41,7 +42,8 @@ public class ExtensionAPI {
 		loadExtension(new BuiltinAudioReader());
 		loadExtension(new ProgramSettings());
 		loadExtension(new BasicImporter());
-		
+		loadExtension(new Search());
+
 		// Load external extensions
 		for (Object extension : Utility.loadClassesFromFolder("extensions/")) {
 			if (Extension.class.isAssignableFrom(extension.getClass())) loadExtension((Extension) extension);

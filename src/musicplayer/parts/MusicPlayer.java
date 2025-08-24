@@ -318,4 +318,6 @@ public class MusicPlayer {
 		return volume;
 	}
 
+	public static Playlist current_view_playlist() { return Library.getPlaylist(view_playlist); }
+
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import musicplayer.MainProgram;
 import musicplayer.gui.G_Element;
+import musicplayer.gui.G_Icon;
 import musicplayer.gui.G_List;
 import musicplayer.gui.G_PlaylistHeader;
 import musicplayer.gui.G_Scrollable;
@@ -12,6 +13,9 @@ import musicplayer.gui.extra.Popup.Option;
 import musicplayer.parts.MusicPlayer;
 
 public class G_PlaylistScreen extends G_Element implements Screen {
+	
+	public record PlaylistOptionIcon(G_Icon icon, boolean show_while_locked) {}
+	public static ArrayList<PlaylistOptionIcon> icons = new ArrayList<PlaylistOptionIcon>();
 	
 	@Override public G_Element instance() { return INSTANCE; }
 	@Override public String identifier() { return IDENTIFIER; }
@@ -28,17 +32,11 @@ public class G_PlaylistScreen extends G_Element implements Screen {
 	addSubElement(playlist_gui_scroll); }
 	
 	public static ArrayList<Option> playlist_menu_options = new ArrayList<Option>();
-	
+
 	static {
-		playlist_menu_options.add(new Option("View Library", () -> {
-			MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
-		}));
-		playlist_menu_options.add(new Option("Other Test Button (play)", () -> {
-			MusicPlayer.play();
-		}));
-		playlist_menu_options.add(new Option("Other Test Button (pause)", () -> {
-			MusicPlayer.pause();
-		}));
+//		album_menu_options.add(new Option("Clone as Playlist", () -> {
+//			MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
+//		}));
 	}
 
 	@Override
@@ -66,4 +64,7 @@ public class G_PlaylistScreen extends G_Element implements Screen {
 		INSTANCE.addSubElement(playlist_gui_scroll);
 	}
 
+	public static void register_header_icon(G_Icon icon, boolean show_while_locked) {
+		icons.add(new PlaylistOptionIcon(icon, show_while_locked));
+	}
 }

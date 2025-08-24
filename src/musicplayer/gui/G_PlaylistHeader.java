@@ -7,6 +7,7 @@ import musicplayer.gui.extra.Popup;
 import musicplayer.gui.extra.Popup.Option;
 import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.gui.screens.G_PlaylistScreen;
+import musicplayer.gui.screens.G_PlaylistScreen.PlaylistOptionIcon;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
 import musicplayer.utility.Rectangle;
@@ -23,11 +24,22 @@ public class G_PlaylistHeader extends G_Element {
 			Option[] options = Option.from(G_PlaylistScreen.playlist_menu_options);
 			MainProgram.popups.add(new Popup(x + width(), y + height(), Alignment.RIGHT, Alignment.LEFT, options));
 		} };
-
-
+		
+	public G_List right_icons 			= new G_List(menu);
 	
 	public void set_playlist(String name) {
 		title.text = Library.getPlaylist(name).name();
+		
+		removeSubElement(right_icons);
+		right_icons = new G_List();
+		addSubElement(right_icons);
+		for (PlaylistOptionIcon icon : G_PlaylistScreen.icons) {
+			if (icon.show_while_locked() || !MusicPlayer.current_view_playlist().locked) {
+				right_icons.add(icon.icon());
+			}
+		}
+		right_icons.add(menu);
+		
 		title.recalculate_size();
 	}
 
@@ -40,10 +52,13 @@ public class G_PlaylistHeader extends G_Element {
 
 		addSubElement(title);
 		addSubElement(home);
-		addSubElement(menu);
+		addSubElement(right_icons);
 		
 		title.text = MusicPlayer.playlist;
 		title.halign(Alignment.MIDDLE);
+		
+		title.left_margin = 10;
+		title.right_margin = 10;
 		
 		recalculate_size();
 	}
@@ -52,7 +67,7 @@ public class G_PlaylistHeader extends G_Element {
 	public void recalculate_size() {
 		title.recalculate_size();
 		home.recalculate_size();
-		menu.recalculate_size();
+		right_icons.recalculate_size();
 		
 		this.unpadded_height = home.height() + 5;
 	}
@@ -62,13 +77,16 @@ public class G_PlaylistHeader extends G_Element {
 	@Override
 	public void layout(int left, int top, int right, int bottom) {
 		draw_area = new Rectangle(left, top, right, bottom);
+		
+		int side_width = home.width();
+		if (right_icons.width() > side_width) side_width = right_icons.width();
 
 		left += left_margin;
 		right -= right_margin;
 		top += top_margin;
-		home	.layout(left, 						top, left +home .width(), 	bottom);
-		title	.layout(left +home.width(), 		top, right-menu.width(), 	bottom);
-		menu	.layout(right-menu.width(), 		top, right, 				bottom);
+		home		.layout(left, 						top, left + side_width, 	bottom);
+		title		.layout(left + side_width, 		top, right-side_width, 	bottom);
+		right_icons	.layout(right- side_width, 		top, right, 				bottom);
 	}
 
 	@Override
@@ -77,7 +95,7 @@ public class G_PlaylistHeader extends G_Element {
 		GraphicsAPI.rect(draw_area, depth);
 		title.draw(depth+1);
 		home.draw(depth+1);
-		menu.draw(depth+1);
+		right_icons.draw(depth+1);
 	}
 
 }

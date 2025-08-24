@@ -112,4 +112,14 @@ public class Library {
 		return set;
 	}
 
+	public static Playlist[] listPlaylists() {
+		Playlist[] playlists_return = new Playlist[playlists.size()];
+		
+		Object[] set = playlists.keySet().toArray();
+		for (int i = 0; i < set.length; i++) {
+			playlists_return[i] = playlists.get(set[i]);
+		}
+		return playlists_return;
+	}
+
 }
