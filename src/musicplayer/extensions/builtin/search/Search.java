@@ -34,7 +34,7 @@ public class Search extends Extension  {
 	
 	static ArrayList<SearchTerm> search_query = new ArrayList<SearchTerm>();
 	
-	static String playlist_to_add_to = null;
+	public static String playlist_to_add_to = null;
 
 	public static void setSearchQuery(String query) {
 		
@@ -141,7 +141,11 @@ public class Search extends Extension  {
 	@Override public String   identifier() 		{ return "builtin;search"; }
 	
 	G_Icon 		add_to_playlist_icon 				= new G_Icon("+")
-	{ @Override public void onClick() { } };
+	{ @Override public void onClick() {
+		Search.playlist_to_add_to = MusicPlayer.view_playlist;
+		setSearchQueryAndGo("");
+
+	} };
 	G_Icon 		search_in_playlist_icon 			= new G_Icon("magnifying_glass")
 	{ @Override public void onClick() { 
 		setSearchQueryAndGo("playlist:" + MusicPlayer.view_playlist);

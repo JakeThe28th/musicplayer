@@ -3,6 +3,7 @@ package musicplayer.gui;
 import org.joml.Vector4f;
 
 import musicplayer.MainProgram;
+import musicplayer.extensions.builtin.search.Search;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.screens.G_PlaylistScreen;
@@ -162,12 +163,14 @@ public class G_Song extends G_Element implements I_DraggableElement {
 			if (highlight_amount <= 0) MusicPlayer.temp_highlight.remove(song);
 			
 			GraphicsAPI.color(new Vector4f(1, 1, 0, highlight_amount));
-			GraphicsAPI.rect(
-					song_rectangle.left(), 
-					song_rectangle.top(), 
-					song_rectangle.right(),
-					song_rectangle.bottom(),
-					depth);
+			GraphicsAPI.rect(song_rectangle, depth);
+		}
+		
+		if (is_search_result && Search.playlist_to_add_to != null) {
+			if (Library.getPlaylist(Search.playlist_to_add_to).listSongs().contains(Library.getSongFromAlbum(song))) {
+				GraphicsAPI.color(GraphicsAPI.TRANSPARENT_AQUA);
+				GraphicsAPI.rect(song_rectangle, depth);
+			}
 		}
 		
 		GraphicsAPI.color(MainProgram.SEMIDARK_COLOR);
@@ -222,7 +225,10 @@ public class G_Song extends G_Element implements I_DraggableElement {
 			MusicPlayer.seek(0);
 			MusicPlayer.play();
 		} else {
-			MusicPlayer.go_to_song_source(song, playlist);
+			if (Search.playlist_to_add_to == null) MusicPlayer.go_to_song_source(song, playlist);
+			if (Search.playlist_to_add_to != null) {
+				Library.getPlaylist(Search.playlist_to_add_to).add(song);
+			}
 		}
 	}
 	
