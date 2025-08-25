@@ -53,10 +53,7 @@ public class G_PlaylistGridItem extends G_Element {
 
 	@Override
 	public void draw(int depth) {
-		if (cover == null) {
-			cover = playlist.glcover();
-			//Log.send("cover " +  cover);
-		}
+		cover = playlist.glcover();
 		GraphicsAPI.color(GraphicsAPI.WHITE);
 		GraphicsAPI.rect(area, depth, cover);
 		

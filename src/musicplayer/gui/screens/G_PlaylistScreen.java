@@ -1,6 +1,12 @@
 package musicplayer.gui.screens;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import musicplayer.MainProgram;
 import musicplayer.gui.G_Element;
@@ -10,6 +16,7 @@ import musicplayer.gui.G_PlaylistHeader;
 import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Text;
 import musicplayer.gui.extra.Popup.Option;
+import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
 
 public class G_PlaylistScreen extends G_Element implements Screen {
@@ -38,6 +45,16 @@ public class G_PlaylistScreen extends G_Element implements Screen {
 		album_menu_options.add(new Option("Temporarily unlock", () -> {
 			MusicPlayer.current_view_playlist().locked = false;
 			MusicPlayer.reload_view_playlist();
+		}));
+		playlist_menu_options.add(new Option("Set cover art", () -> {
+			String file = TinyFileDialogs.tinyfd_openFileDialog("Select cover image", "", null, null, false);
+			if (file == null) return;
+			try {
+				MusicPlayer.current_view_playlist().cover(ImageIO.read(new File(file)));
+				MusicPlayer.reload_view_playlist();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}));
 	}
 
