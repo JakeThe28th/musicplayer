@@ -32,11 +32,13 @@ public class G_PlaylistScreen extends G_Element implements Screen {
 	addSubElement(playlist_gui_scroll); }
 	
 	public static ArrayList<Option> playlist_menu_options = new ArrayList<Option>();
+	public static ArrayList<Option> album_menu_options = new ArrayList<Option>();
 
 	static {
-//		album_menu_options.add(new Option("Clone as Playlist", () -> {
-//			MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
-//		}));
+		album_menu_options.add(new Option("Temporarily unlock", () -> {
+			MusicPlayer.current_view_playlist().locked = false;
+			MusicPlayer.reload_view_playlist();
+		}));
 	}
 
 	@Override

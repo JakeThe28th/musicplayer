@@ -19,7 +19,7 @@ import musicplayer.utility.Utility;
 
 public class Playlist {
 	
-	boolean is_album = false; // True for auto-generated album playlists
+	public boolean is_album = false; // True for auto-generated album playlists
 	
 	BufferedImage cover_raw;
 	BufferedImage cover;

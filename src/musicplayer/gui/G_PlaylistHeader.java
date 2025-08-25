@@ -1,5 +1,7 @@
 package musicplayer.gui;
 
+import java.util.ArrayList;
+
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
@@ -21,7 +23,12 @@ public class G_PlaylistHeader extends G_Element {
 		}};
 	G_Icon 		menu 			= new G_Icon("hamburger")
 		{ @Override public void onClick() {
-			Option[] options = Option.from(G_PlaylistScreen.playlist_menu_options);
+			ArrayList<Option> option_arrays = new ArrayList<Option>();
+				option_arrays.addAll(G_PlaylistScreen.playlist_menu_options);
+			if (MusicPlayer.current_view_playlist().is_album) {
+				option_arrays.addAll(G_PlaylistScreen.album_menu_options); }
+			
+			Option[] options = Option.from(option_arrays);
 			MainProgram.popups.add(new Popup(x + width(), y + height(), Alignment.RIGHT, Alignment.LEFT, options));
 		} };
 		
