@@ -108,8 +108,10 @@ public class Search extends Extension  {
 				if (song.name().contains(match_word)) counter.put(song, counter.get(song) + 1);
 				
 				for (String word : split_title) {
+					if (word.isBlank()) continue;
+					
 					word = word.toLowerCase();
-					if (word.equals(match_word)) counter.put(song, counter.get(song) + 1);
+					if (word.equals(match_word)) counter.put(song, counter.get(song) + 2);
 				}
 				
 			}
