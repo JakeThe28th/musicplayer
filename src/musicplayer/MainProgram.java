@@ -29,7 +29,7 @@ public class MainProgram {
 	
 	public static final boolean SHOW_FPS = false;
 	
-	public static final String VERSION = "0.2a";
+	public static final String VERSION = "0.3a";
 	public static final String PROGRAM_NAME = "NOW PLAYING";
 	public static final String PROGRAM_TITLE = PROGRAM_NAME + " " + VERSION;
 	

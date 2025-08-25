@@ -40,6 +40,7 @@ public class G_PlaylistScreen extends G_Element implements Screen {
 	
 	public static ArrayList<Option> playlist_menu_options = new ArrayList<Option>();
 	public static ArrayList<Option> album_menu_options = new ArrayList<Option>();
+	public static ArrayList<Option> song_menu_options = new ArrayList<Option>();
 
 	static {
 		album_menu_options.add(new Option("Temporarily unlock", () -> {

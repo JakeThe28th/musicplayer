@@ -1,11 +1,15 @@
 package musicplayer.gui;
 
+import java.util.ArrayList;
+
 import org.joml.Vector4f;
 
 import musicplayer.MainProgram;
 import musicplayer.extensions.builtin.search.Search;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
+import musicplayer.gui.extra.Popup;
+import musicplayer.gui.extra.Popup.Option;
 import musicplayer.gui.screens.G_PlaylistScreen;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
@@ -24,9 +28,29 @@ public class G_Song extends G_Element implements I_DraggableElement {
 	
 	Playlist playlist;
 	
-	G_Icon menu = new G_Icon("hamburger");
+	G_Icon menu = new G_Icon("hamburger")
+		{ @Override public void onClick() {
+			ArrayList<Option> option_arrays = new ArrayList<Option>();
+				option_arrays.addAll(G_PlaylistScreen.song_menu_options);
+
+				option_arrays.add(new Option("Add to", () -> {
+					ArrayList<Option> others = new ArrayList<Option>();
+						for (Playlist p : Library.listPlaylists()) {
+							others.add(new Option(p.name(), () -> {
+								MainProgram.showError("Not implemented yet");
+								// TODO
+								// rethink options stuff so this can be in G_PlaylistScreen
+							}));
+						}
+					MainProgram.popups.add(new Popup(x + width(), y + height(), Alignment.RIGHT, Alignment.LEFT, Option.from(others)));
+				}));
+				
+			Option[] options = Option.from(option_arrays);
+			MainProgram.popups.add(new Popup(x + width(), y + height(), Alignment.RIGHT, Alignment.LEFT, options));
+		} };
+		
 	G_Icon drag = new G_Icon("up_down_arrow")
-			{ @Override public void onLeftMousePress() { MainProgram.pickup(G_Song.this ); } };
+		{ @Override public void onLeftMousePress() { MainProgram.pickup(G_Song.this ); } };
 	
 	G_List icons = new G_List(drag, menu);
 
