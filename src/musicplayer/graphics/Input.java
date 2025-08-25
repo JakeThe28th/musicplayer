@@ -80,8 +80,7 @@ class Input {
 	}
 
 	private static void setKeyWithScancode(int key, int scancode, int action, int mods) {
-		// TODO Auto-generated method stub
-		
+		current_keys[scancode] = new Key(key, scancode, action, mods);
 	}
 
 	private static void setMouseScroll(double xoffset, double yoffset) {
@@ -99,6 +98,11 @@ class Input {
 	}
 	
 	// -- Getters -- //
+	
+	public static int getKeyActionWithScancode(int scancode) {
+		if (current_keys[scancode] == null) return -1;
+		return current_keys[scancode].action;
+	}
 	
 	public static int mouseX() { return (int) mouse_x; }
 	public static int mouseY() { return (int) mouse_y; }

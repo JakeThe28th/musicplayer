@@ -164,4 +164,8 @@ public class GraphicsAPI {
 	public static void input_string(String str) {
 		Input.input_string = str;
 	}
+
+	public static int getKeyState(int key) {
+		return Input.getKeyActionWithScancode(GLFW.glfwGetKeyScancode(key));
+	}
 }

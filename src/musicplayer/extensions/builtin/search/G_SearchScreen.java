@@ -2,7 +2,10 @@ package musicplayer.extensions.builtin.search;
 
 import java.util.ArrayList;
 
+import org.lwjgl.glfw.GLFW;
+
 import musicplayer.MainProgram;
+import musicplayer.extensions.builtin.ProgramSettings;
 import musicplayer.extensions.builtin.search.SearchRecords.*;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
@@ -92,6 +95,10 @@ public class G_SearchScreen extends G_Element implements Screen {
 	
 	@Override public G_Element instance() { return INSTANCE; }
 	@Override public String identifier() { return "builtin;search";}
+	
+	{ 	
+		ProgramSettings.bindKeyLimited(identifier(), ()->{search_go_button.onClick();}, GLFW.GLFW_KEY_ENTER, GLFW.GLFW_RELEASE ); 
+	}
 
 	@Override
 	public void recalculate_size() {
