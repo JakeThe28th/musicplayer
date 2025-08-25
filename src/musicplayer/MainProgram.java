@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -68,7 +69,18 @@ public class MainProgram {
 	public static String 			current_screen 			= G_HomeScreen.IDENTIFIER;
 	public static String 			last_screen 			= current_screen;
 
+	public static ArrayDeque<String> screen_stack = new ArrayDeque<>();
+	
 	public static void change_screen(String view_identifier) {
+		screen_stack.push(current_screen);
+		transition_to_screen(view_identifier);
+	}
+	
+	public static void previous_screen() {
+		transition_to_screen(screen_stack.pop());
+	}
+	
+	private static void transition_to_screen(String view_identifier) {
 		MainProgram.last_screen = MainProgram.current_screen;
 		MainProgram.current_screen = view_identifier;
 		MainProgram.view_transition_timer = System.currentTimeMillis();
