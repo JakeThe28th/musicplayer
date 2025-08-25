@@ -57,6 +57,12 @@ public class ExtensionAPI {
 	
 	}
 	
+	public static void tick() {
+		for (String extension : extensions.keySet()) {
+			extensions.get(extension).onTick();
+		}
+	}
+	
 	public static void end() {
 		for (String extension : extensions.keySet()) {
 			Log.send("Closing extension " + extension);

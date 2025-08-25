@@ -139,6 +139,8 @@ public class MainProgram {
 		// Main loop
 		while (GraphicsAPI.isOpen()) {
 			
+			ExtensionAPI.tick();
+			
 			input = true;
 			
 			//GraphicsHandler.clear();

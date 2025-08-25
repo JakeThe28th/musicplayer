@@ -156,4 +156,12 @@ public class GraphicsAPI {
 	public static void persistentRendering(boolean b) {
 		RenderQueue.delete_queue_after_rendering = !b;
 	}
+	
+	public static String input_string() {
+		return Input.input_string;
+	}
+	
+	public static void input_string(String str) {
+		Input.input_string = str;
+	}
 }

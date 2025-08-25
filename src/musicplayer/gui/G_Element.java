@@ -46,9 +46,11 @@ public abstract class G_Element {
 	public Vector4f   	base_color			= new Vector4f(1,1,1,1);
 	
 	public void halign(Alignment align) 		{ this.horizontal_align = align; }
-	
+	public void valign(Alignment align) 		{ this.vertical_align = align; }
+
 	protected Alignment   	horizontal_align	= Alignment.LEFT;
-	
+	protected Alignment   	vertical_align		= Alignment.LEFT;
+
 	// Run before layout(), in case elements changed size
 	public abstract void recalculate_size();
 

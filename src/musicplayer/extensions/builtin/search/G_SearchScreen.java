@@ -42,7 +42,24 @@ public class G_SearchScreen extends G_Element implements Screen {
 	
 	G_Scrollable results_scroll = new G_Scrollable(new G_List());
 	
-	G_TypingBox input_box = new G_TypingBox();
+	public G_TypingBox input_box = new G_TypingBox() {
+		@Override
+		public void onChangeText(String newtext) {
+			if (newtext.endsWith(" ")) {
+				text.text = "";
+			} else {
+				String [] split = newtext.split(" ");
+				text.text = split[split.length-1];
+			}
+			Search.queueSearchQuery(newtext);
+		}
+	};
+	
+	public G_Icon search_go_button = new G_Icon("play") {
+		@Override public void onClick() { 
+			Search.queueGetSearchResults();
+		}
+	};
 	
 	public void results(G_Element newresults) {
 		results_scroll.root(newresults);
@@ -67,6 +84,8 @@ public class G_SearchScreen extends G_Element implements Screen {
 		addSubElement(terms); 
 		addSubElement(results_scroll); 
 		addSubElement(input_box);
+		addSubElement(search_go_button);
+		search_go_button.valign(Alignment.MIDDLE);
 		}
 
 	public static final G_SearchScreen INSTANCE = new G_SearchScreen();
@@ -80,6 +99,7 @@ public class G_SearchScreen extends G_Element implements Screen {
 		terms.recalculate_size();
 		results_scroll.recalculate_size();
 		input_box.recalculate_size();
+		search_go_button.recalculate_size();
 	}
 			
 	@Override
@@ -94,8 +114,11 @@ public class G_SearchScreen extends G_Element implements Screen {
 		terms.layout(left, yy, right, yy+terms.height());
 		yy += terms.height();
 		
-		input_box.layout(left, yy, right, yy+input_box.height());
-		yy += input_box.height();
+		int right_width = search_go_button.width();
+		int input_height = input_box.height();
+		input_box.layout(left, yy, right-right_width, yy+input_height);
+		search_go_button.layout(right-right_width, yy, right, yy+input_height);
+		yy += input_height;
 		
 		results_scroll.layout(left, yy, right, bottom);
 	}
@@ -106,6 +129,7 @@ public class G_SearchScreen extends G_Element implements Screen {
 		terms.draw(depth);
 		results_scroll.draw(depth);
 		input_box.draw(depth);
+		search_go_button.draw(depth);
 	}
 	
 }

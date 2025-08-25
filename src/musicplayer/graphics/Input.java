@@ -68,7 +68,6 @@ class Input {
 		glfwSetCharCallback(current_window, (window, codepoint) -> {
 			 input_string += (char) codepoint;
 		});
-		
 	}
 
 	private static void setMouseButtonDown(int button, boolean b) {

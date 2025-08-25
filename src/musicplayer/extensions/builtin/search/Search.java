@@ -32,11 +32,14 @@ import musicplayer.utility.Rectangle;
 
 public class Search extends Extension  {
 	
-	ArrayList<SearchTerm> search_query = new ArrayList<SearchTerm>();
+	static ArrayList<SearchTerm> search_query = new ArrayList<SearchTerm>();
 	
 	static String playlist_to_add_to = null;
 
-	private void setSearchQuery(String query) {
+	public static void setSearchQuery(String query) {
+		
+		GraphicsAPI.input_string(query);
+		
 		search_query.clear();
 
 		String[] parts = query.split(" ");
@@ -56,13 +59,15 @@ public class Search extends Extension  {
 		}
 		
 		G_SearchScreen.INSTANCE.terms(GUI_terms);
+	}
+	
+	public static void setSearchQueryAndGo(String query) {
+		setSearchQuery(query);
 		MainProgram.change_screen(search.identifier()); 
-		
-		
 		G_SearchScreen.INSTANCE.results(getSearchResults(search_query));
 	}
 	
-	private ArrayList<SearchResult> getSearchResults(ArrayList<SearchTerm> query) {
+	public static ArrayList<SearchResult> getSearchResults(ArrayList<SearchTerm> query) {
 		
 		ArrayList<SongResult> songs = new ArrayList<SongResult>();
 		
@@ -120,7 +125,7 @@ public class Search extends Extension  {
 		return results;
 	}
 	
-	G_SearchScreen search = G_SearchScreen.INSTANCE;
+	static G_SearchScreen search = G_SearchScreen.INSTANCE;
 
 	@Override public String   identifier() 		{ return "builtin;search"; }
 	
@@ -128,11 +133,11 @@ public class Search extends Extension  {
 	{ @Override public void onClick() { } };
 	G_Icon 		search_in_playlist_icon 			= new G_Icon("magnifying_glass")
 	{ @Override public void onClick() { 
-		setSearchQuery("playlist:" + MusicPlayer.view_playlist + " music box");
+		setSearchQueryAndGo("playlist:" + MusicPlayer.view_playlist);
 	} };
 	G_Icon 		search_in_home_icon 				= new G_Icon("magnifying_glass")
 	{ @Override public void onClick() { 
-		setSearchQuery("die prologue");
+		setSearchQueryAndGo("");
 	} };
 	
 	@Override
@@ -142,6 +147,28 @@ public class Search extends Extension  {
 		G_PlaylistScreen.register_header_icon(add_to_playlist_icon, false);
 		G_PlaylistScreen.register_header_icon(search_in_playlist_icon, true);
 		G_HomeScreen.register_right_icon(search_in_home_icon);
+	}
+	
+	@Override
+	public void onTick() {
+		if (queued_query != null) {
+			Search.setSearchQuery(queued_query);
+			queued_query = null;
+		}
+		if (queued_get_results) {
+			G_SearchScreen.INSTANCE.results(getSearchResults(search_query));
+			queued_get_results = false;
+		}
+	}
+
+	static String queued_query = null;
+	public static void queueSearchQuery(String newtext) {
+		queued_query = newtext;
+	}
+
+	static boolean queued_get_results = false;
+	public static void queueGetSearchResults() {
+		queued_get_results = true;
 	}
 
 }
