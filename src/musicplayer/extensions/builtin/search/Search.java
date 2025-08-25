@@ -71,7 +71,10 @@ public class Search extends Extension  {
 		
 		ArrayList<SongResult> songs = new ArrayList<SongResult>();
 		
+		HashMap<Song, Integer> counter = new HashMap<>();
+
 		boolean has_playlist_filter = false;
+		boolean has_keywords = false;
 		
 		// Add only songs in the playlists searched for
 		for (SearchTerm term : query) {
@@ -80,7 +83,11 @@ public class Search extends Extension  {
 				Playlist in = Library.getPlaylist(term.extra());
 				for (Song song : in.listSongs()) {
 					songs.add(new SongResult(song, in));
+					if (!counter.containsKey(song)) counter.put(song, 1);
 				}
+			}
+			if (term.type() == SearchTermType.KEYWORD) {
+				has_keywords = true;
 			}
 		}
 		
@@ -93,7 +100,6 @@ public class Search extends Extension  {
 				
 		// Keywords...
 		ArrayList<SearchResult> results = new ArrayList<SearchResult>();
-		HashMap<Song, Integer> counter = new HashMap<>();
 		for (SongResult song_result : songs) {
 			Song song = song_result.song();
 			
@@ -105,7 +111,7 @@ public class Search extends Extension  {
 			for (SearchTerm term : query) if (term.type() == SearchTermType.KEYWORD) {
 				String match_word = term.extra().toLowerCase();
 				
-				if (song.name().contains(match_word)) counter.put(song, counter.get(song) + 1);
+				if (song.name().toLowerCase().contains(match_word)) counter.put(song, counter.get(song) + 1);
 				
 				for (String word : split_title) {
 					if (word.isBlank()) continue;
@@ -116,7 +122,10 @@ public class Search extends Extension  {
 				
 			}
 			
-			results.add(new SearchResult(song, counter.get(song), song_result.playlist()));
+			if (counter.get(song) != 0) {
+				if (!has_keywords) counter.put(song, counter.get(song) + 1);
+				results.add(new SearchResult(song, counter.get(song), song_result.playlist()));
+			}
 			
 		}
 		
