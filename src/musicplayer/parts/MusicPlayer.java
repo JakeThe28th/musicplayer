@@ -43,6 +43,11 @@ public class MusicPlayer {
 		reload_playlist_gui = true;
 		if(song.equals(current_song.uuid())) restart_song = true;
 	}
+	
+	//
+	
+	public static final long HIGHLIGHT_DURATION = 4000;
+	public static HashMap<UUID, Long> temp_highlight = new HashMap<UUID, Long>();
 		
 	public static int scroll_mode = 1;
 	public static final int SCROLL_PAGE = 0;
@@ -117,24 +122,36 @@ public class MusicPlayer {
 
 	}
 	
+	public static void go_to_song_source(UUID song, Playlist playlist) {
+		if (playlist == null) playlist = Library.getAlbum(song.album).linked_playlist;
+		
+		MusicPlayer.set_current_view_playlist(playlist.identifier);
+		MainProgram.change_screen(MainProgram.playlist_screen.identifier());
+		scroll_to_index(playlist.songs.indexOf(song));
+		temp_highlight.put(song, System.currentTimeMillis() + HIGHLIGHT_DURATION);
+	}
+	
 	public static void scroll_to_current() {
 		if (view_playlist.equals(playlist)) {
-			
-			G_Scrollable scroll 	= G_PlaylistScreen.playlist_gui_scroll;
-			int element_height 		= G_PlaylistScreen.playlist_gui_list.element(0).height();
-
-			double page_height		= (scroll.sheight-(element_height*1.25));
-			double screen_top 		= scroll.scroll_y;
-			double screen_bottom	= scroll.scroll_y + page_height;
-			double target 			= (element_height * song_index);
-
-			if (target > screen_top) {
-				if 		(target < screen_bottom) 		{ target = -1; } 
-				else if (scroll_mode == SCROLL_SONG) 	{ target = target - page_height; }
-			}
-			
-			if (target > 1) G_PlaylistScreen.playlist_gui_scroll.scroll_target(target);
+			scroll_to_index(song_index);
 		}
+	}
+	
+	public static void scroll_to_index(int index) {
+		G_Scrollable scroll 	= G_PlaylistScreen.playlist_gui_scroll;
+		int element_height 		= G_PlaylistScreen.playlist_gui_list.element(0).height();
+
+		double page_height		= (scroll.sheight-(element_height*1.25));
+		double screen_top 		= scroll.scroll_y;
+		double screen_bottom	= scroll.scroll_y + page_height;
+		double target 			= (element_height * index);
+
+		if (target > screen_top) {
+			if 		(target < screen_bottom) 		{ target = -1; } 
+			else if (scroll_mode == SCROLL_SONG) 	{ target = target - page_height; }
+		}
+		
+		if (target > 1) G_PlaylistScreen.playlist_gui_scroll.scroll_target(target);
 	}
 
 	public static void current(UUID song) {

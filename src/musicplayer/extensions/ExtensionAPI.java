@@ -10,7 +10,7 @@ import musicplayer.audio.AudioSource;
 import musicplayer.extensions.builtin.BasicImporter;
 import musicplayer.extensions.builtin.BuiltinAudioReader;
 import musicplayer.extensions.builtin.ProgramSettings;
-import musicplayer.extensions.builtin.Search;
+import musicplayer.extensions.builtin.search.Search;
 import musicplayer.extensions.types.AudioReaderExtension;
 import musicplayer.extensions.types.GUIModifierExtension;
 import musicplayer.graphics.GraphicsAPI;
@@ -42,6 +42,12 @@ public class ExtensionAPI {
 		loadExtension(new BuiltinAudioReader());
 		loadExtension(new ProgramSettings());
 		loadExtension(new BasicImporter());
+		
+		// I know this extension is kinda cheating by
+		// having multiple .java source files,
+		// but to be fair that was only because organizing
+		// it in one file was getting unwieldy so I
+		// think it's still fine to treat it as an extension
 		loadExtension(new Search());
 
 		// Load external extensions

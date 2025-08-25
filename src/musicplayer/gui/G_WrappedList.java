@@ -18,6 +18,8 @@ public class G_WrappedList extends G_Element {
 
 	@Override
 	public void layout(int left, int top, int right, int bottom) {
+		
+		int real_top = top;
 
 		left += left_margin;
 		right -= right_margin;
@@ -26,15 +28,34 @@ public class G_WrappedList extends G_Element {
 		
 		int xx = left;
 		int yy = top;
+		int element_height = elements.get(0).height();
+		int max_empty_space_on_right = 100;
+		boolean advance = false;
 		for (G_Element e : elements) {
-			if (xx + e.width() > right) {
-				xx = left;
-				yy += e.height();
+			
+			int draw_right = xx + e.width();
+			if (draw_right > right) {
+				if ((xx+max_empty_space_on_right) > right) {
+					xx = left;
+					yy += element_height;
+					draw_right = xx + e.width();
+				} else {
+					advance = true;
+					draw_right = right;
+				}
 			}
-			e.layout(xx, yy, xx+e.width(), yy+e.height());
+			
+			e.layout(xx, yy, draw_right, yy+element_height);
 			xx += e.width();
+			if (advance) {
+				xx = left;
+				yy += element_height;
+				advance = false;
+			}
 		}
-
+		
+		this.unpadded_height = (yy+element_height+bottom_margin)-real_top;
+		this.unpadded_height -= element_height/2;
 	}
 
 	@Override

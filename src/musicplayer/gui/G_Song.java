@@ -1,5 +1,7 @@
 package musicplayer.gui;
 
+import org.joml.Vector4f;
+
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
@@ -16,7 +18,8 @@ public class G_Song extends G_Element implements I_DraggableElement {
 	public UUID song;
 	public G_Text name = new G_Text();
 	
-	public boolean temporary_highlight = false;
+	public boolean temporary_dragging_highlight = false;
+	private boolean is_search_result = true;
 	
 	Playlist playlist;
 	
@@ -72,7 +75,7 @@ public class G_Song extends G_Element implements I_DraggableElement {
 		
 		for (G_Element e : G_PlaylistScreen.playlist_gui_list.elements) {
 			G_Song element = (G_Song) e;
-			if (element.draw_index == calculate_target_index()) element.temporary_highlight = true;
+			if (element.draw_index == calculate_target_index()) element.temporary_dragging_highlight = true;
 			}
 		}
 
@@ -82,12 +85,18 @@ public class G_Song extends G_Element implements I_DraggableElement {
 		G_PlaylistScreen.playlist_gui_list.remove(this);
 	}
 	
-	public G_Song(UUID n, int i, Playlist p) {
-		song = n;
+	public G_Song(UUID song, int i, Playlist p) {
+		this(song, i, p, false);
+	}
+	
+	public G_Song(UUID song, int i, Playlist p, boolean is_search_result) {
+		this.song = song;
 		name.text(Library.getSongFromAlbum(song).name());
 		playlist = p;
+		this.is_search_result = is_search_result;
+		if (is_search_result) icons.remove(drag);
 		if (playlist == null) icons.remove(drag);
-		if (playlist.locked) icons.remove(drag);
+		if (playlist!= null) if (playlist.locked) icons.remove(drag);
 
 		index = i;
 	}
@@ -138,13 +147,26 @@ public class G_Song extends G_Element implements I_DraggableElement {
 			GraphicsAPI.rect(song_rectangle, depth);
 		}
 		
-		if (temporary_highlight) {
+		if (temporary_dragging_highlight) {
 			GraphicsAPI.color(GraphicsAPI.WHITE);
 			GraphicsAPI.rect(
 					song_rectangle.left(), 
 					song_rectangle.top(), 
 					song_rectangle.right(),
 					song_rectangle.top() + 3,
+					depth);
+		}
+		
+		if (MusicPlayer.temp_highlight.containsKey(song)) {
+			float highlight_amount = (MusicPlayer.temp_highlight.get(song) - System.currentTimeMillis()) / (float) MusicPlayer.HIGHLIGHT_DURATION;
+			if (highlight_amount <= 0) MusicPlayer.temp_highlight.remove(song);
+			
+			GraphicsAPI.color(new Vector4f(1, 1, 0, highlight_amount));
+			GraphicsAPI.rect(
+					song_rectangle.left(), 
+					song_rectangle.top(), 
+					song_rectangle.right(),
+					song_rectangle.bottom(),
 					depth);
 		}
 		
@@ -168,7 +190,7 @@ public class G_Song extends G_Element implements I_DraggableElement {
 		
 		
 		// visualizer thing
-		if (this_is_the_current_song) {
+		if (this_is_the_current_song && !this.is_search_result) {
 			GraphicsAPI.color(MainProgram.TRANSPARENT_ACCENT_COLOR);
 			int target_width 		= right - left;
 			int slice_w 	 		= 2;
@@ -187,17 +209,21 @@ public class G_Song extends G_Element implements I_DraggableElement {
 		
 		icons.draw(depth+1);
 		
-		temporary_highlight = false;
+		temporary_dragging_highlight = false;
 		
 	}
 
 	@Override
 	public void onClick() {
-		MusicPlayer.song_index = index;
-		MusicPlayer.current(song);
-		MusicPlayer.set_current_playlist(MusicPlayer.view_playlist);
-		MusicPlayer.seek(0);
-		MusicPlayer.play();
+		if (!is_search_result) {
+			MusicPlayer.song_index = index;
+			MusicPlayer.current(song);
+			MusicPlayer.set_current_playlist(MusicPlayer.view_playlist);
+			MusicPlayer.seek(0);
+			MusicPlayer.play();
+		} else {
+			MusicPlayer.go_to_song_source(song, playlist);
+		}
 	}
 	
 }

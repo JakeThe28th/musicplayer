@@ -52,7 +52,10 @@ public class G_HomeScreen extends G_Element implements Screen {
 			Option[] options = Option.from(library_menu_options);
 			MainProgram.popups.add(new Popup(x + width(), y + height(), Alignment.RIGHT, Alignment.LEFT, options));
 		} };
-	
+		
+	public G_List left_icons 			= new G_List(new_collection);
+	public G_List right_icons 			= new G_List(menu);
+
 		public static ArrayList<Option> library_menu_options = new ArrayList<Option>();
 		public static ArrayList<Option> menu_options_album = new ArrayList<Option>();
 		public static ArrayList<Option> menu_options_playlist = new ArrayList<Option>();
@@ -104,6 +107,14 @@ public class G_HomeScreen extends G_Element implements Screen {
 			menu_options_playlist.add(o);
 		}
 		
+		public static void register_left_icon(G_Icon icon) {
+			INSTANCE.left_icons.add(icon, 0);
+		}
+
+		public static void register_right_icon(G_Icon icon) {
+			INSTANCE.right_icons.add(icon, 0);
+		}
+		
 	{
 		playlist_tab_text.text("Playlists");
 		playlist_tab_text.can_click = true;
@@ -130,8 +141,8 @@ public class G_HomeScreen extends G_Element implements Screen {
 		addSubElement(albums_scroll);  
 		addSubElement(playlists_scroll); 
 		addSubElement(tab_selector); 
-		addSubElement(menu); 
-		addSubElement(new_collection);
+		addSubElement(left_icons); 
+		addSubElement(right_icons);
 	}
 	
 	@Override
@@ -139,8 +150,8 @@ public class G_HomeScreen extends G_Element implements Screen {
 		albums_scroll.recalculate_size();
 		playlists_scroll.recalculate_size();
 		tab_selector.recalculate_size();
-		menu.recalculate_size();
-		new_collection.recalculate_size();
+		left_icons.recalculate_size();
+		right_icons.recalculate_size();
 	}
 
 	@Override
@@ -150,14 +161,20 @@ public class G_HomeScreen extends G_Element implements Screen {
 		left += left_margin;
 		right -= right_margin;
 		
-		int icon_width = menu.width();
+		int icons_width = left_icons.width();
+		if (icons_width < right_icons.width()) icons_width = right_icons.width();
+
 		int header_height = 30;
 		
 		int yy = top;
-		tab_selector.layout(left+icon_width, yy, right-icon_width, yy+header_height);
+		right_icons.layout(right-icons_width, yy, right, yy+header_height);
+		left_icons.layout(left, yy, left+icons_width, yy+header_height);
 		
-		menu.layout(right-icon_width, yy, right, yy+header_height);
-		new_collection.layout(left, yy, left+icon_width, yy+header_height);
+		if ((icons_width*2) + tab_selector.width() > GraphicsAPI.width()) {
+			yy += header_height;
+		}
+		
+		tab_selector.layout(left+icons_width, yy, right-icons_width, yy+header_height);
 		
 		yy += header_height;
 		
@@ -178,8 +195,8 @@ public class G_HomeScreen extends G_Element implements Screen {
 	@Override
 	public void draw(int depth) {
 		tab_selector.draw(depth);
-		menu.draw(depth);
-		new_collection.draw(depth);
+		left_icons.draw(depth);
+		right_icons.draw(depth);
 		if (current_tab == Tab.ALBUMS) {
 			albums_scroll.draw(0);
 		} else {
