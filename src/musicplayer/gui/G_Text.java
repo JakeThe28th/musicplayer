@@ -36,7 +36,8 @@ public class G_Text extends G_Element {
 	public void layout(int left, int top, int right, int bottom) {
 		int xoffset = GUIUtility.getAlignmentOffset(left, right, width(), horizontal_align);
 		x = left + left_margin + xoffset;
-		y = top + top_margin;
+		int yoffset = GUIUtility.getAlignmentOffset(top, bottom, height(), vertical_align);
+		y = top + top_margin + yoffset;
 		
 		if (can_click) {
 			hover_rectangle = new Rectangle(left, top, right, bottom);
