@@ -13,6 +13,7 @@ import musicplayer.gui.G_Icon;
 import musicplayer.gui.G_List;
 import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Song;
+import musicplayer.gui.G_Text;
 import musicplayer.gui.G_TypingBox;
 import musicplayer.gui.G_WrappedList;
 import musicplayer.gui.enums.Alignment;
@@ -69,6 +70,14 @@ public class G_SearchScreen extends G_Element implements Screen {
 	}
 	
 	public void results(ArrayList<SearchResult> all_items) {
+		if (all_items.size() <= 0) {
+			G_List new_results = new G_List().verticalify();
+			G_Text oops = new G_Text();
+			oops.text = "No search results found.";
+			new_results.add(oops);
+			results(new_results);
+			return;
+		}
 		SearchResult result0 = all_items.get(0);
 		if (result0.item() instanceof Song) {
 			G_List new_results = new G_List().verticalify();
