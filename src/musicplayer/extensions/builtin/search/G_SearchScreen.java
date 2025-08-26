@@ -43,11 +43,13 @@ public class G_SearchScreen extends G_Element implements Screen {
 	
 	G_Icon home = new G_Icon("home")
 	{ @Override public void onClick() { 
+		Search.playlist_to_add_to = null;
 		MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
 	}};
 	
 	G_Icon back = new G_Icon("previous")
 	{ @Override public void onClick() { 
+		Search.playlist_to_add_to = null;
 		MusicPlayer.reload_view_playlist();
 		MainProgram.previous_screen();
 	}};
