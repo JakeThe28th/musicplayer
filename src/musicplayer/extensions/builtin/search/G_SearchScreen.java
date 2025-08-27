@@ -50,7 +50,8 @@ public class G_SearchScreen extends G_Element implements Screen {
 	G_Icon back = new G_Icon("previous")
 	{ @Override public void onClick() { 
 		Search.playlist_to_add_to = null;
-		MusicPlayer.reload_view_playlist();
+		// TODO: add an onChange or something event to Screen, and put this in G_PlayListScreen
+		if (MusicPlayer.current_view_playlist() != null) MusicPlayer.reload_view_playlist();
 		MainProgram.previous_screen();
 	}};
 	
