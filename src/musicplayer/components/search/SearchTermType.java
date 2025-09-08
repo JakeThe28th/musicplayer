@@ -1,4 +1,4 @@
-package musicplayer.extensions.builtin.search;
+package musicplayer.components.search;
 
 public enum SearchTermType {
 	// NOTE: these need to be defined from most specific to least

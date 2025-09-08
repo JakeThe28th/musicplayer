@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.joml.Vector4f;
 
 import musicplayer.MainProgram;
-import musicplayer.extensions.builtin.search.Search;
+import musicplayer.components.search.Search;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.extra.Popup;

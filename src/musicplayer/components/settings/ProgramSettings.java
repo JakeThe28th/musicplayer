@@ -1,4 +1,4 @@
-package musicplayer.extensions.builtin;
+package musicplayer.components.settings;
 
 import java.io.IOException;
 import java.util.HashMap;

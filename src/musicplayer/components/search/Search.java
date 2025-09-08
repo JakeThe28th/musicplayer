@@ -1,4 +1,4 @@
-package musicplayer.extensions.builtin.search;
+package musicplayer.components.search;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 import org.joml.Vector4f;
 
 import musicplayer.MainProgram;
+import musicplayer.components.search.SearchRecords.*;
 import musicplayer.extensions.Extension;
-import musicplayer.extensions.builtin.search.SearchRecords.*;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;

@@ -1,4 +1,4 @@
-package musicplayer.extensions.builtin.search;
+package musicplayer.components.search;
 
 import java.util.Comparator;
 

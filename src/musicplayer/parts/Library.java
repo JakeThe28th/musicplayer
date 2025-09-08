@@ -121,5 +121,11 @@ public class Library {
 		}
 		return playlists_return;
 	}
+	
+	public static void print() {
+		for (Song song : Library.listSongs()) {
+			Log.send(song.uuid() + ", name=" + song.name());
+		}
+	}
 
 }

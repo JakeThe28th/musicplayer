@@ -1,12 +1,12 @@
-package musicplayer.extensions.builtin.search;
+package musicplayer.components.search;
 
 import java.util.ArrayList;
 
 import org.lwjgl.glfw.GLFW;
 
 import musicplayer.MainProgram;
-import musicplayer.extensions.builtin.ProgramSettings;
-import musicplayer.extensions.builtin.search.SearchRecords.*;
+import musicplayer.components.search.SearchRecords.*;
+import musicplayer.components.settings.ProgramSettings;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.graphics.KeybindAPI;
 import musicplayer.gui.G_Element;

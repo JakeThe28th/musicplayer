@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import org.joml.Vector4f;
 
+import musicplayer.components.ComponentAPI;
 import musicplayer.extensions.ExtensionAPI;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.graphics.KeybindAPI;
@@ -50,7 +51,6 @@ public class MainProgram {
 		errors.add(new ErrorMessage(string, System.currentTimeMillis()));
 	}
 
-	
 	// Screens
 	public static HashMap<String, Screen> screens = new HashMap<String, Screen>();
 	static { 
@@ -120,12 +120,14 @@ public class MainProgram {
 		
 		GraphicsAPI.center_text(0, 0, "Initializing Audio...");
 		GraphicsAPI.render();
-		
 		MusicPlayer.initAudioDevice();
+		
+		GraphicsAPI.center_text(0, 0, "Initializing Components...");
+		GraphicsAPI.render();
+		ComponentAPI.init();
 		
 		GraphicsAPI.center_text(0, 0, "Initializing Extensions...");
 		GraphicsAPI.render();
-
 		ExtensionAPI.init();
 
 		GraphicsAPI.center_text(0, 0, "Loading songs...");
@@ -134,25 +136,13 @@ public class MainProgram {
 		
 		try {
 		
-//		for (Song song : Library.listSongs()) {
-//			Log.send(song.uuid() + ", name=" + song.name());
-//		}
-		
-		//MusicPlayer.set_current_playlist("defaultalbum");
-		//MusicPlayer.set_current_view_playlist("defaultalbum");
-		//MusicPlayer.current("defaultalbum", "awesomedefaultsong");
-		
 		MusicPlayer.setPlaybackMode(MusicPlayer.LOOP_LIST);
-		
-		//Library.play();
-		
-//		MusicPlayer.set_current_playlist("awesome-other-album");
-//		MusicPlayer.current("awesome-other-album", "wowow");
 		
 		// Main loop
 		while (GraphicsAPI.isOpen()) {
 			
 			KeybindAPI.tick();
+			ComponentAPI.tick();
 			ExtensionAPI.tick();
 			
 			input = true;
@@ -216,7 +206,6 @@ public class MainProgram {
 			
 			GraphicsAPI.render();
 						
-			//GraphicsHandler.refresh();
 		}
 		
 		} finally {
@@ -232,6 +221,10 @@ public class MainProgram {
 			GraphicsAPI.center_text(10, 0, "Closing extensions");
 			GraphicsAPI.render();
 			ExtensionAPI.end();
+			
+			GraphicsAPI.center_text(10, 0, "Closing components");
+			GraphicsAPI.render();
+			ComponentAPI.end();
 			
 			GraphicsAPI.center_text(10, 0, "Closing audio device");
 			GraphicsAPI.render();

@@ -1,8 +1,8 @@
-package musicplayer.extensions.builtin.search;
+package musicplayer.components.search;
 
 import org.joml.Vector4f;
 
-import musicplayer.extensions.builtin.search.SearchRecords.*;
+import musicplayer.components.search.SearchRecords.*;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Text;

@@ -7,10 +7,10 @@ import java.util.HashMap;
 
 import musicplayer.MainProgram;
 import musicplayer.audio.AudioSource;
+import musicplayer.components.search.Search;
+import musicplayer.components.settings.ProgramSettings;
 import musicplayer.extensions.builtin.BasicImporter;
 import musicplayer.extensions.builtin.BuiltinAudioReader;
-import musicplayer.extensions.builtin.ProgramSettings;
-import musicplayer.extensions.builtin.search.Search;
 import musicplayer.extensions.types.AudioReaderExtension;
 import musicplayer.extensions.types.GUIModifierExtension;
 import musicplayer.graphics.GraphicsAPI;
@@ -27,7 +27,7 @@ public class ExtensionAPI {
 
 	public static void loadExtension(Extension extension) throws IOException {
 		
-		((Extension) extension).setWorkingDirectory("extensions/" + ((Extension) extension).identifier() + "/");
+		extension.setWorkingDirectory("extensions/" + extension.identifier() + "/");
 		
 		GraphicsAPI.center_text(0, 0, "Initializing Extensions...");
 		GraphicsAPI.center_text(0, 30, "Loaded "+ extension.identifier() +"...");
@@ -40,15 +40,7 @@ public class ExtensionAPI {
 	public static void init() throws IOException {
 		
 		loadExtension(new BuiltinAudioReader());
-		loadExtension(new ProgramSettings());
 		loadExtension(new BasicImporter());
-		
-		// I know this extension is kinda cheating by
-		// having multiple .java source files,
-		// but to be fair that was only because organizing
-		// it in one file was getting unwieldy so I
-		// think it's still fine to treat it as an extension
-		loadExtension(new Search());
 
 		// Load external extensions
 		for (Object extension : Utility.loadClassesFromFolder("extensions/")) {
