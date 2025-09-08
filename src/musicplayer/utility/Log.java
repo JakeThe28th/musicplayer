@@ -1,6 +1,22 @@
 package musicplayer.utility;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class Log {
+	
+	static String log = "";
+	
+	private static void internal_log(String msg) {
+		log += msg + "\n";
+		try {
+			Files.writeString(Paths.get("latest.log"), log);
+		} catch (IOException e) {
+			System.out.println("failed to save log");
+			e.printStackTrace();
+		}
+	}
 	
 	public static void send(String... strings) {
 		String logged_message = "";
@@ -12,6 +28,7 @@ public class Log {
 		}
 		
 		System.out.println(logged_message);
+		internal_log(logged_message);
 	}
 
 	public static void send(float... floats) {
@@ -24,6 +41,7 @@ public class Log {
 		}
 		
 		System.out.println(logged_message);
+		internal_log(logged_message);
 	}
 	
 	public static void send(double... doubles) {
@@ -36,6 +54,7 @@ public class Log {
 		}
 		
 		System.out.println(logged_message);
+		internal_log(logged_message);
 	}
 
 }
