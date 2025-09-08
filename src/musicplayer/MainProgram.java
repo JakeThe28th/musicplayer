@@ -26,6 +26,7 @@ import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.Playlist;
 import musicplayer.utility.Utility;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class MainProgram {
 	
@@ -134,6 +135,10 @@ public class MainProgram {
 		GraphicsAPI.render();
 		Library.init();
 		
+		KeybindAPI.bindkey("play/pause", GLFW_KEY_SPACE, GLFW_RELEASE, () -> { MusicPlayer.toggleplay(); } ); 
+		KeybindAPI.bindkey("previous", GLFW_KEY_LEFT, GLFW_RELEASE, () -> { MusicPlayer.previous(); } ); 
+		KeybindAPI.bindkey("next", GLFW_KEY_RIGHT, GLFW_RELEASE, () -> { MusicPlayer.next(); } ); 
+
 		try {
 		
 		MusicPlayer.setPlaybackMode(MusicPlayer.LOOP_LIST);

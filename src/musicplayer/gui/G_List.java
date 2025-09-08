@@ -66,23 +66,24 @@ public class G_List extends G_Element {
 
 	@Override
 	public void layout(int left, int top, int right, int bottom) {	
-		int index = 0;
 		if (!vertical) {
 			this.top = top;
 			int xx = left + left_margin + GUIUtility.getAlignmentOffset(left, right, width(), horizontal_align);
 			this.left = xx;
-			for (G_Element e : elements) {
+			for (int index = 0; index < elements.size(); index++) {
+				G_Element e = elements.get(index);
 				if (e instanceof G_Song) ((G_Song) e).draw_index = index;
 				e.layout(xx, top, xx+e.width(), bottom);
 				xx+=e.width();
-				index++;
 			}
 		} else {
 			
 			int yy = top + top_margin + GUIUtility.getAlignmentOffset(top, bottom, height(), Alignment.LEFT);
 			this.top = yy;
 			this.left = left;
-			for (G_Element e : elements) {
+			for (int index = 0; index < elements.size(); index++) {
+				G_Element e = elements.get(index);
+				
 				if (yy+e.height() < top || (yy) > bottom 
 				 || yy+e.height() < GraphicsAPI.scissor().top() || (yy) > GraphicsAPI.scissor().bottom()) {
 					e.hover_rectangle = new Rectangle(-1,-1,-1,-1);
@@ -101,7 +102,6 @@ public class G_List extends G_Element {
 						e.hover_rectangle.right(), 
 						e.hover_rectangle.bottom());
 				yy+=e.height();
-				index++;
 			}
 
 		}

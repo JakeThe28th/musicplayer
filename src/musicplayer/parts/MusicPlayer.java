@@ -210,24 +210,27 @@ public class MusicPlayer {
 					seek(0);
 					play();
 				} else {
-					next();
+					next(true);
 				}
 			}
 		}
 	}
 	
-	public static void next() { 	
+	public static void next() { next(false); }
+	public static void next(boolean auto) { 	
 		if (playlist.equals(NO_PLAYLIST)) return;
 		
 		song_index++;
 		ArrayList<Song> songs = Library.getPlaylist(playlist).listSongs();
-		if (song_index >= songs.size() && playback_mode == LOOP_LIST) {
-			song_index = 0;
-		} else if (playback_mode == SHUFFLE) {
+		if (playback_mode == SHUFFLE) {
 			song_index = (int) (Math.random() * (songs.size()));
-		} else if (playback_mode != LOOP_LIST) {
+		} else if (playback_mode != LOOP_LIST && auto) {
 			song_index --;
 			return;
+		}
+		
+		if (song_index >= songs.size()) {
+			song_index = 0;
 		}
 		
 		Song next_song = songs.get(song_index);
@@ -336,5 +339,9 @@ public class MusicPlayer {
 	}
 
 	public static Playlist current_view_playlist() { return Library.getPlaylist(view_playlist); }
+
+	public static void toggleplay() {
+		if (playing()) pause(); else play();
+	}
 
 }
