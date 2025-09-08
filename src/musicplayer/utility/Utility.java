@@ -85,7 +85,8 @@ public class Utility {
         while (true) {
             line = r.readLine();
             if (line == null) { break; }
-            System.out.println(line);
+            //System.out.println(line);
+            Log.send("[cmd.exe] " + line);
             if (tick != null) tick.run(line);
         }
         if (finish != null) finish.run();
