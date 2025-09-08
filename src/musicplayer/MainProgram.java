@@ -12,6 +12,7 @@ import org.joml.Vector4f;
 
 import musicplayer.extensions.ExtensionAPI;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.KeybindAPI;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_SongControls;
 import musicplayer.gui.I_DraggableElement;
@@ -151,6 +152,7 @@ public class MainProgram {
 		// Main loop
 		while (GraphicsAPI.isOpen()) {
 			
+			KeybindAPI.tick();
 			ExtensionAPI.tick();
 			
 			input = true;
@@ -280,6 +282,10 @@ public class MainProgram {
 			GraphicsAPI.text(10, 40, 1000, "raw mspt: " 	+ f.format(frame_time));
 			GraphicsAPI.text(10, 70, 1000, "     fps: " 	+ f.format(1000 / t));
 		}
+	}
+
+	public static boolean isCurrentScreen(String identifier) {
+		return identifier.equals(current_screen);
 	}
 
 }

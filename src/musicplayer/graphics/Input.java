@@ -99,6 +99,8 @@ class Input {
 	
 	// -- Getters -- //
 	
+	public static int action(int scancode) { return getKeyActionWithScancode(scancode); }
+	
 	public static int getKeyActionWithScancode(int scancode) {
 		if (current_keys[scancode] == null) return -1;
 		return current_keys[scancode].action;

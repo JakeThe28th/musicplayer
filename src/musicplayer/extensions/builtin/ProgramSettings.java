@@ -155,53 +155,7 @@ public class ProgramSettings extends Extension  {
 	
 	@Override
 	public void onTick() {
-		for (KeyCombination kc : keybinds) {
-			if (!kc.screen_identifier.equals(MainProgram.current_screen)) continue;
-			
-			boolean active = true;
-			for (Key key : kc.keys) {
-				if (GraphicsAPI.getKeyState(key.scancode) != key.action) {
-					active = false;
-				}
-			}
-			if (active) kc.cb.run();;
-		}
-	}
-	
-	static LinkedHashSet<KeyCombination> keybinds = new LinkedHashSet<>();
-	
-	public record Key(int scancode, int action, int mods) {
-		@Override
-		public int hashCode() {
-			return (89 * scancode) + (97 * action) + (101 * mods);
-		}
-	}
-	
-	static class KeyCombination {
-		int hashcode = 1;
-		Key[] keys;
-		String screen_identifier;
-		KeybindCallback cb;
-		public KeyCombination(KeybindCallback cb, String screen_identifier, Key...keys) {
-			hashcode = 1;
-			for (Key k : keys) hashcode *= k.hashCode();
-			this.keys = keys;
-			this.cb = cb;
-			this.screen_identifier = screen_identifier;
-		}
-		@Override public int hashCode() { return hashcode; }
-	}
-
-	// keys //
-	
-	public interface KeybindCallback { public void run(); }
-	
-	public static void bindKeyLimited(String identifier, KeybindCallback cb, int key, int action) {
-		bindKeyLimited(identifier, cb, key, action, 0);
-	}
-	
-	public static void bindKeyLimited(String identifier, KeybindCallback cb, int key, int action, int mods) {
-		keybinds.add(new KeyCombination(cb, identifier, new Key(key, action, mods)));
+		
 	}
 
 }

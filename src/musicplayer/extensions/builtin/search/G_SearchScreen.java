@@ -8,6 +8,7 @@ import musicplayer.MainProgram;
 import musicplayer.extensions.builtin.ProgramSettings;
 import musicplayer.extensions.builtin.search.SearchRecords.*;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.KeybindAPI;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
 import musicplayer.gui.G_List;
@@ -124,7 +125,15 @@ public class G_SearchScreen extends G_Element implements Screen {
 	@Override public String identifier() { return "builtin;search";}
 	
 	{ 	
-		ProgramSettings.bindKeyLimited(identifier(), ()->{search_go_button.onClick();}, GLFW.GLFW_KEY_ENTER, GLFW.GLFW_RELEASE ); 
+		KeybindAPI.bind(
+				"confirm_search", 
+				GLFW.glfwGetKeyScancode(GLFW.GLFW_KEY_ENTER), 
+				GLFW.GLFW_RELEASE,
+				( ) -> {
+					if (MainProgram.isCurrentScreen(identifier()))
+						search_go_button.onClick();
+				}
+			); 
 	}
 
 	@Override
