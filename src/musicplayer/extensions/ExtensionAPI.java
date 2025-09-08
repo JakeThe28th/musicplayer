@@ -1,14 +1,11 @@
 package musicplayer.extensions;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import musicplayer.MainProgram;
 import musicplayer.audio.AudioSource;
-import musicplayer.components.search.Search;
-import musicplayer.components.settings.ProgramSettings;
 import musicplayer.extensions.builtin.BasicImporter;
 import musicplayer.extensions.builtin.BuiltinAudioReader;
 import musicplayer.extensions.types.AudioReaderExtension;

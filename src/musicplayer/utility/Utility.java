@@ -54,9 +54,16 @@ public class Utility {
 			String name = file.getName().toString();
 			name = name.substring(0, name.lastIndexOf('.'));
 			try {
-				Object object = classloader.loadClass(name).getConstructor().newInstance();
+				Class<?> class_ = classloader.loadClass(name);
+				Object object = class_.getConstructor().newInstance();
 				classes.add(object);
-			} catch (Exception e) { Log.send("Failed to load an extension class: " + file.toString()); e.printStackTrace(); }
+			} catch (Exception e) { 
+				if (e instanceof NoSuchMethodException) {
+					Log.send("Did not load extension class '" + file.toString() + "'; It has no constructor.");
+				} else {
+					Log.send("Failed to load an extension class: " + file.toString()); e.printStackTrace();
+				}
+			}
         }
         
         classloader.close();
