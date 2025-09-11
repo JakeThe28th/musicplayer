@@ -168,4 +168,8 @@ public class GraphicsAPI {
 	public static int getKeyState(int key) {
 		return Input.getKeyActionWithScancode(GLFW.glfwGetKeyScancode(key));
 	}
+
+	public static void clearColor(float x, float y, float z, float a) {
+		Graphics.clearColor(x, y, z, a);
+	}
 }

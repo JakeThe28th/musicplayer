@@ -8,7 +8,7 @@ import musicplayer.gui.G_Slider;
 import musicplayer.gui.G_Text;
 import musicplayer.utility.Rectangle;
 
-public class G_Color extends G_Element {
+public class G_Color_old extends G_Element {
 
 	G_Slider 	red 		= new G_Slider();
 	G_Slider 	green 		= new G_Slider();
@@ -56,7 +56,7 @@ public class G_Color extends G_Element {
 		
 		yy+=SLIDER_HEIGHT;
 		color_rect = new Rectangle(left, yy, right, bottom);
-
+		
 	}
 
 	@Override

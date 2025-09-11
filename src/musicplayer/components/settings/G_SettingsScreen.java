@@ -1,6 +1,9 @@
 package musicplayer.components.settings;
 
+import org.joml.Vector4f;
+
 import musicplayer.MainProgram;
+import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
 import musicplayer.gui.G_List;
@@ -18,7 +21,34 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 	G_List colors = new G_List();
 	{ 
 		colors.verticalify();
-		colors.add(new G_Color()); 
+		
+		colors.add(new G_HexColor(MainProgram.ACCENT_COLOR) { 
+			@Override public void onChangeColor(Vector4f col) { MainProgram.ACCENT_COLOR = col; } 
+		}); 
+		
+		colors.add(new G_HexColor(MainProgram.LIGHT_COLOR) { 
+			@Override public void onChangeColor(Vector4f col) { MainProgram.LIGHT_COLOR = col; } 
+		}); 
+		
+		colors.add(new G_HexColor(MainProgram.DARK_COLOR) { 
+			@Override public void onChangeColor(Vector4f col) { 
+				MainProgram.DARK_COLOR = col;
+				GraphicsAPI.clearColor(MainProgram.DARK_COLOR.x, MainProgram.DARK_COLOR.y, MainProgram.DARK_COLOR.z, 0.8f);
+				} 
+		}); 
+		
+		colors.add(new G_HexColor(MainProgram.DARKER_COLOR) { 
+			@Override public void onChangeColor(Vector4f col) { MainProgram.DARKER_COLOR = col; } 
+		}); 
+		
+		colors.add(new G_HexColor(MainProgram.DARKEST_COLOR) { 
+			@Override public void onChangeColor(Vector4f col) { MainProgram.DARKEST_COLOR = col; } 
+		}); 
+		
+		colors.add(new G_HexColor(MainProgram.SEMIDARK_COLOR) { 
+			@Override public void onChangeColor(Vector4f col) { MainProgram.SEMIDARK_COLOR = col; } 
+		}); 
+		
 		home.halign(Alignment.MIDDLE);
 	}
 	
