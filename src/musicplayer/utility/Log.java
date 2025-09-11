@@ -57,4 +57,9 @@ public class Log {
 		internal_log(logged_message);
 	}
 
+	public static void trace(IOException e) {
+		Log.send("[EXCEPTION] " + e.getMessage());
+		Log.send(Utility.getStackTrace(e));
+	}
+
 }
