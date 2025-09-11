@@ -92,7 +92,16 @@ public class FFMPEG extends Extension implements AudioReaderExtension {
 			CVqueue(new QueuedConversion(uuid, target, new File(filename)));
 			return MusicPlayer.EMPTY;
 		} else {
+			try {
 			return ExtensionAPI.readAudio(target.getPath(), "wav", uuid);
+			} catch (Exception e) {
+				Log.send("FFMPEG: Failed to read converted audio file of track '"+ uuid.toString() +"'");
+				Log.trace(e);
+				MainProgram.showError("FFMPEG: Failed to read converted audio file");
+				MainProgram.showError("of track " + uuid.toString());
+
+				return MusicPlayer.EMPTY;
+			}
 		}
 		
 	}
