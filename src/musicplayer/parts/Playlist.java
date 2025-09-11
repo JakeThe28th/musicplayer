@@ -26,6 +26,10 @@ public class Playlist {
 	Texture glcover;
 	String name;
 	String identifier;
+	
+	// Used to determine if this should be saved upon closing
+	// Set to false in the constructor if loaded from a directory.
+	boolean has_album_cover_changed = true;
 
 	private HashMap<String, String> fields = new HashMap<String, String>();
 
@@ -57,6 +61,8 @@ public class Playlist {
 
 			cover(ImageIO.read(cover));
 		}
+		
+		has_album_cover_changed = false;
 		
 		// Add songs
 		
@@ -142,9 +148,11 @@ public class Playlist {
 		playlist_folder.mkdirs();
 		
 		// Save album image
+		if (has_album_cover_changed) {
 		if (cover != null) ImageIO.write(cover, "png", new File(playlist_folder.toString() + "\\cover.png"));
 		if (cover_raw != null) ImageIO.write(cover_raw, "png", new File(playlist_folder.toString() + "\\cover_raw.png"));
-
+		}
+		
 		// Save metadata
 		Utility.writeKeyValue(Paths.get(playlist_folder.toString() + "\\info.txt"), fields);
 		
