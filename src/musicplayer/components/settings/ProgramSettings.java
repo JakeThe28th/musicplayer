@@ -1,155 +1,116 @@
 package musicplayer.components.settings;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
-
-import org.joml.Vector4f;
-
 import musicplayer.MainProgram;
+import musicplayer.components.settings.types.Setting;
+import musicplayer.components.settings.types.StringSetting;
 import musicplayer.extensions.Extension;
-import musicplayer.graphics.GraphicsAPI;
-import musicplayer.gui.G_Element;
-import musicplayer.gui.G_Icon;
-import musicplayer.gui.G_List;
-import musicplayer.gui.G_Slider;
-import musicplayer.gui.G_Text;
-import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.extra.Popup.Option;
 import musicplayer.gui.screens.G_HomeScreen;
-import musicplayer.gui.screens.Screen;
-import musicplayer.utility.Rectangle;
+import musicplayer.utility.Log;
 
 public class ProgramSettings extends Extension  {
 	
-	static class G_Color extends G_Element {
-
-		G_Slider 	red 		= new G_Slider();
-		G_Slider 	green 		= new G_Slider();
-		G_Slider 	blue 		= new G_Slider();
-		G_Text 		red_text 	= new G_Text("Red");
-		G_Text 		green_text 	= new G_Text("Green");
-		G_Text 		blue_text 	= new G_Text("Blue");
-		
-		public static final int SLIDER_HEIGHT = 30;
-		
-		{ addSubElement(red); addSubElement(green); addSubElement(blue); 
-		  addSubElement(red_text); addSubElement(green_text); addSubElement(blue_text); }
-
-		@Override
-		public void recalculate_size() {
-			for (G_Element e : sub_elements) {
-				e.recalculate_size();
-			}
-			this.unpadded_height = SLIDER_HEIGHT * 5;
-		}
-		
-		Rectangle color_rect;
-
-		@Override
-		public void layout(int left, int top, int right, int bottom) {
-			left += left_margin;
-			right -= right_margin;
-			top += top_margin;
-			bottom -= bottom_margin;
-
-			int yy = top;
-			int x_offset = GraphicsAPI.size("Green").x + 10;
-			
-			yy+=SLIDER_HEIGHT;
-			red.layout(left + x_offset, yy, right, yy+SLIDER_HEIGHT);
-			red_text.layout(left, yy, left + x_offset, yy+SLIDER_HEIGHT);
-
-			yy+=SLIDER_HEIGHT;
-			green.layout(left + x_offset, yy, right, yy+SLIDER_HEIGHT);
-			green_text.layout(left, yy, left + x_offset, yy+SLIDER_HEIGHT);
-
-			yy+=SLIDER_HEIGHT;
-			blue.layout(left + x_offset, yy, right, yy+SLIDER_HEIGHT);
-			blue_text.layout(left, yy, left + x_offset, yy+SLIDER_HEIGHT);
-			
-			yy+=SLIDER_HEIGHT;
-			color_rect = new Rectangle(left, yy, right, bottom);
-
-		}
-
-		@Override
-		public void draw(int depth) {
-			for (G_Element e : sub_elements) {
-				e.draw(depth + 1);
-			}
-			
-			GraphicsAPI.color(new Vector4f(
-					((float) red.amount),
-					((float) green.amount),
-					((float) blue.amount),
-					1));
-			GraphicsAPI.rect(color_rect, depth + 1);
-		}
-		
+	public static final String SETTINGS_FILE = "config.txt";
+	
+	static HashMap<String, Setting> settings = new HashMap<>();
+	
+	public static void set(String key, Setting value) {
+		settings.put(key, value);
+		save();
 	}
 	
-	static class G_SettingsScreen extends G_Element implements Screen {
-		
-		G_Icon 		home 			= new G_Icon("home")
-		{ @Override public void onClick() { 
-			MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
-		}};
-		
-		G_List colors = new G_List();
-		{ 
-			colors.verticalify();
-			colors.add(new G_Color()); 
-			home.halign(Alignment.MIDDLE);
-		}
-		
-		{ addSubElement(colors); addSubElement(home); }
-
-		public static final G_SettingsScreen INSTANCE = new G_SettingsScreen();
-
-		@Override
-		public void recalculate_size() {
-			colors.recalculate_size();
-			home.recalculate_size();
-		}
-
-		@Override
-		public void layout(int left, int top, int right, int bottom) {
-			
-			left += left_margin;
-			right -= right_margin;
-			top += top_margin;
-			bottom -= bottom_margin;
-			
-			
-			int yy = top;
-			home.layout(left, top, right, top+home.height());
-			
-			yy += home.height();
-			colors.layout(left, yy, right, bottom);
-		}
-
-		@Override
-		public void draw(int depth) {
-			colors.draw(depth);
-			home.draw(depth);
-		}
-
-		@Override public G_Element instance() { return INSTANCE; }
-		@Override public String identifier() { return "builtin;settings";}
-		
+	public static void set(String key, String value) {
+		set(key, new StringSetting(value));
+		save();
 	}
 	
-	G_SettingsScreen settings = G_SettingsScreen.INSTANCE;
+	public static String getString(String key) {
+		if (!settings.containsKey(key)) return null;
+		return ((StringSetting) settings.get(key)).value;
+	}
+	
+	public static void save() {
+		String serialized = "";
+		for (String key : settings.keySet()) {
+			serialized += key + "=" + settings.get(key).type() + "(" + Setting.escape(settings.get(key).serialize()) + ")\n";
+		}
+		try {
+			Files.writeString(Paths.get(SETTINGS_FILE), serialized, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+		} catch (IOException e) {
+			Log.send("Failed to save settings.");
+			Log.trace(e);
+		}
+	}
+	
+	public static void load() {
+		try {
+			String serialized = Files.readString(Paths.get(SETTINGS_FILE));
+			int index = 0;
+			while (index < serialized.length()) {
+				// Read until '=' (ex: read 'blah' in 'blah=(foo)';
+				String key = "";
+				while (index < serialized.length() && serialized.charAt(index) != '=') {
+					key += serialized.charAt(index);
+					index++;
+				}
+				index++; // skip '='
+				// Read the type (read until '('.)
+				String type = "";
+				while (index < serialized.length() && serialized.charAt(index) != '(') {
+					type += serialized.charAt(index);
+					index++;
+				}
+				// Read until next unescaped closed parentheses (ex: read 'he\(llo\)' in foo=(he\(llo\)).)
+				index++; // skip '('
+				String value = "";
+				while (index < serialized.length() && serialized.charAt(index) != ')') {
+					value += serialized.charAt(index);
+					index++;
+					if (index > 0 && serialized.charAt(index-1) == '\\') {
+						value += serialized.charAt(index);
+						index++;
+					}
+				}
+				index++; // skip ')'
+				// Read until next non-whitespace
+				while (index < serialized.length() && Character.isWhitespace(serialized.charAt(index))) {
+					index++;
+				}
+				// Convert key/value into actual setting object
+				//Log.send(type, key, value);
+				switch (type) {
+					case "string": set(key, new StringSetting(Setting.unescape(value))); break;
+				}
+			}
+		} catch (IOException e) {
+			Log.send("Failed to read settings.");
+			Log.trace(e);
+		}
+	}
+	
+	// -- //
+	
+	G_SettingsScreen settings_screen = G_SettingsScreen.INSTANCE;
 
 	@Override public String   identifier() 		{ return "builtin;settings"; }
 
 	@Override
 	public void onLoad() throws IOException {
-		MainProgram.registerScreen(settings);
+		load();
+		Log.send(getString("test"));
+		Log.send(getString("blag"));
+		set("test", "foobar");
+		set("blag", "gootar(?)");
+
+		MainProgram.registerScreen(settings_screen);
 		G_HomeScreen.addMenuOption(new Option(
 				"Settings",
-				() -> { MainProgram.change_screen(settings.identifier()); }
+				() -> { MainProgram.change_screen(settings_screen.identifier()); }
 				));
 	}
 	
