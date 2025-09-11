@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import musicplayer.MainProgram;
+import musicplayer.components.settings.types.ColorSetting;
 import musicplayer.components.settings.types.Setting;
 import musicplayer.components.settings.types.StringSetting;
 import musicplayer.extensions.Extension;
@@ -24,7 +25,12 @@ public class ProgramSettings extends Extension  {
 		save();
 	}
 	
-	public static void set(String key, String value) {
+	public static void setColor(String key, String value) {
+		set(key, new ColorSetting(value));
+		save();
+	}
+	
+	public static void setString(String key, String value) {
 		set(key, new StringSetting(value));
 		save();
 	}
@@ -85,6 +91,7 @@ public class ProgramSettings extends Extension  {
 				//Log.send(type, key, value);
 				switch (type) {
 					case "string": set(key, new StringSetting(Setting.unescape(value))); break;
+					case "color": set(key, new ColorSetting(Setting.unescape(value))); break;
 				}
 			}
 		} catch (IOException e) {
@@ -104,8 +111,9 @@ public class ProgramSettings extends Extension  {
 		load();
 		Log.send(getString("test"));
 		Log.send(getString("blag"));
-		set("test", "foobar");
-		set("blag", "gootar(?)");
+		setString("test", "foobar");
+		setString("blag", "gootar(?)");
+		setColor("carpet", "#32a852");
 
 		MainProgram.registerScreen(settings_screen);
 		G_HomeScreen.addMenuOption(new Option(

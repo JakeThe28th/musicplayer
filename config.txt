@@ -1,2 +1,3 @@
 test=string(foobar)
+carpet=color(#32a852)
 blag=string(gootar\(?\))
