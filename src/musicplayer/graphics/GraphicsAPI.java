@@ -1,14 +1,16 @@
 package musicplayer.graphics;
 
+import static org.lwjgl.glfw.GLFW.GLFW_DECORATED;
+import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
+import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
+
 import java.io.IOException;
 import java.util.Stack;
 
-import org.joml.Matrix4f;
 import org.joml.Vector2i;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
-import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
 /** It's probably overkill to use the GUI library here so,
@@ -171,5 +173,17 @@ public class GraphicsAPI {
 
 	public static void clearColor(float x, float y, float z, float a) {
 		Graphics.clearColor(x, y, z, a);
+	}
+	
+	public static void setDecorated(boolean b) {
+		if (b) {
+			GLFW.glfwSetWindowAttrib(Window.identifier(), GLFW_DECORATED, GLFW_TRUE);
+		} else {
+			GLFW.glfwSetWindowAttrib(Window.identifier(), GLFW_DECORATED, GLFW_FALSE);
+		}
+	}
+
+	public static boolean is_initialized() {
+		return Window.identifier() != -1;
 	}
 }

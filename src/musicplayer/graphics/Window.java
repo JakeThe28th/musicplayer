@@ -18,7 +18,7 @@ import musicplayer.components.settings.Settings;
 
 class Window {
 
-	private static long 		window;
+	private static long 		window = -1;
 	private static boolean 		should_close = false;
 	
 	public static int 			window_height;

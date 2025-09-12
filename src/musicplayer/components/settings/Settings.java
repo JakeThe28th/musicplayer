@@ -8,13 +8,20 @@ import java.util.HashMap;
 
 import org.joml.Vector4f;
 
+import musicplayer.components.settings.interfaces.SettingChangeCallback;
 import musicplayer.components.settings.types.BooleanSetting;
 import musicplayer.components.settings.types.ColorSetting;
 import musicplayer.components.settings.types.Setting;
 import musicplayer.components.settings.types.StringSetting;
+import musicplayer.graphics.GraphicsAPI;
 import musicplayer.utility.Log;
 
 public class Settings {
+	
+	static HashMap<String, SettingChangeCallback> callbacks = new HashMap<>();
+	public static void register(String setting_name, SettingChangeCallback cb) {
+		callbacks.put(setting_name, cb);
+	}
 	
 	static HashMap<String, Setting> settings = new HashMap<>();
 	static boolean automatically_save = false;
@@ -22,6 +29,8 @@ public class Settings {
 	// -- + Initialization + -- //
 	
 	static {
+		try {
+			
 		// Set default settings
 		automatically_save = false;
 		setColor("ACCENT_COLOR", new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 1));
@@ -33,11 +42,19 @@ public class Settings {
 		setColor("TRANSPARENT_ACCENT_COLOR", new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 0.25f));
 
 		setBoolean("use_native_window_decorations", true);
+		register("use_native_window_decorations", (name, value) -> {
+			if (GraphicsAPI.is_initialized()) GraphicsAPI.setDecorated(((BooleanSetting) value).value);
+		});
 		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
 		load();
+		
+		} catch (Exception e) {
+			Log.trace(e);
+			System.exit(0);
+		}
 	}
 	
 	// -- + setting/getting + -- //
@@ -60,6 +77,9 @@ public class Settings {
 	
 	public static void set(String key, Setting value) {
 		settings.put(key, value);
+		if (callbacks.containsKey(key)) {
+			callbacks.get(key).onChange(key, value);
+		}
 		if (automatically_save) save();
 	}
 	
