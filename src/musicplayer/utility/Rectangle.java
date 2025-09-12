@@ -18,6 +18,14 @@ public record Rectangle(int left, int top, int right, int bottom) {
 	
 	public boolean isHovered() {
 		return contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY());
+	}
+
+	public Rectangle decrease(int i) {
+		return new Rectangle(left + i, top + i, right - i, bottom - i);
+	}
+
+	public Rectangle thin_horizontally(int i) {
+		return new Rectangle(left + i, top, right - i, bottom);
 	} 
 	
 	}

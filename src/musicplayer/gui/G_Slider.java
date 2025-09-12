@@ -3,6 +3,7 @@ package musicplayer.gui;
 import org.joml.Vector4f;
 
 import musicplayer.MainProgram;
+import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.utility.Rectangle;
 
@@ -15,7 +16,7 @@ public class G_Slider extends G_Element {
 		this.unpadded_height = 8;
 	}
 	
-	Vector4f slider_color = MainProgram.ACCENT_COLOR;
+	Vector4f slider_color = Settings.ACCENT_COLOR();
 	
 	int left 		= 0;
 	int right 		= 0;

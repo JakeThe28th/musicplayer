@@ -61,7 +61,7 @@ public abstract class G_Element {
 	public abstract void draw(int depth);
 	
 	// Interaction //
-	Rectangle hover_rectangle = new Rectangle(0,0,0,0);
+	protected Rectangle hover_rectangle = new Rectangle(0,0,0,0);
 	
 	public boolean input() {
 		

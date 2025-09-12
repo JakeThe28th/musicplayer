@@ -3,6 +3,7 @@ package musicplayer.gui;
 import org.lwjgl.glfw.GLFW;
 
 import musicplayer.MainProgram;
+import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.parts.Library;
@@ -65,7 +66,7 @@ public class G_SongControls extends G_Element {
 	G_List		right_icons		= new G_List(shuffle);
 	
 	{
-		base_color = MainProgram.LIGHT_COLOR;
+		base_color = Settings.LIGHT_COLOR();
 
 		title.halign(Alignment.MIDDLE);
 		right_margin = 30;

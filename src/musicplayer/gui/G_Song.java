@@ -6,6 +6,7 @@ import org.joml.Vector4f;
 
 import musicplayer.MainProgram;
 import musicplayer.components.search.Search;
+import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.extra.Popup;
@@ -55,9 +56,9 @@ public class G_Song extends G_Element implements I_DraggableElement {
 	G_List icons = new G_List(drag, menu);
 
 	{
-		menu.base_color = MainProgram.SEMIDARK_COLOR;
+		menu.base_color = Settings.SEMIDARK_COLOR();
 		menu.icon_size = 10;
-		drag.base_color = MainProgram.SEMIDARK_COLOR;
+		drag.base_color = Settings.SEMIDARK_COLOR();
 		drag.icon_size = 10;
 		icons.halign(Alignment.MIDDLE);
 		addSubElement(icons);
@@ -168,7 +169,7 @@ public class G_Song extends G_Element implements I_DraggableElement {
 		boolean this_is_the_current_song = index == MusicPlayer.song_index && MusicPlayer.view_playlist.equals(MusicPlayer.playlist);
 		
 		if (draw_index % 2 == 1 && !being_dragged) {
-			GraphicsAPI.color(MainProgram.DARKER_COLOR);
+			GraphicsAPI.color(Settings.DARKER_COLOR());
 			GraphicsAPI.rect(song_rectangle, depth);
 		}
 		
@@ -197,7 +198,7 @@ public class G_Song extends G_Element implements I_DraggableElement {
 			}
 		}
 		
-		GraphicsAPI.color(MainProgram.SEMIDARK_COLOR);
+		GraphicsAPI.color(Settings.SEMIDARK_COLOR());
 		if (this_is_the_current_song) {
 			GraphicsAPI.color(base_color);
 		}
@@ -218,7 +219,7 @@ public class G_Song extends G_Element implements I_DraggableElement {
 		
 		// visualizer thing
 		if (this_is_the_current_song && !this.is_search_result) {
-			GraphicsAPI.color(MainProgram.TRANSPARENT_ACCENT_COLOR);
+			GraphicsAPI.color(Settings.TRANSPARENT_ACCENT_COLOR());
 			int target_width 		= right - left;
 			int slice_w 	 		= 2;
 			int slices = target_width/slice_w;
@@ -229,7 +230,7 @@ public class G_Song extends G_Element implements I_DraggableElement {
 				hh += (bottom-top)/2;
 				GraphicsAPI.rect(left+(slice_w*i), bottom-((int) hh), left+(slice_w*(i+1)), bottom, depth + 1);
 			}
-			GraphicsAPI.color(MainProgram.ACCENT_COLOR);
+			GraphicsAPI.color(Settings.ACCENT_COLOR());
 		}
 
 		name.draw(depth+2);

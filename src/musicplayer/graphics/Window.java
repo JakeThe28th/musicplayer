@@ -13,6 +13,8 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
 
+import musicplayer.components.settings.Settings;
+
 
 class Window {
 
@@ -27,6 +29,10 @@ class Window {
 		glfwDefaultWindowHints(); // optional, the current window hints are already the default
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
+		
+		if (!Settings.use_native_window_decorations()) {
+			glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+		}
 
 		// Create the window
 		window = glfwCreateWindow(width, height, title, NULL, NULL);

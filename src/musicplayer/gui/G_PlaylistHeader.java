@@ -3,6 +3,7 @@ package musicplayer.gui;
 import java.util.ArrayList;
 
 import musicplayer.MainProgram;
+import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.extra.Popup;
@@ -51,7 +52,7 @@ public class G_PlaylistHeader extends G_Element {
 	}
 
 	{
-		base_color = MainProgram.LIGHT_COLOR;
+		base_color = Settings.LIGHT_COLOR();
 		
 		right_margin = 30;
 		left_margin = 30;

@@ -1,6 +1,7 @@
 package musicplayer.gui;
 
 import musicplayer.MainProgram;
+import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
@@ -98,9 +99,9 @@ public class G_Scrollable extends G_Element {
 	public void draw(int depth) {
 		GraphicsAPI.push_scissor(scissor_box);
 
-		GraphicsAPI.color(MainProgram.DARKEST_COLOR);
+		GraphicsAPI.color(Settings.DARKEST_COLOR());
 		GraphicsAPI.rect(scroll_area, depth + 1);
-		GraphicsAPI.color(MainProgram.ACCENT_COLOR);
+		GraphicsAPI.color(Settings.ACCENT_COLOR());
 		if (scroll_area.contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY())) {
 			if (scroll_bar.contains(scroll_bar.left()+1, GraphicsAPI.mouseY())) {
 				GraphicsAPI.color(GraphicsAPI.WHITE);

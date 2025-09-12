@@ -1,0 +1,170 @@
+package musicplayer.components.settings;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
+
+import org.joml.Vector4f;
+
+import musicplayer.components.settings.types.BooleanSetting;
+import musicplayer.components.settings.types.ColorSetting;
+import musicplayer.components.settings.types.Setting;
+import musicplayer.components.settings.types.StringSetting;
+import musicplayer.utility.Log;
+
+public class Settings {
+	
+	static HashMap<String, Setting> settings = new HashMap<>();
+	static boolean automatically_save = false;
+
+	// -- + Initialization + -- //
+	
+	static {
+		// Set default settings
+		automatically_save = false;
+		setColor("ACCENT_COLOR", new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 1));
+		setColor("LIGHT_COLOR", new Vector4f(63 / 255f, 89 / 255f, 84 / 255f, 1));
+		setColor("DARK_COLOR", new Vector4f(24 / 255f, 55 / 255f, 49 / 255f, 1));
+		setColor("DARKER_COLOR", new Vector4f(19 / 255f, 40 / 255f, 39 / 255f, 1));
+		setColor("DARKEST_COLOR", new Vector4f(10 / 255f, 24 / 255f, 23 / 255f, 1));
+		setColor("SEMIDARK_COLOR",  new Vector4f(80 / 255f, 100 / 255f, 100 / 255f, 1));
+		setColor("TRANSPARENT_ACCENT_COLOR", new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 0.25f));
+
+		setBoolean("use_native_window_decorations", true);
+		
+		// Load settings from disk
+		// (overrides but doesn't clear existing settings)
+		automatically_save = true;
+		load();
+	}
+	
+	// -- + setting/getting + -- //
+	
+	public static Vector4f ACCENT_COLOR() { return getColor("ACCENT_COLOR"); }
+	public static Vector4f LIGHT_COLOR() { return getColor("LIGHT_COLOR"); }
+	public static Vector4f DARK_COLOR() { return getColor("DARK_COLOR"); }
+	public static Vector4f DARKER_COLOR() { return getColor("DARKER_COLOR"); }
+	public static Vector4f DARKEST_COLOR() { return getColor("DARKEST_COLOR"); }
+	public static Vector4f SEMIDARK_COLOR() { return getColor("SEMIDARK_COLOR"); }
+	public static Vector4f TRANSPARENT_ACCENT_COLOR() { return getColor("TRANSPARENT_ACCENT_COLOR"); }
+	
+	public static boolean  use_native_window_decorations() {
+		return getBoolean("use_native_window_decorations");
+	}
+	
+	// -- + setting/getting + -- //
+		
+	// -- Setters -- //
+	
+	public static void set(String key, Setting value) {
+		settings.put(key, value);
+		if (automatically_save) save();
+	}
+	
+	public static void setColor(String key, String value) {
+		set(key, new ColorSetting(value));
+	}
+	
+	public static void setColor(String key, Vector4f value) {
+		set(key, new ColorSetting(value));
+	}
+	
+	public static void setString(String key, String value) {
+		set(key, new StringSetting(value));
+	}
+	
+	public static void setBoolean(String key, boolean value) {
+		set(key, new BooleanSetting(value));
+	}
+	
+	// -- Getters -- //
+	
+	public static Setting get(String key) {
+		return settings.get(key);
+	}
+	
+	public static String getString(String key) {
+		if (!settings.containsKey(key)) return null;
+		return ((StringSetting) get(key)).value;
+	}
+	
+	public static Vector4f getColor(String key) {
+		if (!settings.containsKey(key)) return null;
+		return ((ColorSetting) get(key)).value;
+	}
+	
+	public static boolean getBoolean(String key) {
+		if (!settings.containsKey(key)) return false;
+		return ((BooleanSetting) get(key)).value;
+	}
+	
+	// -- + Saving/Loading from disk + -- //
+	
+	public static final String SETTINGS_FILE = "config.txt";
+	
+	/** Save settings to disk */
+	public static void save() {
+		String serialized = "";
+		for (String key : settings.keySet()) {
+			serialized += key + "=" + settings.get(key).type() + "(" + Setting.escape(settings.get(key).serialize()) + ")\n";
+		}
+		try {
+			Files.writeString(Paths.get(SETTINGS_FILE), serialized, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+		} catch (IOException e) {
+			Log.send("Failed to save settings.");
+			Log.trace(e);
+		}
+	}
+	
+	/** Load settings from disk */
+	public static void load() {
+		try {
+			String serialized = Files.readString(Paths.get(SETTINGS_FILE));
+			int index = 0;
+			while (index < serialized.length()) {
+				// Read until '=' (ex: read 'blah' in 'blah=(foo)';
+				String key = "";
+				while (index < serialized.length() && serialized.charAt(index) != '=') {
+					key += serialized.charAt(index);
+					index++;
+				}
+				index++; // skip '='
+				// Read the type (read until '('.)
+				String type = "";
+				while (index < serialized.length() && serialized.charAt(index) != '(') {
+					type += serialized.charAt(index);
+					index++;
+				}
+				// Read until next unescaped closed parentheses (ex: read 'he\(llo\)' in foo=(he\(llo\)).)
+				index++; // skip '('
+				String value = "";
+				while (index < serialized.length() && serialized.charAt(index) != ')') {
+					value += serialized.charAt(index);
+					index++;
+					if (index > 0 && serialized.charAt(index-1) == '\\') {
+						value += serialized.charAt(index);
+						index++;
+					}
+				}
+				index++; // skip ')'
+				// Read until next non-whitespace
+				while (index < serialized.length() && Character.isWhitespace(serialized.charAt(index))) {
+					index++;
+				}
+				// Convert key/value into actual setting object
+				//Log.send(type, key, value);
+				switch (type) {
+					case "string": set(key, new StringSetting(Setting.unescape(value))); break;
+					case "color": set(key, new ColorSetting(Setting.unescape(value))); break;
+					case "boolean": set(key, new BooleanSetting(Setting.unescape(value))); break;
+				}
+			}
+		} catch (IOException e) {
+			Log.send("Failed to read settings.");
+			Log.trace(e);
+		}
+	}
+	
+}

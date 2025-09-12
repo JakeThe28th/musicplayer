@@ -36,14 +36,6 @@ public class MainProgram {
 	public static final String PROGRAM_NAME = "NOW PLAYING";
 	public static final String PROGRAM_TITLE = PROGRAM_NAME + " " + VERSION;
 	
-	public static Vector4f ACCENT_COLOR = new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 1);
-	public static Vector4f LIGHT_COLOR = new Vector4f(63 / 255f, 89 / 255f, 84 / 255f, 1);
-	public static Vector4f DARK_COLOR = new Vector4f(24 / 255f, 55 / 255f, 49 / 255f, 1);
-	public static Vector4f DARKER_COLOR = new Vector4f(19 / 255f, 40 / 255f, 39 / 255f, 1);
-	public static Vector4f DARKEST_COLOR = new Vector4f(10 / 255f, 24 / 255f, 23 / 255f, 1);
-	public static Vector4f SEMIDARK_COLOR = new Vector4f(80 / 255f, 100 / 255f, 100 / 255f, 1);
-	public static Vector4f TRANSPARENT_ACCENT_COLOR = new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 0.25f);
-	
 	// Error print
 	record ErrorMessage(String msg, long time) {}
 	static ArrayList<ErrorMessage> errors = new ArrayList<>();
