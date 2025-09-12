@@ -18,6 +18,7 @@ import java.util.HashMap;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
+import musicplayer.MainProgram;
 import musicplayer.extensions.Extension;
 import musicplayer.graphics.GraphicsAPI;
 
@@ -90,6 +91,7 @@ public class Utility {
             //System.out.println(line);
             Log.send("[cmd.exe] " + line);
             if (tick != null) tick.run(line);
+            if (line.contains("ERROR")) MainProgram.showError(line);
         }
         if (finish != null) finish.run();
 	}

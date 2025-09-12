@@ -130,6 +130,13 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 	private void cache(String url, UUID song) throws IOException {
 		String location = cached_song_directory + cached_urls.size() + "." + download_file_type;
 		download(url, location, download_file_type, song); 
+		
+		if (!new File(location).exists()) {
+			MainProgram.showError("Failed to download " + song);
+			MainProgram.showError("URL: " + url);
+			return;
+		}
+		
 		cached_urls.add(url);
 		cached_url_types.add(download_file_type);
 		
