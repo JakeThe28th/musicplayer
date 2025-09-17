@@ -26,7 +26,7 @@ public class G_HexColor extends G_Element {
 
 	G_Text 		color_text 	= new G_Text("");
 	Vector4f 	color 		= new Vector4f();
-	G_Icon 		copy		= new G_Icon("pencil") {
+	G_Icon 		copy		= new G_Icon("copy") {
 		@Override
 		public void onClick() {
 			StringSelection selection = new StringSelection(ColorSetting.toHex(color));
@@ -35,7 +35,7 @@ public class G_HexColor extends G_Element {
 		}
 	};
 		
-	G_Icon 		paste		= new G_Icon("pin") {
+	G_Icon 		paste		= new G_Icon("paste") {
 		@Override
 		public void onClick() {
 	        try {
