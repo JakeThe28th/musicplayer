@@ -77,7 +77,9 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 	}
 	
 	Rectangle section_break;
-
+	int colors_width;
+	Rectangle color_preview_area;
+	
 	@Override
 	public void layout(int left, int top, int right, int bottom) {
 		
@@ -94,7 +96,29 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 		color_header.layout(left, yy, right, yy+color_header.height());
 		
 		yy += color_header.height();
-		colors.layout(left, yy, right, yy+colors.height());
+		
+		colors_width = (int) ((right-left) * 0.75);
+		colors.layout(left, yy, left+colors_width, yy+colors.height());
+		
+		// preview stuff
+		int color_preview_width = (right-(left+colors_width))-10;
+		float ratio = 1.75f;
+		int color_preview_height = (int) (color_preview_width * ratio);
+		if (color_preview_height > colors.height() - 20) {
+			color_preview_height = colors.height() - 20;
+			color_preview_width = (int) (color_preview_height / ratio);
+		}
+		int color_preview_y = yy + (colors.height()/2);
+		int color_preview_x = left+colors_width + ((right-(left+colors_width))/2);
+
+		color_preview_area = new Rectangle(
+				color_preview_x - (color_preview_width/2),
+				color_preview_y-(color_preview_height/2),
+				color_preview_x + (color_preview_width/2),
+				color_preview_y+(color_preview_height/2)
+				);
+		// preview stuff
+		
 		yy += colors.height();
 
 		yy += 5;
@@ -116,6 +140,47 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 		boolean_header.draw(depth);
 		GraphicsAPI.color(Settings.LIGHT_COLOR());
 		GraphicsAPI.rect(section_break, depth);
+		
+		// preview stuff vvv
+		
+		GraphicsAPI.color(Settings.DARKEST_COLOR());
+		GraphicsAPI.rect(color_preview_area, depth+1);
+		Rectangle box = color_preview_area.decrease(2);
+		// top playlist bar, song controls
+		GraphicsAPI.color(Settings.LIGHT_COLOR());
+		GraphicsAPI.rect(box, depth+3);
+		// text on those
+		GraphicsAPI.color(GraphicsAPI.WHITE);
+		Rectangle top_box = box.internal(0, 0, 1, 0.15f);
+		GraphicsAPI.rect(top_box.thin_vertically(0.35).internal(0.05f, 0, 0.1f, 1), depth+4);
+		GraphicsAPI.rect(top_box.thin_vertically(0.35).internal(0.13f, 0, 0.95f, 1), depth+4);
+
+		// background
+		GraphicsAPI.color(Settings.DARK_COLOR());
+		GraphicsAPI.rect(box.thin_vertically(0.15), depth+5);
+		// scrollbar
+		GraphicsAPI.color(Settings.DARKEST_COLOR());
+		GraphicsAPI.rect(box.thin_vertically(0.17).internal(0.01f, 0, 0.1f, 1), depth+5);
+		GraphicsAPI.color(Settings.ACCENT_COLOR());
+		GraphicsAPI.rect(box.thin_vertically(0.19).internal(0.04f, 0, 0.08f, 0.5f), depth+6);
+		// alternating list colors
+		
+		int amount = 5;
+		int hh = (box.thin_vertically(0.17).height()) / amount;
+		int yy = box.thin_vertically(0.17).top();
+		Rectangle scb = box.internal(0.1f, 0, 1, 1).thin_horizontally(0.1);
+		for (int i = 0; i < amount; i++) {
+			if (i % 2 == 0) {
+				GraphicsAPI.color(Settings.DARKER_COLOR());
+				GraphicsAPI.rect(scb.left(), yy+6, scb.right(), yy+hh-6, depth+7);
+			}
+			GraphicsAPI.color(Settings.SEMIDARK_COLOR());
+			GraphicsAPI.rect(scb.internal(0.80f, 0, 1, 1).left(), yy+9, scb.right()-10, yy+hh-9, depth+7);
+			GraphicsAPI.color(GraphicsAPI.WHITE);
+			GraphicsAPI.rect(scb.left()+4, yy+12, scb.internal(0.80f, 0, 1, 1).left()-10, yy+hh-12, depth+8);
+			yy += hh;
+		}
+		
 	}
 
 	@Override public G_Element instance() { return INSTANCE; }
