@@ -1,0 +1,8 @@
+deltarune:w.ogg.wav
+deltarune:mus_birdnoise.ogg.wav
+deltarune:church_hymn.ogg.wav
+deltarune:noelle_house_wip.ogg.wav
+deltarune:spamton_neo_meeting.ogg.wav
+deltarune:ch3_board1.ogg.wav
+deltarune:church_hymn.ogg.wav
+deltarune:church_hymn.ogg.wav

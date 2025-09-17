@@ -71,6 +71,7 @@ public class Playlist {
 		if (song_order.exists()) {
 			for (String line : Files.readString(song_order.toPath()).split("\n")) {
 				line = line.strip();
+				if (line.isBlank()) break;
 				UUID uuid = new UUID(line.split(":")[0], line.split(":")[1]);
 				this.add(uuid);
 			}

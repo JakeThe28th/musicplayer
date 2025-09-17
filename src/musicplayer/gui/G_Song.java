@@ -3,6 +3,7 @@ package musicplayer.gui;
 import java.util.ArrayList;
 
 import org.joml.Vector4f;
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import musicplayer.MainProgram;
 import musicplayer.components.search.Search;
@@ -52,14 +53,31 @@ public class G_Song extends G_Element implements I_DraggableElement {
 		
 	G_Icon drag = new G_Icon("up_down_arrow")
 		{ @Override public void onLeftMousePress() { MainProgram.pickup(G_Song.this ); } };
+		
+	G_Icon remove = new G_Icon("giant_trash")
+		{ @Override public void onLeftMousePress() { 
+			boolean remove = TinyFileDialogs.tinyfd_messageBox(
+					" " + MainProgram.PROGRAM_TITLE, 
+					"Really remove " + Library.getSongFromAlbum(song).name() + " from " + playlist.name() + " ?", 
+					"yesno", 
+					"warning", 
+					false);
+			if (remove) {
+				playlist.remove(index); 
+				MusicPlayer.reload_view_playlist(); 
+				if (playlist.is_album) MainProgram.showError("Note: song was not deleted from underlying album.");
+			}
+		} };
 	
-	G_List icons = new G_List(drag, menu);
+	G_List icons = new G_List(drag, menu, remove);
 
 	{
 		menu.base_color = Settings.SEMIDARK_COLOR();
 		menu.icon_size = 10;
 		drag.base_color = Settings.SEMIDARK_COLOR();
 		drag.icon_size = 10;
+		remove.base_color = Settings.SEMIDARK_COLOR();
+		remove.icon_size = 10;
 		icons.halign(Alignment.MIDDLE);
 		addSubElement(icons);
 		addSubElement(name);
@@ -123,7 +141,9 @@ public class G_Song extends G_Element implements I_DraggableElement {
 		if (is_search_result) icons.remove(drag);
 		if (playlist == null) icons.remove(drag);
 		if (playlist!= null) if (playlist.locked) icons.remove(drag);
-
+		if (playlist == null || playlist.locked) {
+			icons.remove(remove);
+		}
 		index = i;
 	}
 	
