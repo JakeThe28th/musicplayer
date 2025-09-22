@@ -176,6 +176,7 @@ public class Playlist {
 
 	public void cover(BufferedImage image) {
 		this.cover = image;
+		has_album_cover_changed = true;
 		
 		if (image.getWidth() != image.getHeight()) {
 			int ww = image.getWidth();
