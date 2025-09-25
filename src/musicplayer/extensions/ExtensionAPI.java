@@ -58,8 +58,13 @@ public class ExtensionAPI {
 	
 	public static void end() {
 		for (String extension : extensions.keySet()) {
-			Log.send("Closing extension " + extension);
-			extensions.get(extension).onClose();
+			try {
+				Log.send("Closing extension " + extension);
+				extensions.get(extension).onClose();
+			} catch (Exception e) {
+				Log.send("Error while closing extension " + extension);
+				Log.trace(e);
+			}
 		}
 	}
 	

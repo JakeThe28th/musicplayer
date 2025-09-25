@@ -44,7 +44,15 @@ public class FFMPEG extends Extension implements AudioReaderExtension {
 	    		if (CVhasnext()) {
 	    			QueuedConversion q = CVpop();
 	    			convert(q.source, q.song, q.dest);
+		    		// don't destroy the CPU
 	    		} 
+	    		try { 
+	    			// don't destroy the CPU
+	    			Thread.sleep(1000); 
+	    		} catch (InterruptedException e) { 
+	    			e.printStackTrace(); 
+	    			return;
+	    		}
 	    	} catch(IOException v) { v.printStackTrace(); } 
 	    }  
 	};
@@ -89,7 +97,11 @@ public class FFMPEG extends Extension implements AudioReaderExtension {
 	
 	@Override
 	public void onClose() {
-		conversion_thread.interrupt();
+		try {
+			conversion_thread.interrupt();
+		} catch (Exception e) {
+			Log.send(identifier() + " Exception while closing thread");
+		}
 		Utility.delete(new File(cached_song_directory));
 	}
 	

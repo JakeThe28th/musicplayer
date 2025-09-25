@@ -70,6 +70,13 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 	    			QueuedDownload q = DLpop();
 	    			cache(q.url, q.song);
 	    		} 
+	    		try { 
+	    			// don't destroy the CPU
+	    			Thread.sleep(1000); 
+	    		} catch (InterruptedException e) { 
+	    			e.printStackTrace(); 
+	    			return;
+	    		}
 	    	} catch(IOException v) { v.printStackTrace(); } 
 	    }  
 	};
@@ -104,7 +111,11 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 	
 	@Override
 	public void onClose() {
-		download_thread.interrupt();
+		try {
+			download_thread.interrupt();
+		} catch (Exception e) {
+			Log.send(identifier() + " Exception while closing thread");
+		}
 	}
 	
 	@Override
