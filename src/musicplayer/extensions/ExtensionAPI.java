@@ -18,6 +18,10 @@ import musicplayer.utility.Utility;
 
 public class ExtensionAPI {
 	
+	public static HashMap<String, String> shared_information = new HashMap<>();
+	public static void env(String a, String b) { shared_information.put(a, b); }
+	public static String env(String a) { return shared_information.get(a); }
+
 	static HashMap<String, Extension> 				extensions 	  = new HashMap<>();
 	static ArrayList<AudioReaderExtension> 			audioreaders  = new ArrayList<>();
 	static ArrayList<GUIModifierExtension> 			guimodifiers = new ArrayList<>();
@@ -82,5 +86,6 @@ public class ExtensionAPI {
 			e.modify(element);
 		}
 	}
+
 	
 }
