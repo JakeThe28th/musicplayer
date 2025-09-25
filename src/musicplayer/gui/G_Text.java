@@ -66,7 +66,7 @@ public class G_Text extends G_Element {
 		if (can_wrap && ( unpadded_width > area.width() && area.isHovered() ) ) {
 			GraphicsAPI.setFadeColumn(area.left(), area.left()+30, area.right(), area.right()-30);
 			// scroll text
-			int time = (int) Math.floorMod((System.currentTimeMillis() / 20), unpadded_width + 30);
+			int time = (int) Math.floorMod((-System.currentTimeMillis() / 20), unpadded_width + 30);
 			GraphicsAPI.text(area.left()+time, y, depth, text);
 			GraphicsAPI.text((area.left()-(unpadded_width + 30))+time, y, depth, text);
 			GraphicsAPI.resetFadeColumn();
