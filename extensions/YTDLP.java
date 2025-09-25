@@ -164,6 +164,23 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 	private void download(String url, String output_file, String format, UUID song) throws IOException {
 		Log.send(identifier() + ": Downloading " + url);
 		
+		String ffmpeg_location = ExtensionAPI.env("ffmpeg-location");
+		Log.send(identifier() + ": Local FFMPEG: " + ffmpeg_location);
+					
+		String[] args = new String[] {
+				working_directory + "yt-dlp.exe", 
+				url,
+				"--extract-audio",
+				"--audio-format",
+				format,
+				"-o",
+				output_file
+				};
+		
+		if (ffmpeg_location != null) {
+			args = Utility.append(args, "--ffmpeg-location", ffmpeg_location);
+		}
+		
 		Utility.runCommand(
 				(line) -> {
 					float progress = 0.5f;
@@ -193,15 +210,8 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 						if (line.contains("Extracting URL")) MusicPlayer.setLoadProgress(song, pre_sleep_progress);
 					}
 				},
-				() -> {
-				},
-				working_directory + "yt-dlp.exe", 
-				url,
-				"--extract-audio",
-				"--audio-format",
-				format,
-				"-o",
-				output_file
+				() -> { },
+				args
 				);
 		
 	}

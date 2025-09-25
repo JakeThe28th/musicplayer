@@ -157,5 +157,19 @@ public class Utility {
 		e.printStackTrace(new PrintWriter(sw));
 		return sw.toString();
 	}
+
+	public static String[] append(String[] array, String...add) {
+		String[] ret = new String[array.length+add.length];
+		
+		for (int i = 0; i < array.length; i++) {
+			ret[i] = array[i];
+		}
+		
+		for (int i = 0; i < add.length; i++) {
+			ret[array.length + i] = add[i];
+		}
+			
+		return ret;
+	}
 	
 }

@@ -15,6 +15,8 @@ import musicplayer.utility.Log;
 import musicplayer.utility.Utility;
 
 public class FFMPEG extends Extension implements AudioReaderExtension {
+	
+	boolean ffmpeg_installed = false;
 
 	public static final String[] TYPES = new String[] { "oga", "ogg", "m4a", "mp3" };
 	
@@ -53,17 +55,33 @@ public class FFMPEG extends Extension implements AudioReaderExtension {
 	@Override
 	public void onLoad() throws IOException {
 		// TODO Auto-generated method stub
+		
+		// Check if ffmpeg is installed
+		// (jank but probably less annoying than reading Path...)
+		try {
+			new ProcessBuilder("ffmpeg.exe").start();
+			//Runtime.getRuntime().exec("ffmpeg");
+			ffmpeg_installed = true;
+		} catch (Exception e) {
+			ffmpeg_installed = false;
+			Log.send(identifier() + ": FFMPEG not detected on system. Using local version.");
+		}
+		
 		ExtensionAPI.registerAudioReader(this);
 		new File(working_directory).mkdirs();
 		cached_song_directory = working_directory + "cache/";
 		new File(cached_song_directory).mkdirs();
 		
-		if (!new File(working_directory + "ffmpeg\\bin\\").exists()) {
+		if (!new File(working_directory + "ffmpeg\\bin\\").exists() && !ffmpeg_installed) {
 			MainProgram.showError("Can't find ffmpeg bin folder.");
 			MainProgram.showError("Please download ffmpeg");
 			MainProgram.showError("to be able to open more audio file types.");
 			MainProgram.showError("checked: " + working_directory + "ffmpeg/bin/");
 			// note: https://github.com/BtbN/FFmpeg-Builds/releases
+		}
+		
+		if (!ffmpeg_installed) {
+			ExtensionAPI.env("ffmpeg-location", working_directory + "ffmpeg/bin");
 		}
 		
 		conversion_thread.start();
@@ -114,16 +132,23 @@ public class FFMPEG extends Extension implements AudioReaderExtension {
 		//String song_file = Library.getSongFromAlbum(song).field("file");
 		//String source_file = new File(Library.album_directory + song.album + "\\" + song.identifier + "\\" + song_file).getAbsolutePath();
 		String source_file = source.getAbsolutePath();
+		
+		File environment = null;
+		String ffmpeg_path = "ffmpeg.exe";
+		if (!ffmpeg_installed) {
+			environment = new File(working_directory + "ffmpeg\\bin\\");
+			ffmpeg_path = working_directory + "ffmpeg\\bin\\ffmpeg.exe";
+		}
 
 		Utility.runCommand(
-				new File(working_directory + "ffmpeg\\bin\\"),
+				environment,
 				(line) -> {
 					float progress = 0.5f;
 					MusicPlayer.setLoadProgress(song, progress);
 				},
 				() -> {
 				},
-				"ffmpeg.exe", 
+				ffmpeg_path, 
 				destination_file,
 				"-i",
 				source_file
