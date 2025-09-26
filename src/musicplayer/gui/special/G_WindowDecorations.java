@@ -8,6 +8,7 @@ import musicplayer.gui.G_Text;
 import musicplayer.parts.MusicPlayer;
 import musicplayer.utility.Rectangle;
 
+@Deprecated
 public class G_WindowDecorations extends G_Element {
 	
 	G_Text text = new G_Text();

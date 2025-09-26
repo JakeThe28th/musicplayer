@@ -46,13 +46,15 @@ public class Settings {
 		setBoolean("use_native_window_decorations", true);
 		register("use_native_window_decorations", (name, value) -> {
 			if (GraphicsAPI.is_initialized()) {
-				boolean val = ((BooleanSetting) value).value;
-				GraphicsAPI.setDecorated(val);
+				boolean val = !((BooleanSetting) value).value;
+				GraphicsAPI.setDecorated(!val);
+				GraphicsAPI.setWindowPinned(val);
 				if (val) {
-					MainProgram.window_top = 0;
+					GraphicsAPI.setUnfocusedWindowOpacity(0.65f);
+					GraphicsAPI.setFocusedWindowOpacity(0.95f);
 				} else {
-					MainProgram.decorations.recalculate_size();
-					MainProgram.window_top = MainProgram.decorations.height();
+					GraphicsAPI.setUnfocusedWindowOpacity(1);
+					GraphicsAPI.setFocusedWindowOpacity(1);
 				}
 			}
 		});
@@ -87,9 +89,14 @@ public class Settings {
 	public static Vector4f SEMIDARK_COLOR() { return getColor("SEMIDARK_COLOR"); }
 	public static Vector4f TRANSPARENT_ACCENT_COLOR() { return getColor("TRANSPARENT_ACCENT_COLOR"); }
 	
-	public static boolean  use_native_window_decorations() {
+	public static boolean use_native_window_decorations() {
 		return getBoolean("use_native_window_decorations");
 	}
+	
+	public static void use_native_window_decorations(boolean b) {
+		setBoolean("use_native_window_decorations", b);
+	}
+	
 	
 	public static int font_size() {
 		return getInt("font_size");
@@ -113,6 +120,7 @@ public class Settings {
 			callbacks.get(key).onChange(key, value);
 		}
 		if (automatically_save) save();
+		G_SettingsScreen.INSTANCE.reload();
 	}
 	
 	public static void setColor(String key, String value) {

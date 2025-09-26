@@ -66,10 +66,35 @@ public class G_SongControls extends G_Element {
 		{ @Override public void onDrag(double new_value) {
 			MusicPlayer.volume((float) new_value);
 		} };
+		
+		G_Icon 		pin    = new G_Icon("pin") { 
+			boolean pinned = Settings.use_native_window_decorations();
+			public void layout(int left, int top, int right, int bottom) {
+				setPinned(!Settings.use_native_window_decorations());
+				super.layout(left, top, right, bottom);
+			}
+
+			@Override public void onClick() { 
+				setPinned(!pinned);
+			}
+			
+			public void setPinned(boolean p) {
+				if (p != pinned) {
+					pinned = p;
+					if (pinned) {
+						icon_name = "x";
+						Settings.use_native_window_decorations(false);
+					} else {
+						icon_name = "pin";
+						Settings.use_native_window_decorations(true);
+					}
+				}
+			}
+		};
 
 	G_List		center_icons	= new G_List(previous, stop, play_pause, next);
 	G_List		left_icons		= new G_List(volume);
-	G_List		right_icons		= new G_List(shuffle);
+	G_List		right_icons		= new G_List(pin, shuffle);
 	
 	{
 		base_color = Settings.LIGHT_COLOR();

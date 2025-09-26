@@ -29,10 +29,22 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 	G_Text boolean_header = new G_Text().text("Toggles");
 	G_Text slider_header = new G_Text().text("Sliders");
 
-	G_List booleans = new G_List();
-	G_List colors = new G_List();
-	G_List ranged_integers = new G_List();
-	{ 
+	G_List booleans;
+	G_List colors;
+	G_List ranged_integers;
+	
+	{ reload(); }
+	
+	public void reload() {
+		
+		sub_elements.clear();
+		
+		booleans = new G_List();
+		colors = new G_List();
+		ranged_integers = new G_List();
+		
+		// -- -=- -- //
+		
 		colors.verticalify();
 		booleans.verticalify();
 		ranged_integers.verticalify();
@@ -80,9 +92,7 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 		slider_header.halign(Alignment.MIDDLE);
 		
 		home.halign(Alignment.MIDDLE);
-	}
-	
-	{ 
+		
 		addSubElement(colors); 
 		addSubElement(home); 
 		addSubElement(booleans);
@@ -236,5 +246,5 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 
 	@Override public G_Element instance() { return INSTANCE; }
 	@Override public String identifier() { return "builtin;settings";}
-	
+
 }

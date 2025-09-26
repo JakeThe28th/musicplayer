@@ -3,6 +3,7 @@ package musicplayer.graphics;
 import static org.lwjgl.glfw.GLFW.GLFW_DECORATED;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
+import static org.lwjgl.glfw.GLFW.GLFW_FLOATING;
 
 import java.io.IOException;
 import java.util.Stack;
@@ -12,7 +13,9 @@ import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
 import musicplayer.components.settings.Settings;
+import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
+import musicplayer.utility.Utility;
 
 /** It's probably overkill to use the GUI library here so,
  *  making it its' own thing... 
@@ -204,4 +207,75 @@ public class GraphicsAPI {
 	public static boolean is_initialized() {
 		return Window.identifier() != -1;
 	}
+	
+	public static boolean pinned;
+
+	public static void setWindowPinned(boolean b) {
+		pinned = b;
+		if (b) {
+			GLFW.glfwSetWindowAttrib(Window.identifier(), GLFW_FLOATING, GLFW_TRUE);
+		} else {
+			GLFW.glfwSetWindowAttrib(Window.identifier(), GLFW_FLOATING, GLFW_FALSE);
+		}
+	}
+
+	public static float focused_window_opacity = 1;
+	public static float unfocused_window_opacity = 1;
+
+	public static void setUnfocusedWindowOpacity(float opacity) {
+		unfocused_window_opacity = opacity;
+	}
+
+	public static void setFocusedWindowOpacity(float opacity) {
+		focused_window_opacity = opacity;
+	}
+	
+	static long mouse_hover_time = 0;
+	static boolean mouse_is_hovering = false;
+	
+	public static void tickOpacity() {
+		// If the opacity isn't set to full
+		if (focused_window_opacity != 1 && unfocused_window_opacity != 1) {
+			// If the opacities aren't equal
+			if (focused_window_opacity != unfocused_window_opacity) {
+
+				// keep track of when the mouse last entered the window
+				if (GLFW.glfwGetWindowAttrib(Window.identifier(), GLFW.GLFW_HOVERED) == GLFW.GLFW_FALSE) {
+					if (mouse_is_hovering) {
+						mouse_hover_time = System.currentTimeMillis();
+					}
+					mouse_is_hovering = false;
+				} else {
+					if (!mouse_is_hovering) {
+						mouse_hover_time = System.currentTimeMillis();
+					}
+					mouse_is_hovering = true;
+				}
+				
+				float time_seconds = (System.currentTimeMillis() - mouse_hover_time) / 1000f;
+				float amount = Math.clamp(time_seconds*2, 0, 1);
+				
+				float a = unfocused_window_opacity;
+				float b = focused_window_opacity;
+				if (!mouse_is_hovering) {
+					a = focused_window_opacity;
+					b = unfocused_window_opacity;
+				}
+
+				GLFW.glfwSetWindowOpacity(Window.identifier(), (float) Utility.lerp(a, b, amount));
+				
+			} else {
+				// If the opacities *are* equal, just set them once
+				if (mouse_hover_time > 0) {
+					mouse_hover_time = -1;
+					GLFW.glfwSetWindowOpacity(Window.identifier(), focused_window_opacity);
+				}
+			}
+		} else if (mouse_hover_time > 0) {
+			// If the opacity *is* set to full, just set it once
+			mouse_hover_time = -1;
+			GLFW.glfwSetWindowOpacity(Window.identifier(), 1);
+		}
+	}
+
 }

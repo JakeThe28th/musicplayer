@@ -65,8 +65,6 @@ public class MainProgram {
 	public static String 			current_screen 			= G_HomeScreen.IDENTIFIER;
 	public static String 			last_screen 			= current_screen;
 	
-	public static int 				window_top				= 0;
-
 	public static ArrayDeque<String> screen_stack = new ArrayDeque<>();
 	
 	public static void change_screen(String view_identifier) {
@@ -85,9 +83,13 @@ public class MainProgram {
 	}
 	
 	static public void draw_screen(int xx, String screen_name) {
+		
+		// Don't draw if it won't even be visible
+		if (GraphicsAPI.height()-controls.height() <= 1) return;
+			
 		G_Element screen = screens.get(screen_name).instance();
 		screen.recalculate_size();
-		screen.layout(xx, window_top, GraphicsAPI.width() + xx, GraphicsAPI.height()-controls.height());
+		screen.layout(xx, 0, GraphicsAPI.width() + xx, GraphicsAPI.height()-controls.height());
 		screen.draw(0);
 		if (input) screen.input();
 	}
@@ -100,8 +102,6 @@ public class MainProgram {
 	}
 	
 	// 
-	
-	public static G_WindowDecorations decorations = new G_WindowDecorations();
 	
 	public static G_SongControls controls = new G_SongControls();
 	
@@ -138,14 +138,13 @@ public class MainProgram {
 		KeybindAPI.bindkey("next", GLFW_KEY_RIGHT, GLFW_RELEASE, () -> { MusicPlayer.next(); } ); 
 
 		try {
-			
-		MainProgram.decorations.recalculate_size();
-		window_top = decorations.height();
 		
 		MusicPlayer.setPlaybackMode(MusicPlayer.LOOP_LIST);
 		
 		// Main loop
 		while (GraphicsAPI.isOpen()) {
+			
+			GraphicsAPI.tickOpacity();
 			
 			KeybindAPI.tick();
 			ComponentAPI.tick();
@@ -184,12 +183,6 @@ public class MainProgram {
 			controls.layout(0, GraphicsAPI.height() - controls.height(), GraphicsAPI.width(), GraphicsAPI.height());
 			controls.draw(0);
 			if (input) controls.input();
-			
-			if (!Settings.use_native_window_decorations()) {
-				decorations.recalculate_size();
-				decorations.layout(0, 0, GraphicsAPI.width(), decorations.height());
-				decorations.draw(0);
-			}
 			
 			int i = 10;
 			boolean should_close_popups = true;

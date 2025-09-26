@@ -32,7 +32,7 @@ class Window {
 		
 		if (!Settings.use_native_window_decorations()) {
 			glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
-			GraphicsAPI.decorated = Settings.use_native_window_decorations();
+			GraphicsAPI.decorated = false;
 		}
 
 		// Create the window
