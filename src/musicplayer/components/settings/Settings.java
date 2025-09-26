@@ -12,6 +12,7 @@ import musicplayer.MainProgram;
 import musicplayer.components.settings.interfaces.SettingChangeCallback;
 import musicplayer.components.settings.types.BooleanSetting;
 import musicplayer.components.settings.types.ColorSetting;
+import musicplayer.components.settings.types.FloatSetting;
 import musicplayer.components.settings.types.RangedIntegerSetting;
 import musicplayer.components.settings.types.Setting;
 import musicplayer.components.settings.types.StringSetting;
@@ -68,6 +69,8 @@ public class Settings {
 		
 		setBoolean("use_logarithmic_volume", true);
 		
+		setFloat("volume", 0.5f);
+		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
@@ -110,6 +113,14 @@ public class Settings {
 		return getBoolean("use_logarithmic_volume");
 	}
 	
+	public static void volume(float v) {
+		setFloat("volume", v);
+	}
+	
+	public static float volume() {
+		return getFloat("volume");
+	}
+	
 	// -- + setting/getting + -- //
 		
 	// -- Setters -- //
@@ -147,6 +158,10 @@ public class Settings {
 		set(key, setting);
 	}
 	
+	public static void setFloat(String key, float value) {
+		set(key, new FloatSetting(value));
+	}
+	
 	// -- Getters -- //
 	
 	public static Setting get(String key) {
@@ -179,6 +194,11 @@ public class Settings {
 			return ((RangedIntegerSetting) get(key)).value;
 		}
 		return -1;
+	}
+	
+	public static float getFloat(String key) {
+		if (!settings.containsKey(key)) return Float.NaN;
+		return ((FloatSetting) get(key)).value;
 	}
 	
 	// -- + Saving/Loading from disk + -- //
@@ -241,6 +261,7 @@ public class Settings {
 					case "color": set(key, new ColorSetting(Setting.unescape(value))); break;
 					case "boolean": set(key, new BooleanSetting(Setting.unescape(value))); break;
 					case "ranged_integer": set(key, new RangedIntegerSetting(Setting.unescape(value))); break;
+					case "float": set(key, new FloatSetting(Setting.unescape(value))); break;
 				}
 			}
 		} catch (IOException e) {

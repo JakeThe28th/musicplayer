@@ -65,6 +65,7 @@ public class G_SongControls extends G_Element {
 	G_Slider 		volume_slider	= new G_Slider() 
 		{ @Override public void onDrag(double new_value) {
 			MusicPlayer.volume((float) new_value);
+			Settings.volume((float) new_value);
 		} };
 		
 		G_Icon 		pin    = new G_Icon("pin") { 

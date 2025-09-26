@@ -1,6 +1,7 @@
+volume=float(0.27149323)
 DARKER_COLOR=color(#232224)
 TRANSPARENT_ACCENT_COLOR=color(#323033)
-use_native_window_decorations=boolean(false)
+use_native_window_decorations=boolean(true)
 ACCENT_COLOR=color(#f0b11f)
 font_size=ranged_integer(18|4|30)
 LIGHT_COLOR=color(#2b2530)

@@ -320,7 +320,7 @@ public class MusicPlayer {
 		};
 	}
 
-	static float volume = 1;
+	static float volume = Settings.volume();
 	
 	static AudioDevice device;
 
@@ -328,6 +328,8 @@ public class MusicPlayer {
 		// TODO: this is scuffed... i need to refactor audio
 		device = new AudioDevice(AudioDevice.defaultDevice());
 		MusicPlayer.EMPTY = new AudioSource();
+		
+		volume(volume);
 	}
 	
 	public static void endAudioDevice() {
@@ -336,11 +338,9 @@ public class MusicPlayer {
 	
 	public static void volume(float new_value) {
 		if (Settings.use_logarithmic_volume()) {
-			Log.send("prelog " + new_value);
-			
+			//Log.send("prelog " + new_value);
 			new_value = (float) (Math.log10((-new_value*0.9)+1) * -1);
-			
-			Log.send(new_value);
+			//Log.send(new_value);
 		}
 		
 		device.setListenerVolume(new_value);
