@@ -54,6 +54,8 @@ public class Settings {
 		
 		setRangedInteger("icon_size", 20, 4, 30);
 		
+		setBoolean("use_logarithmic_volume", true);
+		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
@@ -85,6 +87,10 @@ public class Settings {
 	
 	public static int icon_size() {
 		return getInt("icon_size");
+	}
+	
+	public static boolean use_logarithmic_volume() {
+		return getBoolean("use_logarithmic_volume");
 	}
 	
 	// -- + setting/getting + -- //

@@ -9,6 +9,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import musicplayer.MainProgram;
 import musicplayer.audio.AudioDevice;
 import musicplayer.audio.AudioSource;
+import musicplayer.components.settings.Settings;
 import musicplayer.extensions.ExtensionAPI;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_List;
@@ -330,6 +331,14 @@ public class MusicPlayer {
 	}
 	
 	public static void volume(float new_value) {
+		if (Settings.use_logarithmic_volume()) {
+			Log.send("prelog " + new_value);
+			
+			new_value = (float) (Math.log10((-new_value*0.9)+1) * -1);
+			
+			Log.send(new_value);
+		}
+		
 		device.setListenerVolume(new_value);
 		volume = new_value;
 	}
