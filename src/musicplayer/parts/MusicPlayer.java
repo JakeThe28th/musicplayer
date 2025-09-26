@@ -344,4 +344,21 @@ public class MusicPlayer {
 		if (playing()) pause(); else play();
 	}
 
+	public static String getTimecodeString() {
+		if (current_song_audio != null) {
+			long time_ms = current_song_audio.currentTimeMillis();
+			
+			double time_seconds = time_ms / 1000;
+			double time_minutes = time_seconds / 60;
+			
+			int seconds = (int) (time_seconds % 60);
+			int minutes = (int) (time_minutes % 60);
+			int hours = (int) (time_minutes / 60);
+			
+			if (hours > 0) return hours + ":" + minutes + ":" + String.format("%02d", seconds);
+			return minutes + ":" + String.format("%02d", seconds);
+		}
+		return "No Song";
+	}
+
 }
