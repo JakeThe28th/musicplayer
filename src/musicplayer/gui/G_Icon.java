@@ -1,5 +1,6 @@
 package musicplayer.gui;
 
+import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.utility.Rectangle;
 
@@ -10,12 +11,13 @@ public class G_Icon extends G_Element {
 	}
 	
 	public String icon_name = "stop";
-	int icon_size = 20;
+	//int icon_size = 20;
+	double icon_size = 1;
 
 	@Override
 	public void recalculate_size() {
-		unpadded_width = icon_size;
-		unpadded_height = icon_size;
+		unpadded_width = (int) (icon_size * Settings.icon_size());
+		unpadded_height = (int) (icon_size * Settings.icon_size());
 	}
 	
 	protected int x = 0;
@@ -33,7 +35,7 @@ public class G_Icon extends G_Element {
 	@Override
 	public void draw(int depth) {
 		GraphicsAPI.color(base_color);
-		GraphicsAPI.icon(x, y, depth, icon_name, icon_size);
+		GraphicsAPI.icon(x, y, depth, icon_name, (int) (icon_size * Settings.icon_size()));
 	}
 	
 }

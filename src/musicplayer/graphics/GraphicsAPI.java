@@ -11,6 +11,7 @@ import org.joml.Vector2i;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
+import musicplayer.components.settings.Settings;
 import musicplayer.utility.Rectangle;
 
 /** It's probably overkill to use the GUI library here so,
@@ -29,6 +30,8 @@ public class GraphicsAPI {
 	public static final Vector4f TRANSLUCENT_BLACK 	= new Vector4f(0, 0, 0, 0.5f);
 	
 	public static final Vector4f BLACK75 			= new Vector4f(0,0,0,0.75f);
+	
+	public static boolean is_iconified = false;
 
 	static int width = 512;
 	static int height = 8*96;
@@ -37,6 +40,7 @@ public class GraphicsAPI {
 	
 	public static void init() throws IOException {
 		Graphics.setup(width, height, "music thingy");
+		text.font_size(Settings.font_size());
 	}
 	
 	public static int 		width () { return Window.window_width; }
@@ -56,6 +60,10 @@ public class GraphicsAPI {
 	}
 	
 	/* -- -- */
+	
+	public static void font_size(int size) {
+		text.font_size(size);
+	}
 		
 	public static void color(float r, float g, float b, float a) {
 		Shapes.color(new Vector4f(r,g,b,a));

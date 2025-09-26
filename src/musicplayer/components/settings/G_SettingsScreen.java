@@ -5,11 +5,13 @@ import org.joml.Vector4f;
 import musicplayer.MainProgram;
 import musicplayer.components.settings.types.BooleanSetting;
 import musicplayer.components.settings.types.ColorSetting;
+import musicplayer.components.settings.types.RangedIntegerSetting;
 import musicplayer.components.settings.types.Setting;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
 import musicplayer.gui.G_List;
+import musicplayer.gui.G_Slider;
 import musicplayer.gui.G_Text;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.screens.G_HomeScreen;
@@ -25,13 +27,16 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 	
 	G_Text color_header = new G_Text().text("Colors");
 	G_Text boolean_header = new G_Text().text("Toggles");
+	G_Text slider_header = new G_Text().text("Sliders");
 
 	G_List booleans = new G_List();
 	G_List colors = new G_List();
+	G_List ranged_integers = new G_List();
 	{ 
 		colors.verticalify();
 		booleans.verticalify();
-
+		ranged_integers.verticalify();
+		
 		for (String key : Settings.settings.keySet()) {
 			Setting setting = Settings.get(key);
 			if (setting instanceof ColorSetting) {
@@ -46,14 +51,34 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 						new G_Switch(Settings.getBoolean(key)) { 
 							@Override public void onChangeValue(boolean b) { Settings.setBoolean(key, b); } 
 						},
-						0.75f
+						0.5f
+						)); 
+			}
+			if (setting instanceof RangedIntegerSetting) {
+				G_Slider slider = new G_Slider() { 
+					@Override public void onDrag(double newvalue) {
+						RangedIntegerSetting value = Settings.getRangedInteger(key);
+						value.percentage(newvalue);
+						Settings.setRangedInteger(key, value);
+					} 
+					@Override protected String amountFormatted() {
+						return Settings.getRangedInteger(key).value + "";
+					}
+				};
+				slider.amount = Settings.getRangedInteger(key).percentage();
+				
+				ranged_integers.add(new G_ElementPair(
+						new G_Text().text(key),
+						slider,
+						0.5f
 						)); 
 			}
 		}
 		
 		color_header.halign(Alignment.MIDDLE);
 		boolean_header.halign(Alignment.MIDDLE);
-
+		slider_header.halign(Alignment.MIDDLE);
+		
 		home.halign(Alignment.MIDDLE);
 	}
 	
@@ -63,6 +88,8 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 		addSubElement(booleans);
 		addSubElement(color_header);
 		addSubElement(boolean_header);
+		addSubElement(slider_header);
+		addSubElement(ranged_integers);
 	}
 
 	public static final G_SettingsScreen INSTANCE = new G_SettingsScreen();
@@ -74,9 +101,13 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 		booleans.recalculate_size();
 		color_header.recalculate_size();
 		boolean_header.recalculate_size();
+		ranged_integers.recalculate_size();
+		slider_header.recalculate_size();
 	}
 	
-	Rectangle section_break;
+	Rectangle color_toggle_section_break;
+	Rectangle toggle_slider_section_break;
+
 	int colors_width;
 	Rectangle color_preview_area;
 	
@@ -121,14 +152,31 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 		
 		yy += colors.height();
 
+		// Booleans
+		
 		yy += 5;
-		section_break = new Rectangle(left + 50, yy, right - 50, yy+2);
+		color_toggle_section_break = new Rectangle(left + 50, yy, right - 50, yy+2);
 		yy += 5;
 
 		boolean_header.layout(left, yy, right, yy+boolean_header.height());
 		
 		yy+= boolean_header.height();
 		booleans.layout(left, yy, right, yy+booleans.height());
+		yy += booleans.height();
+		
+		// Sliders
+		
+		yy += 5;
+		toggle_slider_section_break = new Rectangle(left + 50, yy, right - 50, yy+2);
+		yy += 5;
+
+		slider_header.layout(left, yy, right, yy+slider_header.height());
+		
+		yy+= slider_header.height();
+		
+		ranged_integers.layout(left, yy, right, yy+ranged_integers.height());
+		yy += ranged_integers.height();
+
 	}
 
 	@Override
@@ -138,8 +186,11 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 		booleans.draw(depth);
 		color_header.draw(depth);
 		boolean_header.draw(depth);
+		slider_header.draw(depth);
+		ranged_integers.draw(depth);
 		GraphicsAPI.color(Settings.LIGHT_COLOR());
-		GraphicsAPI.rect(section_break, depth);
+		GraphicsAPI.rect(color_toggle_section_break, depth);
+		GraphicsAPI.rect(toggle_slider_section_break, depth);
 		
 		// preview stuff vvv
 		

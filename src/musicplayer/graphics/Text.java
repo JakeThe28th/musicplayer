@@ -10,6 +10,8 @@ import org.joml.Matrix4f;
 import org.joml.Vector2i;
 import org.joml.Vector4f;
 
+import musicplayer.utility.Log;
+
 class Text {
 	
 	/* It would probably be more efficient
@@ -21,9 +23,15 @@ class Text {
 	 * the shader, so the RAM cost will just 
 	 * have to be eaten. */
 	
+	
 	int font_size = 18;
 	//Font font = new Font("SansSerif", Font.PLAIN, font_size);
 	Font font = new Font("Consolas", Font.PLAIN, font_size);
+	
+	public void font_size(int new_size) {
+		this.font_size = new_size;
+		font = new Font("Consolas", Font.PLAIN, font_size);
+	}
 	
 	HashMap<Integer, TextureInfo> 	textures = new HashMap<Integer, TextureInfo>();
 	

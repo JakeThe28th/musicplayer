@@ -11,6 +11,7 @@ import org.joml.Vector4f;
 import musicplayer.components.settings.interfaces.SettingChangeCallback;
 import musicplayer.components.settings.types.BooleanSetting;
 import musicplayer.components.settings.types.ColorSetting;
+import musicplayer.components.settings.types.RangedIntegerSetting;
 import musicplayer.components.settings.types.Setting;
 import musicplayer.components.settings.types.StringSetting;
 import musicplayer.graphics.GraphicsAPI;
@@ -46,6 +47,13 @@ public class Settings {
 			if (GraphicsAPI.is_initialized()) GraphicsAPI.setDecorated(((BooleanSetting) value).value);
 		});
 		
+		setRangedInteger("font_size", 18, 4, 30);
+		register("font_size", (name, value) -> {
+			if (GraphicsAPI.is_initialized()) GraphicsAPI.font_size(((RangedIntegerSetting) value).value);
+		});
+		
+		setRangedInteger("icon_size", 20, 4, 30);
+		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
@@ -69,6 +77,14 @@ public class Settings {
 	
 	public static boolean  use_native_window_decorations() {
 		return getBoolean("use_native_window_decorations");
+	}
+	
+	public static int font_size() {
+		return getInt("font_size");
+	}
+	
+	public static int icon_size() {
+		return getInt("icon_size");
 	}
 	
 	// -- + setting/getting + -- //
@@ -99,6 +115,14 @@ public class Settings {
 		set(key, new BooleanSetting(value));
 	}
 	
+	public static void setRangedInteger(String key, int value, int min, int max) {
+		set(key, new RangedIntegerSetting(value, min, max));
+	}
+	
+	public static void setRangedInteger(String key, RangedIntegerSetting setting) {
+		set(key, setting);
+	}
+	
 	// -- Getters -- //
 	
 	public static Setting get(String key) {
@@ -118,6 +142,19 @@ public class Settings {
 	public static boolean getBoolean(String key) {
 		if (!settings.containsKey(key)) return false;
 		return ((BooleanSetting) get(key)).value;
+	}
+	
+	public static RangedIntegerSetting getRangedInteger(String key) {
+		if (!settings.containsKey(key)) return null;
+		return ((RangedIntegerSetting) get(key));
+	}
+	
+	public static int getInt(String key) {
+		if (!settings.containsKey(key)) return -1;
+		if (get(key) instanceof RangedIntegerSetting) {
+			return ((RangedIntegerSetting) get(key)).value;
+		}
+		return -1;
 	}
 	
 	// -- + Saving/Loading from disk + -- //
@@ -179,6 +216,7 @@ public class Settings {
 					case "string": set(key, new StringSetting(Setting.unescape(value))); break;
 					case "color": set(key, new ColorSetting(Setting.unescape(value))); break;
 					case "boolean": set(key, new BooleanSetting(Setting.unescape(value))); break;
+					case "ranged_integer": set(key, new RangedIntegerSetting(Setting.unescape(value))); break;
 				}
 			}
 		} catch (IOException e) {

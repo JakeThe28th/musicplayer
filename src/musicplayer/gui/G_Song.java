@@ -73,11 +73,11 @@ public class G_Song extends G_Element implements I_DraggableElement {
 
 	{
 		menu.base_color = Settings.SEMIDARK_COLOR();
-		menu.icon_size = 10;
+		menu.icon_size = 0.5;
 		drag.base_color = Settings.SEMIDARK_COLOR();
-		drag.icon_size = 10;
+		drag.icon_size = 0.5;
 		remove.base_color = Settings.SEMIDARK_COLOR();
-		remove.icon_size = 10;
+		remove.icon_size = 0.5;
 		icons.halign(Alignment.MIDDLE);
 		addSubElement(icons);
 		addSubElement(name);
