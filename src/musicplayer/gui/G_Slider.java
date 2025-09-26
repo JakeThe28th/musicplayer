@@ -1,5 +1,6 @@
 package musicplayer.gui;
 
+import org.joml.Vector2i;
 import org.joml.Vector4f;
 
 import musicplayer.MainProgram;
@@ -52,8 +53,29 @@ public class G_Slider extends G_Element {
 		GraphicsAPI.color(slider_color);
 		GraphicsAPI.rect(left, y-thickness, left + draw_amount, y+thickness, depth);
 		GraphicsAPI.dot(left + draw_amount, y, depth, dot_size);
+		
+		// Draw number when hovering
+		if (dragging || hover_rectangle.contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY())) {
+			GraphicsAPI.color(GraphicsAPI.TRANSLUCENT_BLACK);
+			String text = amountFormatted();
+			Vector2i size = GraphicsAPI.size(text);
+			int width = size.x+10;
+			Rectangle hoverpreview = new Rectangle(
+					(left + draw_amount) - (width/2),
+					y-(size.y()+10),
+					(left + draw_amount) + (width/2),
+					y
+					);
+			GraphicsAPI.rect(hoverpreview, depth+20);
+			GraphicsAPI.color(GraphicsAPI.WHITE);
+			GraphicsAPI.text(hoverpreview.left()+5, hoverpreview.top()+5, depth+30, text);
+		}
 	}
 	
+	protected String amountFormatted() {
+		return String.format("%.2f", amount);
+	}
+
 	@Override
 	public boolean input() {
 		if (hover_rectangle.contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY())) {

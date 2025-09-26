@@ -20,7 +20,8 @@ public class G_SongControls extends G_Element {
 	
 	G_Text 		title			= new G_Text().text("No Song");
 	G_Slider 	progress_bar	= new G_Slider() 
-			{ @Override public void onDrag(double new_value) {
+			{ 
+			  @Override public void onDrag(double new_value) {
 				if (current_song != null) {
 					if (GraphicsAPI.left_click_pressed()) {
 						should_unpause_after_seek = MusicPlayer.playing();
@@ -31,9 +32,14 @@ public class G_SongControls extends G_Element {
 					if (GraphicsAPI.left_click_released()) {
 						if (should_unpause_after_seek) MusicPlayer.play();
 					}
-					
 				}
-			} };
+			  } 
+			  
+			  @Override protected String amountFormatted() {
+					return MusicPlayer.getTimecodeString();
+			  }
+			  
+			};
 		G_Icon 		previous 		= new G_Icon("previous")
 			{ @Override public void onClick() { MusicPlayer.previous(); }};
 		G_Icon 		stop 			= new G_Icon("stop")
