@@ -27,7 +27,7 @@ public class G_PlaylistGridItem extends G_Element {
 	}
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		// TODO Auto-generated method stub
 		name.recalculate_size();
 	}
@@ -36,7 +36,7 @@ public class G_PlaylistGridItem extends G_Element {
 	Rectangle name_area;
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		area = new Rectangle(left+left_margin, top+top_margin, right-right_margin, bottom-bottom_margin);
 		
 		int text_top = (bottom-bottom_margin)-name.height();

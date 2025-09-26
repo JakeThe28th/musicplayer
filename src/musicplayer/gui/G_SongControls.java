@@ -87,7 +87,7 @@ public class G_SongControls extends G_Element {
 	}
 	
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		title.recalculate_size();
 		progress_bar.recalculate_size();
 		center_icons.recalculate_size();
@@ -159,7 +159,7 @@ public class G_SongControls extends G_Element {
 	Rectangle draw_area;
 	
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		draw_area = new Rectangle(left, top, right, bottom);
 
 		left += left_margin;

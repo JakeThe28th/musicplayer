@@ -30,7 +30,7 @@ public class G_Scrollable extends G_Element {
 	public double scroll_y = 0;
 	
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		root.recalculate_size();
 		// TODO Auto-generated method stub
 		
@@ -43,7 +43,7 @@ public class G_Scrollable extends G_Element {
 	Rectangle scroll_bar;
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		
 		scissor_box = new Rectangle(left, top, right, bottom);
 			  sheight = 	     	  (scissor_box.bottom()-scissor_box.top());

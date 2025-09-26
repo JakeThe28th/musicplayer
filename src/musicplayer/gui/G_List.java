@@ -38,7 +38,7 @@ public class G_List extends G_Element {
 
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		for (G_Element e : elements) {
 			e.recalculate_size();
 		}
@@ -65,7 +65,7 @@ public class G_List extends G_Element {
 	public int left = 0;
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {	
+	protected void i_layout(int left, int top, int right, int bottom) {	
 		if (!vertical) {
 			this.top = top;
 			int xx = left + left_margin + GUIUtility.getAlignmentOffset(left, right, width(), horizontal_align);

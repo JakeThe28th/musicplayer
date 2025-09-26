@@ -17,7 +17,7 @@ public class G_TypingBox extends G_Element {
 	}
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		text.recalculate_size();
 		this.unpadded_height = text.height();
 		this.unpadded_width = text.width();
@@ -27,7 +27,7 @@ public class G_TypingBox extends G_Element {
 	Rectangle typing_indicator = new Rectangle(0,0,0,0);
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 
 		left += left_margin;
 		right -= right_margin;

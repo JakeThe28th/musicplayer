@@ -21,13 +21,13 @@ public class G_Grid extends G_Element {
 	int item_size = 10;
 	
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		for (G_Element e : elements) e.recalculate_size();
 		this.unpadded_height = ( (int) Math.ceil(elements.size() / (float) columns) ) * item_size;
 	}
 	
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 
 		columns = TARGET_COLUMN_COUNT;
 		

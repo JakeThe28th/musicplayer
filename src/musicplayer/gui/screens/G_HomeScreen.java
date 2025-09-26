@@ -146,7 +146,7 @@ public class G_HomeScreen extends G_Element implements Screen {
 	}
 	
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		albums_scroll.recalculate_size();
 		playlists_scroll.recalculate_size();
 		tab_selector.recalculate_size();
@@ -155,7 +155,7 @@ public class G_HomeScreen extends G_Element implements Screen {
 	}
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		top += 10;
 		
 		left += left_margin;

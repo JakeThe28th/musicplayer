@@ -31,6 +31,8 @@ import static org.lwjgl.glfw.GLFW.*;
 public class MainProgram {
 	
 	public static final boolean SHOW_FPS = false;
+	public static boolean OPTIMIZE_GUI = true;
+
 	
 	public static final String VERSION = "0.3.7a";
 	public static final String PROGRAM_NAME = "NOW PLAYING";
@@ -143,7 +145,7 @@ public class MainProgram {
 			ExtensionAPI.tick();
 			
 			input = true;
-			
+				
 			//GraphicsHandler.clear();
 			
 			MusicPlayer.update();
@@ -170,6 +172,7 @@ public class MainProgram {
 					held_element = null;
 				}
 			}
+			
 			
 			controls.recalculate_size();
 			controls.layout(0, GraphicsAPI.height() - controls.height(), GraphicsAPI.width(), GraphicsAPI.height());

@@ -27,7 +27,7 @@ public class G_ElementPair extends G_Element {
 	}
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		a.recalculate_size();
 		b.recalculate_size();
 		
@@ -39,7 +39,7 @@ public class G_ElementPair extends G_Element {
 	}
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		left += left_margin;
 		right -= right_margin;
 		top += top_margin;

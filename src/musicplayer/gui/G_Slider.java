@@ -12,7 +12,7 @@ public class G_Slider extends G_Element {
 	// TODO instead of adding top/bottom for vertical probably just swap out x and y  in draw and in mouse check
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		this.unpadded_height = 8;
 	}
 	
@@ -32,7 +32,7 @@ public class G_Slider extends G_Element {
 	boolean bounded = true;
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		this.left = left + this.left_margin;
 		this.right = right - this.right_margin;
 		if (this.left > right) this.left = right;

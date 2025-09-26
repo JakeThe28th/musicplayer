@@ -12,12 +12,12 @@ public class G_WrappedList extends G_Element {
 	}
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		for (G_Element e : elements) e.recalculate_size();
 	}
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		
 		int real_top = top;
 

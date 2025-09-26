@@ -137,7 +137,7 @@ public class G_SearchScreen extends G_Element implements Screen {
 	}
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		icons.recalculate_size();
 		terms.recalculate_size();
 		results_scroll.recalculate_size();
@@ -147,7 +147,7 @@ public class G_SearchScreen extends G_Element implements Screen {
 	}
 			
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 				
 		left += left_margin; right -= right_margin; top += top_margin; bottom -= bottom_margin;
 		int yy = top;

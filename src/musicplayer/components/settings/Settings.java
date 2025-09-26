@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import org.joml.Vector4f;
 
+import musicplayer.MainProgram;
 import musicplayer.components.settings.interfaces.SettingChangeCallback;
 import musicplayer.components.settings.types.BooleanSetting;
 import musicplayer.components.settings.types.ColorSetting;
@@ -44,6 +45,11 @@ public class Settings {
 		setBoolean("use_native_window_decorations", true);
 		register("use_native_window_decorations", (name, value) -> {
 			if (GraphicsAPI.is_initialized()) GraphicsAPI.setDecorated(((BooleanSetting) value).value);
+		});
+		
+		setBoolean("update_gui_every_frame", false);
+		register("update_gui_every_frame", (name, value) -> {
+			MainProgram.OPTIMIZE_GUI = !((BooleanSetting) value).value;
 		});
 		
 		// Load settings from disk

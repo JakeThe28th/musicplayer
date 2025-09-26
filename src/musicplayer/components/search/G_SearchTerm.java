@@ -36,7 +36,7 @@ public class G_SearchTerm extends G_Element {
 	}
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		this.unpadded_height = GraphicsAPI.size("to find out").y + (top_margin) + (bottom_margin);
 		
 		int count = type.segments.length + (extra.isEmpty() ? 0 : 1);
@@ -53,7 +53,7 @@ public class G_SearchTerm extends G_Element {
 	Rectangle[] segments;
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		
 		left += left_margin;
 		right -= right_margin;

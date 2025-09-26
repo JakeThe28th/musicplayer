@@ -68,7 +68,7 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 	public static final G_SettingsScreen INSTANCE = new G_SettingsScreen();
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		colors.recalculate_size();
 		home.recalculate_size();
 		booleans.recalculate_size();
@@ -81,7 +81,7 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 	Rectangle color_preview_area;
 	
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		
 		left += left_margin;
 		right -= right_margin;

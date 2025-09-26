@@ -60,13 +60,13 @@ public class G_PlaylistScreen extends G_Element implements Screen {
 	}
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		playlist_header.recalculate_size();
 		playlist_gui_scroll.recalculate_size();
 	}
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		playlist_header.layout(left, top, right, playlist_header.height());
 		playlist_gui_scroll.layout(left, playlist_header.height(), right, bottom);
 	}

@@ -50,13 +50,36 @@ public abstract class G_Element {
 
 	protected Alignment   	horizontal_align	= Alignment.LEFT;
 	protected Alignment   	vertical_align		= Alignment.LEFT;
+	
+	public boolean should_update_size = true;
+	public Rectangle last_layout = null;
 
-	// Run before layout(), in case elements changed size
-	public abstract void recalculate_size();
+	// Use this instead of calling i_recalculate_size() directly
+	public boolean recalculate_size() {
+		if (!MainProgram.OPTIMIZE_GUI || should_update_size) {
+			i_recalculate_size();
+			should_update_size = false;
+			last_layout = null;
+			return true;
+		} return false;
+	}
+	
+	// Runs before layout(), in case elements changed size
+	protected abstract void i_recalculate_size();
 
-	// Run before drawing, calculates the placement of elements.
-	public abstract void layout(int left, int top, int right, int bottom);
+	// Use this instead of calling i_recalculate_size() directly
+	public boolean layout(int left, int top, int right, int bottom) {
+		Rectangle layout = new Rectangle(left, top, right, bottom);
+		if (!MainProgram.OPTIMIZE_GUI || !(layout.equals(last_layout))) {
+			i_layout(left, top, right, bottom);
+			last_layout = layout;
+			return true;
+		} return false;
+	}
 		
+	// Runs before drawing, calculates the placement of elements.
+	protected abstract void i_layout(int left, int top, int right, int bottom);
+
 	// Actually draws the element
 	public abstract void draw(int depth);
 	

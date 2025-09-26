@@ -23,7 +23,7 @@ public class G_Color_old extends G_Element {
 	  addSubElement(red_text); addSubElement(green_text); addSubElement(blue_text); }
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		for (G_Element e : sub_elements) {
 			e.recalculate_size();
 		}
@@ -33,7 +33,7 @@ public class G_Color_old extends G_Element {
 	Rectangle color_rect;
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		left += left_margin;
 		right -= right_margin;
 		top += top_margin;

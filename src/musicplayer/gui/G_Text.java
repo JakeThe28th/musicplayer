@@ -24,7 +24,7 @@ public class G_Text extends G_Element {
 	public G_Text text(String new_text) { text = new_text; recalculate_size(); return this; }
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		Vector2i size = GraphicsAPI.size(text);
 		this.unpadded_width = size.x;
 		this.unpadded_height = size.y;
@@ -33,7 +33,7 @@ public class G_Text extends G_Element {
 	Rectangle area;
 	
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		int xoffset = GUIUtility.getAlignmentOffset(left, right, width(), horizontal_align);
 		x = left + left_margin + xoffset;
 		int yoffset = GUIUtility.getAlignmentOffset(top, bottom, height(), vertical_align);

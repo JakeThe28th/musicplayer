@@ -148,7 +148,7 @@ public class G_Song extends G_Element implements I_DraggableElement {
 	}
 	
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		this.unpadded_height = name.height();
 		this.unpadded_width = name.width() + icons.width() + number_width;
 		icons.recalculate_size();
@@ -159,7 +159,7 @@ public class G_Song extends G_Element implements I_DraggableElement {
 	int number_width = 40;
 	
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		this.left = left + this.left_margin + number_width;
 		this.number_x = left + this.left_margin;
 		this.top = top + this.top_margin;

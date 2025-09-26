@@ -1,5 +1,6 @@
 DARKER_COLOR=color(#232224)
 TRANSPARENT_ACCENT_COLOR=color(#323033)
+update_gui_every_frame=boolean(false)
 use_native_window_decorations=boolean(true)
 ACCENT_COLOR=color(#f0b11f)
 LIGHT_COLOR=color(#2b2530)

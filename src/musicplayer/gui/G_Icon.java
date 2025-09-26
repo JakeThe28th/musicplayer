@@ -13,7 +13,7 @@ public class G_Icon extends G_Element {
 	int icon_size = 20;
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		unpadded_width = icon_size;
 		unpadded_height = icon_size;
 	}
@@ -22,7 +22,7 @@ public class G_Icon extends G_Element {
 	protected int y = 0;
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		int xoffset = GUIUtility.getAlignmentOffset(left, right, width(), horizontal_align);
 		x = left + left_margin + xoffset;
 		int yoffset = GUIUtility.getAlignmentOffset(top, bottom, height(), vertical_align);

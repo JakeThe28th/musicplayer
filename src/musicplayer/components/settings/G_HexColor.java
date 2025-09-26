@@ -56,7 +56,7 @@ public class G_HexColor extends G_Element {
 	{ color_text.halign(Alignment.MIDDLE);; addSubElement(color_text); addSubElement(copy); addSubElement(paste); }
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		for (G_Element e : sub_elements) {
 			e.recalculate_size();
 		}
@@ -73,7 +73,7 @@ public class G_HexColor extends G_Element {
 	Rectangle color_rect;
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		left += left_margin;
 		right -= right_margin;
 		top += top_margin;

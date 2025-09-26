@@ -14,14 +14,14 @@ public class G_Switch extends G_Element {
 	}
 
 	@Override
-	public void recalculate_size() {
+	protected void i_recalculate_size() {
 		this.unpadded_height = 20;
 	}
 	
 	Rectangle draw_area;
 
 	@Override
-	public void layout(int left, int top, int right, int bottom) {
+	protected void i_layout(int left, int top, int right, int bottom) {
 		left += left_margin;
 		right -= right_margin;
 		top += top_margin;
