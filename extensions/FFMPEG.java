@@ -40,7 +40,7 @@ public class FFMPEG extends Extension implements AudioReaderExtension {
 	Thread conversion_thread = new Thread() {
 	    public void run() { 
 			Log.send("(FFMPEG) Starting conversion thread");
-			while (!interrupted()) try {
+			while (!interrupted() && MainProgram.MAIN_THREAD.isAlive()) try {
 	    		if (CVhasnext()) {
 	    			QueuedConversion q = CVpop();
 	    			convert(q.source, q.song, q.dest);

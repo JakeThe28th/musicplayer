@@ -110,9 +110,13 @@ public class MainProgram {
 	public boolean pinned = false;
 	
 	public static boolean input = true;
+
+	public static Thread MAIN_THREAD;
 	
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws IOException, ParseException {
+		
+		MAIN_THREAD = Thread.currentThread();
 		
 		GraphicsAPI.init();
 		GraphicsAPI.title(PROGRAM_TITLE);
