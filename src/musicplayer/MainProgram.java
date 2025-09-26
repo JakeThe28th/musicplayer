@@ -156,6 +156,8 @@ public class MainProgram {
 			
 			input = true;
 			
+			if (!GraphicsAPI.windowIsHovered()) input = false;
+			
 			//GraphicsHandler.clear();
 			
 			MusicPlayer.update();

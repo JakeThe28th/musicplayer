@@ -240,7 +240,7 @@ public class GraphicsAPI {
 			if (focused_window_opacity != unfocused_window_opacity) {
 
 				// keep track of when the mouse last entered the window
-				if (GLFW.glfwGetWindowAttrib(Window.identifier(), GLFW.GLFW_HOVERED) == GLFW.GLFW_FALSE) {
+				if (!windowIsHovered()) {
 					if (mouse_is_hovering) {
 						mouse_hover_time = System.currentTimeMillis();
 					}
@@ -276,6 +276,10 @@ public class GraphicsAPI {
 			mouse_hover_time = -1;
 			GLFW.glfwSetWindowOpacity(Window.identifier(), 1);
 		}
+	}
+
+	public static boolean windowIsHovered() {
+		return GLFW.glfwGetWindowAttrib(Window.identifier(), GLFW.GLFW_HOVERED) == GLFW.GLFW_TRUE;
 	}
 
 }
