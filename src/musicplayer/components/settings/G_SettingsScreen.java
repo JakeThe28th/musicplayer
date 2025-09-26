@@ -16,6 +16,7 @@ import musicplayer.gui.G_Text;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.gui.screens.Screen;
+import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
 public  class G_SettingsScreen extends G_Element implements Screen {
@@ -36,7 +37,6 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 	{ reload(); }
 	
 	public void reload() {
-		
 		sub_elements.clear();
 		
 		booleans = new G_List();

@@ -6,6 +6,7 @@ import org.joml.Vector4f;
 import musicplayer.MainProgram;
 import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
 public class G_Slider extends G_Element {

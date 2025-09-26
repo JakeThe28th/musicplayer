@@ -230,7 +230,7 @@ public class GraphicsAPI {
 		focused_window_opacity = opacity;
 	}
 	
-	static long mouse_hover_time = 0;
+	public static long mouse_hover_time = 0;
 	static boolean mouse_is_hovering = false;
 	
 	public static void tickOpacity() {

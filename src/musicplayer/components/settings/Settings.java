@@ -54,6 +54,7 @@ public class Settings {
 					GraphicsAPI.setUnfocusedWindowOpacity(0.65f);
 					GraphicsAPI.setFocusedWindowOpacity(0.95f);
 				} else {
+					GraphicsAPI.mouse_hover_time = 1;
 					GraphicsAPI.setUnfocusedWindowOpacity(1);
 					GraphicsAPI.setFocusedWindowOpacity(1);
 				}
@@ -131,7 +132,6 @@ public class Settings {
 			callbacks.get(key).onChange(key, value);
 		}
 		if (automatically_save) save();
-		G_SettingsScreen.INSTANCE.reload();
 	}
 	
 	public static void setColor(String key, String value) {
@@ -148,6 +148,7 @@ public class Settings {
 	
 	public static void setBoolean(String key, boolean value) {
 		set(key, new BooleanSetting(value));
+		G_SettingsScreen.INSTANCE.reload();
 	}
 	
 	public static void setRangedInteger(String key, int value, int min, int max) {

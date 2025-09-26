@@ -27,6 +27,7 @@ public class ProgramSettings extends Extension  {
 	G_Icon 		settings_home_icon 				= new G_Icon("gear")
 	{ @Override public void onClick() { 
 		MainProgram.change_screen(settings_screen.identifier());
+		G_SettingsScreen.INSTANCE.reload();
 	} };
 
 	
