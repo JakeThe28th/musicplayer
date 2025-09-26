@@ -34,14 +34,16 @@ public class G_HexColor extends G_Element {
         	clipboard.setContents(selection, selection);
 		}
 	};
-		
+	
 	G_Icon 		paste		= new G_Icon("paste") {
 		@Override
 		public void onClick() {
 	        try {
 		        String data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-		        if (data.length() == 7 && data.startsWith("#")) {
+		        if (data.length() == 7 && data.startsWith("#") && data.substring(1).matches("-?[0-9a-fA-F]+")) {
 		        	internal_color(ColorSetting.readHex(data));
+		        } else if (data.length() == 6 && data.matches("-?[0-9a-fA-F]+")) {
+		        	internal_color(ColorSetting.readHex("#" + data));
 		        } else {
 		        	MainProgram.showError("Clipboard is not a hex color");
 		        }
