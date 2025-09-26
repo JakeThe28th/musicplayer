@@ -49,8 +49,15 @@ public class GraphicsAPI {
 	
 	public static void 		render() { RenderQueue.render(); }
 	
+	static String title = "None";
+	
 	public static void		title(String title) {
 		Window.title(title);
+		GraphicsAPI.title = title;
+	}
+	
+	public static String	title() {
+		return title;
 	}
 	
 	/* -- Drawing stuffs -- */
@@ -183,7 +190,10 @@ public class GraphicsAPI {
 		Graphics.clearColor(x, y, z, a);
 	}
 	
+	public static boolean decorated;
+	
 	public static void setDecorated(boolean b) {
+		decorated = b;
 		if (b) {
 			GLFW.glfwSetWindowAttrib(Window.identifier(), GLFW_DECORATED, GLFW_TRUE);
 		} else {

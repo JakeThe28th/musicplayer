@@ -68,6 +68,10 @@ class Input {
 		glfwSetCharCallback(current_window, (window, codepoint) -> {
 			 input_string += (char) codepoint;
 		});
+		
+		GLFW.glfwSetWindowIconifyCallback(current_window, (window, iconified) -> {
+			GraphicsAPI.is_iconified = iconified;
+		});
 	}
 
 	private static void setMouseButtonDown(int button, boolean b) {

@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import org.joml.Vector4f;
 
+import musicplayer.MainProgram;
 import musicplayer.components.settings.interfaces.SettingChangeCallback;
 import musicplayer.components.settings.types.BooleanSetting;
 import musicplayer.components.settings.types.ColorSetting;
@@ -44,7 +45,16 @@ public class Settings {
 
 		setBoolean("use_native_window_decorations", true);
 		register("use_native_window_decorations", (name, value) -> {
-			if (GraphicsAPI.is_initialized()) GraphicsAPI.setDecorated(((BooleanSetting) value).value);
+			if (GraphicsAPI.is_initialized()) {
+				boolean val = ((BooleanSetting) value).value;
+				GraphicsAPI.setDecorated(val);
+				if (val) {
+					MainProgram.window_top = 0;
+				} else {
+					MainProgram.decorations.recalculate_size();
+					MainProgram.window_top = MainProgram.decorations.height();
+				}
+			}
 		});
 		
 		setRangedInteger("font_size", 18, 4, 30);

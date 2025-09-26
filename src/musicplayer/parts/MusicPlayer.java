@@ -96,6 +96,10 @@ public class MusicPlayer {
 		MusicPlayer.set_current_view_playlist(MusicPlayer.view_playlist);
 	}
 	
+	public static Song current_song() {
+		return current_song;
+	}
+	
 	public static void current(String album, String identifier) {
 				
 		// Maybe bad for loading songs quickly, but also maybe
@@ -368,6 +372,11 @@ public class MusicPlayer {
 			return minutes + ":" + String.format("%02d", seconds);
 		}
 		return "No Song";
+	}
+
+	public static String current_song_name() {
+		if (current_song == null) return "No song";
+		return current_song.name();
 	}
 
 }
