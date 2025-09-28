@@ -13,6 +13,7 @@ public class G_Text extends G_Element {
 	int 	y 			= 0;
 	
 	boolean can_wrap = true;
+	public boolean force_scroll = false;
 	public boolean can_click = false;
 	
 	public G_Text() { }
@@ -63,7 +64,7 @@ public class G_Text extends G_Element {
 	public void draw(int depth) {
 		GraphicsAPI.color(base_color);
 		
-		if (can_wrap && ( unpadded_width > area.width() && area.isHovered() ) ) {
+		if (can_wrap && ( unpadded_width > area.width() && (force_scroll || area.isHovered()) )) {
 			GraphicsAPI.setFadeColumn(area.left(), area.left()+30, area.right(), area.right()-30);
 			// scroll text
 			int time = (int) Math.floorMod((-System.currentTimeMillis() / 20), unpadded_width + 30);

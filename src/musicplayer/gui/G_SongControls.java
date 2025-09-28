@@ -107,6 +107,8 @@ public class G_SongControls extends G_Element {
 
 		center_icons.halign(Alignment.MIDDLE);
 		
+		title.force_scroll = Settings.always_scroll_current_song_title();
+		
 		addSubElement(title);
 		addSubElement(progress_bar);
 		addSubElement(center_icons);
@@ -245,6 +247,10 @@ public class G_SongControls extends G_Element {
 
 	public void setPlaying(boolean b) {
 		play_pause.icon_name = b ? "pause" : "play";
+	}
+
+	public void setForceScroll(boolean value) {
+		title.force_scroll = value;
 	}	
 	
 }

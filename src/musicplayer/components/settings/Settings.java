@@ -72,6 +72,11 @@ public class Settings {
 		
 		setFloat("volume", 0.5f);
 		
+		setBoolean("always_scroll_current_song_title", true);
+		register("always_scroll_current_song_title", (name, value) -> {
+			if (MainProgram.controls != null) MainProgram.controls.setForceScroll(((BooleanSetting) value).value);
+		});
+		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
@@ -120,6 +125,10 @@ public class Settings {
 	
 	public static float volume() {
 		return getFloat("volume");
+	}
+	
+	public static boolean always_scroll_current_song_title() {
+		return getBoolean("always_scroll_current_song_title");
 	}
 	
 	// -- + setting/getting + -- //

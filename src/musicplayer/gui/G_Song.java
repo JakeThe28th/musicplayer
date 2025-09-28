@@ -253,6 +253,12 @@ public class G_Song extends G_Element implements I_DraggableElement {
 			GraphicsAPI.color(Settings.ACCENT_COLOR());
 		}
 
+		if (this_is_the_current_song) {
+			name.force_scroll = Settings.always_scroll_current_song_title();
+		} else {
+			name.force_scroll = false;
+		}
+		
 		name.draw(depth+2);
 		
 		icons.draw(depth+1);
