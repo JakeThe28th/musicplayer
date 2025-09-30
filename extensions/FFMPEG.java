@@ -18,7 +18,7 @@ public class FFMPEG extends Extension implements AudioReaderExtension {
 	
 	boolean ffmpeg_installed = false;
 
-	public static final String[] TYPES = new String[] { "oga", "ogg", "m4a", "mp3" };
+	public static final String[] TYPES = new String[] { "oga", "ogg", "m4a", "mp3", "flac" };
 	
 	@Override public String   identifier() 		{ return "utility;ffmpeg"; }
 	@Override public String[] supportedTypes() 	{ return TYPES; }

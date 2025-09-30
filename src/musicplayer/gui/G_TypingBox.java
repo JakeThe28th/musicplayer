@@ -1,6 +1,10 @@
 package musicplayer.gui;
 
+import org.joml.Vector4f;
+
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.KeybindAPI;
+import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
 public class G_TypingBox extends G_Element {
@@ -10,10 +14,14 @@ public class G_TypingBox extends G_Element {
 	protected String rawtext = "";
 	protected G_Text text = new G_Text();
 	
+	Vector4f selected_color = new Vector4f(0.8f,0.8f,1f,1);
+	
 	{
 		text.text = "";
 		text.base_color = GraphicsAPI.BLACK;
 		addSubElement(text);
+		hover_color = new Vector4f(0,0,0,0.2f);
+		base_color = GraphicsAPI.WHITE;
 	}
 
 	@Override
@@ -33,6 +41,8 @@ public class G_TypingBox extends G_Element {
 		right -= right_margin;
 		top += top_margin;
 		bottom -= bottom_margin;
+		
+		hover_rectangle = new Rectangle(left, top, right, bottom);
 		
 		background = new Rectangle(left, top, right, bottom);
 		
@@ -58,14 +68,26 @@ public class G_TypingBox extends G_Element {
 	
 	@Override
 	public boolean input() {
+		base_color = GraphicsAPI.WHITE;
 		if (typing) {
+			base_color = selected_color;
+			KeybindAPI.lock_keybinds = true;
 			if (!rawtext.equals(GraphicsAPI.input_string())) {
 				rawtext = GraphicsAPI.input_string();
 				text.text = GraphicsAPI.input_string();
 				onChangeText(rawtext);
 			}
+			if (KeybindAPI.shouldStopTyping()) {
+				typing = false;
+			}
 		}
 		return super.input();
+	}
+	
+	@Override
+	public void onClick() {
+		GraphicsAPI.input_string(rawtext);
+		typing = true;
 	}
 	
 	public void onChangeText(String new_text) {

@@ -44,6 +44,7 @@ public abstract class G_Element {
 	public int 			bottom_margin 		= 5;
 	
 	public Vector4f   	base_color			= new Vector4f(1,1,1,1);
+	public Vector4f		hover_color			= GraphicsAPI.TRANSPARENT_WHITE;
 	
 	public void halign(Alignment align) 		{ this.horizontal_align = align; }
 	public void valign(Alignment align) 		{ this.vertical_align = align; }
@@ -72,7 +73,7 @@ public abstract class G_Element {
 		}
 		
 		if (hover_rectangle.contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY())) {
-			GraphicsAPI.color(GraphicsAPI.TRANSPARENT_WHITE);
+			GraphicsAPI.color(hover_color);
 			if (GraphicsAPI.left_click_down()) { GraphicsAPI.color(GraphicsAPI.TRANSLUCENT_WHITE); }
 			if (GraphicsAPI.left_click_released()) { onClick(); return true; }
 			if (GraphicsAPI.left_click_pressed()) { onLeftMousePress(); return true; }

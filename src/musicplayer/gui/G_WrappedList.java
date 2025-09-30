@@ -28,7 +28,7 @@ public class G_WrappedList extends G_Element {
 		
 		int xx = left;
 		int yy = top;
-		int element_height = elements.get(0).height();
+		int element_height =  elements.size() != 0 ? elements.get(0).height() : 0;
 		int max_empty_space_on_right = 100;
 		boolean advance = false;
 		for (G_Element e : elements) {

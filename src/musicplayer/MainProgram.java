@@ -154,6 +154,8 @@ public class MainProgram {
 			ComponentAPI.tick();
 			ExtensionAPI.tick();
 			
+			KeybindAPI.lock_keybinds = false;
+			
 			input = true;
 			
 			if (!GraphicsAPI.windowIsHovered()) input = false;

@@ -65,6 +65,16 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 	Thread download_thread = new Thread() {
 	    public void run() { 
 			Log.send("(YT-DLP) Starting download thread");
+			
+			Log.send("(YT-DLP) Updating YT-DLP");
+    		try { 
+    			Utility.runCommand(null, null, new String[] { working_directory + "yt-dlp.exe", "-U"});
+    		} catch (IOException e) { 
+    			MainProgram.showError("An error occured while updating YT-DLP");
+    			MainProgram.showError(e.getMessage());
+    			Log.trace(e);
+    		}
+    		
 			while (!interrupted() && MainProgram.MAIN_THREAD.isAlive()) try {
 	    		if (DLhasnext()) {
 	    			QueuedDownload q = DLpop();

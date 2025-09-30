@@ -126,12 +126,15 @@ public class G_SearchScreen extends G_Element implements Screen {
 	
 	{ 	
 		KeybindAPI.bind(
+				true,
 				"confirm_search", 
 				GLFW.glfwGetKeyScancode(GLFW.GLFW_KEY_ENTER), 
 				GLFW.GLFW_RELEASE,
 				( ) -> {
-					if (MainProgram.isCurrentScreen(identifier()))
+					if (MainProgram.isCurrentScreen(identifier())) {
 						search_go_button.onClick();
+						KeybindAPI.should_stop_typing = true;
+					}
 				}
 			); 
 	}
