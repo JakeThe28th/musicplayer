@@ -133,7 +133,6 @@ public class GraphicsAPI {
 		if (RenderQueue.current_scissor == null) return new Rectangle(0, 0, width, height);
 		return RenderQueue.current_scissor;
 	}
-
 	
 	/* -- Input stuffs -- */
 	

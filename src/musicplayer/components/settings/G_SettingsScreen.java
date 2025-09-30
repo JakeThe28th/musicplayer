@@ -11,6 +11,7 @@ import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
 import musicplayer.gui.G_List;
+import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Slider;
 import musicplayer.gui.G_Text;
 import musicplayer.gui.enums.Alignment;
@@ -19,8 +20,26 @@ import musicplayer.gui.screens.Screen;
 import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 
-public  class G_SettingsScreen extends G_Element implements Screen {
+public class G_SettingsScreen extends G_Element implements Screen {
+		
+	public static final G_SettingsScreen INSTANCE = new G_SettingsScreen();
+	@Override public G_Element instance() { return INSTANCE; }
+	@Override public String identifier() { return "builtin;settings";}
 	
+	G_RealSettingsScreen real_screen = new G_RealSettingsScreen();
+	G_Scrollable settings_scrollable = new G_Scrollable(real_screen);
+	
+	{ this.addSubElement(settings_scrollable); }
+
+	@Override public void recalculate_size() 					{ settings_scrollable.recalculate_size(); }
+	@Override public void layout(int l, int t, int r, int b) 	{ settings_scrollable.layout(l, t, r, b); }
+	@Override public void draw(int depth) 						{ settings_scrollable.draw(depth); 		  }
+	
+	public void reload() { INSTANCE.real_screen.reload(); }
+
+}
+
+class G_RealSettingsScreen extends G_Element {
 	G_Icon 		home 			= new G_Icon("home")
 	{ @Override public void onClick() { 
 		MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
@@ -102,8 +121,6 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 		addSubElement(ranged_integers);
 	}
 
-	public static final G_SettingsScreen INSTANCE = new G_SettingsScreen();
-
 	@Override
 	public void recalculate_size() {
 		colors.recalculate_size();
@@ -113,6 +130,16 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 		boolean_header.recalculate_size();
 		ranged_integers.recalculate_size();
 		slider_header.recalculate_size();
+		
+		this.unpadded_height = 
+				  colors.height() 
+				+ home.height() 
+				+ booleans.height() 
+				+ color_header.height() 
+				+ boolean_header.height() 
+				+ ranged_integers.height() 
+				+ slider_header.height()
+				+ 10;
 	}
 	
 	Rectangle color_toggle_section_break;
@@ -243,8 +270,5 @@ public  class G_SettingsScreen extends G_Element implements Screen {
 		}
 		
 	}
-
-	@Override public G_Element instance() { return INSTANCE; }
-	@Override public String identifier() { return "builtin;settings";}
 
 }

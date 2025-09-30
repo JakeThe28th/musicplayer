@@ -80,6 +80,8 @@ public class G_HexColor extends G_Element {
 		right -= right_margin;
 		top += top_margin;
 		bottom -= bottom_margin;
+		
+		this.hover_rectangle = new Rectangle(0,0,0,0);
 
 		int pad_sides = copy.width() + paste.width();
 		color_text.layout(left+pad_sides, top, right-pad_sides, bottom);

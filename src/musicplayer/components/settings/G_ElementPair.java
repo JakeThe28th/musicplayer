@@ -1,6 +1,8 @@
 package musicplayer.components.settings;
 
+import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
+import musicplayer.utility.Rectangle;
 
 public class G_ElementPair extends G_Element {
 	
@@ -47,6 +49,8 @@ public class G_ElementPair extends G_Element {
 		
 		float width = right - left;
 		int left_width = (int) (width * percent);
+		
+		this.hover_rectangle = new Rectangle(0,0,0,0);
 		
 		a.layout(left, top, left+left_width, bottom);
 		b.layout(left+left_width, top, right, bottom);
