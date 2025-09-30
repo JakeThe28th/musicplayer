@@ -77,6 +77,8 @@ public class Settings {
 			if (MainProgram.controls != null) MainProgram.controls.setForceScroll(((BooleanSetting) value).value);
 		});
 		
+		setBoolean("skip_broken_songs", true);
+		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
@@ -129,6 +131,10 @@ public class Settings {
 	
 	public static boolean always_scroll_current_song_title() {
 		return getBoolean("always_scroll_current_song_title");
+	}
+	
+	public static boolean skip_broken_songs() {
+		return getBoolean("skip_broken_songs");
 	}
 	
 	// -- + setting/getting + -- //

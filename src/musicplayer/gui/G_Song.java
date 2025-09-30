@@ -22,6 +22,7 @@ import musicplayer.utility.Rectangle;
 
 public class G_Song extends G_Element implements I_DraggableElement {
 
+	public static final Vector4f NAME_BASE_COLOR = GraphicsAPI.WHITE;
 	public UUID song;
 	public G_Text name = new G_Text();
 	
@@ -86,6 +87,7 @@ public class G_Song extends G_Element implements I_DraggableElement {
 		name.right_margin = 0;
 		name.left_margin = 0;
 		name.recalculate_size();
+		this.name.base_color = G_Song.NAME_BASE_COLOR;
 	}
 	
 	boolean being_dragged = false;
@@ -145,6 +147,10 @@ public class G_Song extends G_Element implements I_DraggableElement {
 			icons.remove(remove);
 		}
 		index = i;
+		
+		if (MusicPlayer.isBroken(song)) {
+			this.name.base_color = GraphicsAPI.TRANSPARENT_RED;
+		}
 	}
 	
 	@Override

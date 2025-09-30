@@ -155,6 +155,9 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 		if (!new File(location).exists()) {
 			MainProgram.showError("Failed to download " + song);
 			MainProgram.showError("URL: " + url);
+			MusicPlayer.markAsBroken(song);
+			MusicPlayer.setLoadProgress(song, 0);
+
 			return;
 		}
 		
@@ -348,7 +351,8 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 			if (real_song.file_extension().equals(TYPES[0])) {
 				try {
 					String url = Files.readString(Paths.get(real_song.directory + "\\" + real_song.field("file"))).strip();
-					if (!cached_urls.contains(url)) {
+					// TODO: Checking the base color like this is kinda scuffed...
+					if (!cached_urls.contains(url) && song.name.base_color == G_Song.NAME_BASE_COLOR) {
 						song.name.base_color = GraphicsAPI.TRANSLUCENT_WHITE;
 					}
 				} catch (IOException e) { e.printStackTrace(); }				

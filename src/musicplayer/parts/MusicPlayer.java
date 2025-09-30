@@ -3,6 +3,7 @@ package musicplayer.parts;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
@@ -43,6 +44,18 @@ public class MusicPlayer {
 		load_progress.remove(song);
 		reload_playlist_gui = true;
 		if(song.equals(current_song.uuid())) restart_song = true;
+	}
+	
+	//
+	
+	private static LinkedHashSet<UUID> broken_songs = new LinkedHashSet<>();
+
+	public static void markAsBroken(UUID song) {
+		broken_songs.add(song);
+	}
+	
+	public static boolean isBroken(UUID song) {
+		return broken_songs.contains(song);
 	}
 	
 	//
@@ -193,6 +206,11 @@ public class MusicPlayer {
 		}
 	
 	public static void update() { 
+		
+		if (current_song != null && isBroken(current_song.uuid()) && Settings.skip_broken_songs()) {
+			next();
+		}
+		
 		if (reload_playlist_gui) {
 			reload_playlist_gui = false;
 			set_current_view_playlist(view_playlist); // reload playlist gui
