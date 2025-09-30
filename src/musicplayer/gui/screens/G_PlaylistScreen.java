@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
-import musicplayer.MainProgram;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
 import musicplayer.gui.G_List;
@@ -16,7 +15,6 @@ import musicplayer.gui.G_PlaylistHeader;
 import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Text;
 import musicplayer.gui.extra.Popup.Option;
-import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
 
 public class G_PlaylistScreen extends G_Element implements Screen {
