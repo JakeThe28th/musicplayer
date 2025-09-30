@@ -123,4 +123,8 @@ public class G_List extends G_Element {
 		elements.remove(e);
 	}
 
+	public void clear() {
+		elements.clear();
+	}
+
 }

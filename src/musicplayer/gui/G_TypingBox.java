@@ -9,10 +9,18 @@ import musicplayer.utility.Rectangle;
 
 public class G_TypingBox extends G_Element {
 	
-	boolean typing = true;
+	public static G_TypingBox current_typing_box = null;
+	public boolean typing() { return current_typing_box == this; }
+	
+	{  current_typing_box = this; }
 	
 	protected String rawtext = "";
 	protected G_Text text = new G_Text();
+	
+	public void rawtext(String newtext) {
+		rawtext = newtext;
+		text.text(newtext);
+	}
 	
 	Vector4f selected_color = new Vector4f(0.8f,0.8f,1f,1);
 	
@@ -49,7 +57,7 @@ public class G_TypingBox extends G_Element {
 		text.layout(left, top, right, bottom);
 		
 		int ww = text.width() + 4;
-		if (System.currentTimeMillis() / 750 % 2 == 0 && typing) {
+		if (System.currentTimeMillis() / 750 % 2 == 0 && typing()) {
 			typing_indicator = new Rectangle(ww,top+8,ww+2,bottom-8);
 		} else {
 			typing_indicator = new Rectangle(ww,0,ww+4,0);
@@ -69,7 +77,7 @@ public class G_TypingBox extends G_Element {
 	@Override
 	public boolean input() {
 		base_color = GraphicsAPI.WHITE;
-		if (typing) {
+		if (typing()) {
 			base_color = selected_color;
 			KeybindAPI.lock_keybinds = true;
 			if (!rawtext.equals(GraphicsAPI.input_string())) {
@@ -78,7 +86,7 @@ public class G_TypingBox extends G_Element {
 				onChangeText(rawtext);
 			}
 			if (KeybindAPI.shouldStopTyping()) {
-				typing = false;
+				current_typing_box = null;
 			}
 		}
 		return super.input();
@@ -86,8 +94,8 @@ public class G_TypingBox extends G_Element {
 	
 	@Override
 	public void onClick() {
+		current_typing_box = this;
 		GraphicsAPI.input_string(rawtext);
-		typing = true;
 	}
 	
 	public void onChangeText(String new_text) {

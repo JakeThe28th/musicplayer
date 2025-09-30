@@ -8,6 +8,7 @@ import musicplayer.MainProgram;
 import musicplayer.audio.AudioSource;
 import musicplayer.extensions.builtin.BasicImporter;
 import musicplayer.extensions.builtin.BuiltinAudioReader;
+import musicplayer.extensions.builtin.PlaylistMetadata;
 import musicplayer.extensions.types.AudioReaderExtension;
 import musicplayer.extensions.types.GUIModifierExtension;
 import musicplayer.graphics.GraphicsAPI;
@@ -42,7 +43,8 @@ public class ExtensionAPI {
 		
 		loadExtension(new BuiltinAudioReader());
 		loadExtension(new BasicImporter());
-
+		loadExtension(new PlaylistMetadata());
+		
 		// Load external extensions
 		for (Object extension : Utility.loadClassesFromFolder("extensions/")) {
 			if (Extension.class.isAssignableFrom(extension.getClass())) loadExtension((Extension) extension);

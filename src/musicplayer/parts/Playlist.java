@@ -10,11 +10,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
 import musicplayer.MainProgram;
 import musicplayer.graphics.Texture;
+import musicplayer.utility.Log;
 import musicplayer.utility.Utility;
 
 public class Playlist {
@@ -127,6 +129,10 @@ public class Playlist {
 	public void name(String n) {
 		name = n;
 		fields.put("name", name);
+	}
+	
+	public Set<String> fields() {
+		return fields.keySet();
 	}
 	
 	public String metadata(String key) {
