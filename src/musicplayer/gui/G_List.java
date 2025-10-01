@@ -126,5 +126,19 @@ public class G_List extends G_Element {
 	public void clear() {
 		elements.clear();
 	}
+	
+	@Override // also cull input
+	public boolean input() {
+		
+		if (MainProgram.popups.size() > 0) return false;
+		
+		for (G_Element e : sub_elements) {
+			if (e.hover_rectangle.left() == -1) continue;
+			if (e.input()) return true;
+		}
+		
+		return false;
+		
+	}
 
 }
