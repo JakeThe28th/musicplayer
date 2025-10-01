@@ -50,14 +50,7 @@ public class Settings {
 				boolean val = !((BooleanSetting) value).value;
 				GraphicsAPI.setDecorated(!val);
 				GraphicsAPI.setWindowPinned(val);
-				if (val) {
-					GraphicsAPI.setUnfocusedWindowOpacity(0.65f);
-					GraphicsAPI.setFocusedWindowOpacity(0.95f);
-				} else {
-					GraphicsAPI.mouse_hover_time = 1;
-					GraphicsAPI.setUnfocusedWindowOpacity(1);
-					GraphicsAPI.setFocusedWindowOpacity(1);
-				}
+				if (!val) GraphicsAPI.mouse_hover_time = 1;
 			}
 		});
 		
@@ -81,6 +74,15 @@ public class Settings {
 		
 		setBoolean("playlist_start_at_one", true);
 
+		
+		setRangedInteger("unfocused_window_opacity", 65, 0, 100);
+		register("unfocused_window_opacity", (name, value) -> {
+			GraphicsAPI.setUnfocusedWindowOpacity(unfocused_window_opacity() / 100f);
+			});
+		setRangedInteger("focused_window_opacity", 95, 0, 100);
+		register("focused_window_opacity", (name, value) -> {
+			GraphicsAPI.setFocusedWindowOpacity(focused_window_opacity() / 100f);
+		});
 		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
@@ -142,6 +144,14 @@ public class Settings {
 	
 	public static boolean playlist_start_at_one() {
 		return getBoolean("playlist_start_at_one");
+	}
+	
+	public static int focused_window_opacity() {
+		return getInt("focused_window_opacity");
+	}
+	
+	public static int unfocused_window_opacity() {
+		return getInt("unfocused_window_opacity");
 	}
 	
 	// -- + setting/getting + -- //

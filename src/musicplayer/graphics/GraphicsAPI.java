@@ -223,10 +223,12 @@ public class GraphicsAPI {
 	public static float unfocused_window_opacity = 1;
 
 	public static void setUnfocusedWindowOpacity(float opacity) {
+		if (opacity < 0.01f) opacity = 0.01f;
 		unfocused_window_opacity = opacity;
 	}
 
 	public static void setFocusedWindowOpacity(float opacity) {
+		if (opacity < 0.01f) opacity = 0.01f;
 		focused_window_opacity = opacity;
 	}
 	
@@ -235,7 +237,7 @@ public class GraphicsAPI {
 	
 	public static void tickOpacity() {
 		// If the opacity isn't set to full
-		if (focused_window_opacity != 1 && unfocused_window_opacity != 1) {
+		if (!Settings.use_native_window_decorations()) {
 			// If the opacities aren't equal
 			if (focused_window_opacity != unfocused_window_opacity) {
 
