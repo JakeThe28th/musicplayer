@@ -79,6 +79,9 @@ public class Settings {
 		
 		setBoolean("skip_broken_songs", true);
 		
+		setBoolean("playlist_start_at_one", true);
+
+		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
@@ -135,6 +138,10 @@ public class Settings {
 	
 	public static boolean skip_broken_songs() {
 		return getBoolean("skip_broken_songs");
+	}
+	
+	public static boolean playlist_start_at_one() {
+		return getBoolean("playlist_start_at_one");
 	}
 	
 	// -- + setting/getting + -- //

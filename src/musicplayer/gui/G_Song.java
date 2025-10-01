@@ -228,7 +228,9 @@ public class G_Song extends G_Element implements I_DraggableElement {
 		if (this_is_the_current_song) {
 			GraphicsAPI.color(base_color);
 		}
-		GraphicsAPI.text(number_x, top, depth, index + "");
+		
+		int add = Settings.playlist_start_at_one() ? 1 : 0;
+		GraphicsAPI.text(number_x, top, depth, (index + add) + "");
 		
 		GraphicsAPI.color(base_color);
 		
