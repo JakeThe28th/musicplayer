@@ -18,7 +18,7 @@ import musicplayer.utility.Rectangle;
  * just be... kind of overkill.
  */
 public abstract class G_Element {
-		
+			
 	public static final ArrayList<G_Element> EMPTY = new ArrayList<G_Element>();
 	
 	protected ArrayList<G_Element> sub_elements = new ArrayList<G_Element>();
@@ -65,12 +65,14 @@ public abstract class G_Element {
 	protected Rectangle hover_rectangle = new Rectangle(0,0,0,0);
 	
 	public boolean input() {
-		
+				
 		if (MainProgram.popups.size() > 0) return false;
 		
 		for (G_Element e : sub_elements) {
 			if (e.input()) return true;
 		}
+		
+		if (!GraphicsAPI.windowIsHovered()) return false;
 		
 		if (hover_rectangle.contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY())) {
 			GraphicsAPI.color(hover_color);
@@ -79,6 +81,7 @@ public abstract class G_Element {
 			if (GraphicsAPI.left_click_pressed()) { onLeftMousePress(); return true; }
 
 			GraphicsAPI.rect(hover_rectangle, 0);
+			onHover();
 		}
 		
 		return false;
@@ -99,4 +102,5 @@ public abstract class G_Element {
 	public void onClick() { }
 	public void onLeftMousePress() { }
 	
+	public void onHover() { }
 }

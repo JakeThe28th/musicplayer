@@ -27,6 +27,10 @@ public record Rectangle(int left, int top, int right, int bottom) {
 	public Rectangle thin_horizontally(int i) {
 		return new Rectangle(left + i, top, right - i, bottom);
 	}
+	
+	public Rectangle expand_horizontally(int i) {
+		return new Rectangle(left - i, top, right + i, bottom);
+	}
 
 	public Rectangle thin_vertically(double percent) {
 		int i = (int) (height() * percent);

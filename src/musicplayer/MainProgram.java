@@ -34,7 +34,7 @@ public class MainProgram {
 	
 	public static final boolean SHOW_FPS = false;
 	
-	public static final String VERSION = "0.3.10a";
+	public static final String VERSION = "0.3.11a";
 	public static final String PROGRAM_NAME = "NOW PLAYING";
 	public static final String PROGRAM_TITLE = PROGRAM_NAME + " " + VERSION;
 	
@@ -158,7 +158,7 @@ public class MainProgram {
 			
 			input = true;
 			
-			if (!GraphicsAPI.windowIsHovered()) input = false;
+			// if (!GraphicsAPI.windowIsHovered()) input = false;
 			
 			//GraphicsHandler.clear();
 			

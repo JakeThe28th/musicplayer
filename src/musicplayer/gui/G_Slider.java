@@ -54,8 +54,6 @@ public class G_Slider extends G_Element {
 		GraphicsAPI.color(slider_color);
 		GraphicsAPI.rect(left, y-thickness, left + draw_amount, y+thickness, depth);
 		GraphicsAPI.dot(left + draw_amount, y, depth, dot_size);
-
-		if (!GraphicsAPI.windowIsHovered()) { dragging = false; }
 		
 		// Draw number when hovering
 		if (dragging || hover_rectangle.contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY())) {
@@ -81,6 +79,9 @@ public class G_Slider extends G_Element {
 
 	@Override
 	public boolean input() {
+		
+		if (!GraphicsAPI.windowIsHovered()) { dragging = false; }
+		
 		if (hover_rectangle.contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY())) {
 			GraphicsAPI.color(GraphicsAPI.TRANSPARENT_WHITE);
 			if (GraphicsAPI.left_click_pressed()) { dragging = true; onDrag(amount); return true; }

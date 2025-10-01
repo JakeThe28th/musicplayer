@@ -59,8 +59,38 @@ public class G_SongControls extends G_Element {
 			show_volume_slider = !show_volume_slider;
 			volume_slider_transition_timer = System.currentTimeMillis();
 			}};
- public G_Icon 		shuffle 		= new G_Icon("shuffle")
-			{ @Override public void onClick() { MusicPlayer.cyclePlaybackMode(); }};
+ public G_Icon 		shuffle 		= new G_Icon("shuffle") { 
+	 @Override public void onClick() { MusicPlayer.cyclePlaybackMode(); }
+	 @Override public void onHover() {
+		 
+		 GraphicsAPI.font_size((int) (Settings.font_size()*0.75f));
+		 
+		 String text = switch (MusicPlayer.playback_mode) {
+			case MusicPlayer.LOOP_NONE -> "Play Once";
+			case MusicPlayer.LOOP_SONG -> "Loop Song";
+			case MusicPlayer.LOOP_LIST -> "Loop Playlist";
+			case MusicPlayer.SHUFFLE   -> "Shuffle";
+			default -> "Unknown playback mode.";
+		};
+		 
+		 int padding = 5;
+		 int height_padding = 5;
+		 int x_middle = hover_rectangle.left() + ((hover_rectangle.right() - hover_rectangle.left()) / 2);
+		 int text_height = GraphicsAPI.size(text).y;
+		 int text_width = GraphicsAPI.size(text).x;
+		 Rectangle rect = new Rectangle(
+				 x_middle, 
+				 hover_rectangle.top() - ((text_height + (padding*2)) + height_padding), 
+				 x_middle, 
+				 hover_rectangle.top() - (height_padding));
+		 rect = rect.expand_horizontally(((text_width+(padding*2))/2));
+		 GraphicsAPI.color(GraphicsAPI.BLACK75);
+		 GraphicsAPI.rect(rect, 100);
+		 GraphicsAPI.color(GraphicsAPI.WHITE);
+		 GraphicsAPI.text(rect.left()+padding, rect.top()+padding, 120, text);
+		 GraphicsAPI.font_size(Settings.font_size());
+	 }
+ };
 			
 	G_Slider 		volume_slider	= new G_Slider() 
 		{ @Override public void onDrag(double new_value) {
