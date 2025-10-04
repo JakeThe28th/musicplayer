@@ -72,7 +72,8 @@ class Window {
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(window);
 		// Enable v-sync
-		glfwSwapInterval(1);
+		//glfwSwapInterval(1);
+		setVsync(Settings.enable_vsync());
 
 		// Make the window visible
 		glfwShowWindow(window);
@@ -114,6 +115,10 @@ class Window {
 
 	public static void title(String title) {
 		GLFW.glfwSetWindowTitle(window, title);
+	}
+
+	public static void setVsync(boolean value) {
+		glfwSwapInterval(value ? 1 : 0);		
 	}
 
 }

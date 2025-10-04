@@ -84,6 +84,16 @@ public class Settings {
 			GraphicsAPI.setFocusedWindowOpacity(focused_window_opacity() / 100f);
 		});
 		
+		setBoolean("show_fps", false);
+		register("show_fps", (name, value) -> {
+			MainProgram.SHOW_FPS = ((BooleanSetting) value).value;
+		});
+		
+		setBoolean("enable_vsync", true);
+		register("enable_vsync", (name, value) -> {
+			GraphicsAPI.setVsync(((BooleanSetting) value).value);
+		});
+		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
@@ -152,6 +162,14 @@ public class Settings {
 	
 	public static int unfocused_window_opacity() {
 		return getInt("unfocused_window_opacity");
+	}
+	
+	public static boolean show_fps() {
+		return getBoolean("show_fps");
+	}
+	
+	public static boolean enable_vsync() {
+		return getBoolean("enable_vsync");
 	}
 	
 	// -- + setting/getting + -- //

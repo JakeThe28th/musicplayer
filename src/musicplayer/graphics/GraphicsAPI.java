@@ -284,4 +284,8 @@ public class GraphicsAPI {
 		return GLFW.glfwGetWindowAttrib(Window.identifier(), GLFW.GLFW_HOVERED) == GLFW.GLFW_TRUE;
 	}
 
+	public static void setVsync(boolean value) {
+		Window.setVsync(value);
+	}
+
 }
