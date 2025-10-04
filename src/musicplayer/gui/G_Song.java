@@ -104,9 +104,9 @@ public class G_Song extends G_Element implements I_DraggableElement {
 
 	@Override
 	public void drop() {
-
 		playlist.remove(index);
 		playlist.add(song, calculate_target_index());
+		MusicPlayer.song_index = calculate_target_index();
 		MusicPlayer.reload_view_playlist();
 	}
 	
