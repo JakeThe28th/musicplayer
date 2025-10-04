@@ -26,10 +26,16 @@ class RenderQueue {
 	
 	public static boolean delete_queue_after_rendering = true;
 	
+	static Mesh last_mesh = null;
+	static Texture last_texture = null;
+	static Rectangle last_scissor = new Rectangle(0,0,0,0);
 	public static void render() {
 		Graphics.clear();
 		for (RenderState state : queue) {
-			state.mesh.bind();
+			if (last_mesh != state.mesh) {
+				state.mesh.bind();
+				last_mesh= state.mesh;
+			}
 			Shader.uniform("transform", state.transform);
 			Shader.uniform("mix_color", state.color);
 
@@ -37,23 +43,30 @@ class RenderQueue {
 				Shader.uniform(uniform, state.integer_uniforms.get(uniform));
 			}
 			
+			if (last_texture != state.texture) {
 			if (state.texture != null) {
 				glBindTexture(GL_TEXTURE_2D, state.texture.texture);
 			}
+			last_texture = state.texture;
+			}
 			
 			if (state.scissor() != null) {
+				if (!state.scissor.equals(last_scissor)) {
 				GL40.glScissor(
 						state.scissor().left(), 
 						Window.window_height - state.scissor().bottom(), 
 						(state.scissor().right()-state.scissor().left()), 
 						(state.scissor().bottom()-state.scissor().top()));
 				GL40.glEnable(GL40.GL_SCISSOR_TEST);
+				}
 			} else {
+				if (last_scissor != null) {
 				GL40.glScissor(0, 0, Window.window_width, Window.window_height);
 				GL40.glDisable(GL40.GL_SCISSOR_TEST);
-
+				}
 			}
-
+			last_scissor = state.scissor;
+			
 			GL40.glDrawElements(GL_TRIANGLES, state.mesh.count(), GL_UNSIGNED_INT, 0);
 		}
 		temp_integer_uniforms.clear();
