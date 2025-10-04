@@ -96,6 +96,8 @@ public class Settings {
 			GraphicsAPI.setVsync(((BooleanSetting) value).value);
 		});
 		
+		setRangedInteger("previous_song_buffer_threshold", 5, 0, 30);
+		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
@@ -176,6 +178,10 @@ public class Settings {
 	
 	public static boolean enable_vsync() {
 		return getBoolean("enable_vsync");
+	}
+	
+	public static int previous_song_buffer_threshold() {
+		return getInt("previous_song_buffer_threshold");
 	}
 	
 	// -- + setting/getting + -- //

@@ -18,6 +18,7 @@ import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Song;
 import musicplayer.gui.screens.G_PlaylistScreen;
 import musicplayer.utility.Log;
+import musicplayer.utility.Utility;
 
 /** Handles most stuff regarding music playback */
 public class MusicPlayer {
@@ -263,6 +264,15 @@ public class MusicPlayer {
 	}
 	
 	public static void previous() { 
+		
+		int threshold = Settings.previous_song_buffer_threshold();
+		int time = Utility.MStoSeconds(current_song_audio.currentTimeMillis());
+		if (threshold != 0 && time > threshold ) {
+			seek(0);
+			if (playing) play();
+			return;
+		}
+		
 		if (playlist.equals(NO_PLAYLIST)) return;
 		
 		song_index--;

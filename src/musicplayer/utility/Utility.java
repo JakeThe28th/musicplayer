@@ -171,5 +171,9 @@ public class Utility {
 			
 		return ret;
 	}
+
+	public static int MStoSeconds(long ms) {
+		return (int) (ms / 1000);
+	}
 	
 }
