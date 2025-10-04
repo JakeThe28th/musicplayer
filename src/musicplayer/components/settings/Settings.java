@@ -17,6 +17,7 @@ import musicplayer.components.settings.types.RangedIntegerSetting;
 import musicplayer.components.settings.types.Setting;
 import musicplayer.components.settings.types.StringSetting;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.gui.G_Grid;
 import musicplayer.utility.Log;
 
 public class Settings {
@@ -97,6 +98,27 @@ public class Settings {
 		});
 		
 		setRangedInteger("previous_song_buffer_threshold", 5, 0, 30);
+		
+		setRangedInteger("focused_window_opacity", 95, 0, 100);
+		register("focused_window_opacity", (name, value) -> {
+			GraphicsAPI.setFocusedWindowOpacity(focused_window_opacity() / 100f);
+		});
+		
+		
+		setRangedInteger("max_album_grid_size", 500, 20, 1000);
+		register("max_album_grid_size", (name, value) -> {
+			G_Grid.MAX_ITEM_SIZE = ((RangedIntegerSetting) value).value;
+		});
+		
+		setRangedInteger("min_album_grid_size", 150, 20, 1000);
+		register("min_album_grid_size", (name, value) -> {
+			G_Grid.MIN_ITEM_SIZE = ((RangedIntegerSetting) value).value;
+		});
+		
+		setRangedInteger("album_grid_colum_target", 3, 1, 10);
+		register("album_grid_colum_target", (name, value) -> {
+			G_Grid.TARGET_COLUMN_COUNT = ((RangedIntegerSetting) value).value;
+		});
 		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
@@ -182,6 +204,18 @@ public class Settings {
 	
 	public static int previous_song_buffer_threshold() {
 		return getInt("previous_song_buffer_threshold");
+	}
+	
+	public static int max_album_grid_size() {
+		return getInt("max_album_grid_size");
+	}
+	
+	public static int min_album_grid_size() {
+		return getInt("min_album_grid_size");
+	}
+	
+	public static int album_grid_colum_target() {
+		return getInt("album_grid_colum_target");
 	}
 	
 	// -- + setting/getting + -- //

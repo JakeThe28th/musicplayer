@@ -2,6 +2,8 @@ package musicplayer.gui;
 
 import java.util.ArrayList;
 
+import musicplayer.components.settings.Settings;
+
 public class G_Grid extends G_Element {
 
 	ArrayList<G_Element> elements = new ArrayList<G_Element>();
@@ -13,9 +15,13 @@ public class G_Grid extends G_Element {
 		elements.add(element);
 	}
 	
-	public static final int MAX_ITEM_SIZE = 400; // Overrides TARGET_COLUMN_COUNT if necessary
-	public static final int MIN_ITEM_SIZE = 150;  // Overrides TARGET_COLUMN_COUNT if necessary
-	public static final int TARGET_COLUMN_COUNT = 3;
+	// Overrides TARGET_COLUMN_COUNT if necessary
+	public static int MAX_ITEM_SIZE = Settings.max_album_grid_size();
+	
+	// Overrides TARGET_COLUMN_COUNT if necessary
+	public static int MIN_ITEM_SIZE = Settings.min_album_grid_size();
+	
+	public static int TARGET_COLUMN_COUNT = Settings.album_grid_colum_target();
 
 	int columns = 3;
 	int item_size = 10;
