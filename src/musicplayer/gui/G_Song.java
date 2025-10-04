@@ -278,11 +278,7 @@ public class G_Song extends G_Element implements I_DraggableElement {
 	@Override
 	public void onClick() {
 		if (!is_search_result) {
-			MusicPlayer.song_index = index;
-			MusicPlayer.current(song);
-			MusicPlayer.set_current_playlist(MusicPlayer.view_playlist);
-			MusicPlayer.seek(0);
-			MusicPlayer.play();
+			MusicPlayer.currentFromPlaylist(index, playlist);
 		} else {
 			if (Search.playlist_to_add_to == null) MusicPlayer.go_to_song_source(song, playlist);
 			if (Search.playlist_to_add_to != null) {

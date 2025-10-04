@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Stack;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
@@ -58,6 +59,11 @@ public class MusicPlayer {
 	public static boolean isBroken(UUID song) {
 		return broken_songs.contains(song);
 	}
+	
+	//
+	
+	static record PreviousSongData(String playlist, int index) {}
+	static Stack<PreviousSongData> previous_songs = new Stack<>();
 	
 	//
 	
@@ -141,6 +147,18 @@ public class MusicPlayer {
 
 	}
 	
+	public static void currentFromPlaylist(int index, Playlist playlist) {
+		
+		previous_songs.push(new PreviousSongData(MusicPlayer.playlist, song_index));
+
+		MusicPlayer.song_index = index;
+		MusicPlayer.current(playlist.listSongs().get(index).uuid());
+		//MusicPlayer.set_current_playlist(MusicPlayer.view_playlist);
+		MusicPlayer.set_current_playlist(playlist.identifier());
+		MusicPlayer.seek(0);
+		MusicPlayer.play();
+	}
+	
 	public static void go_to_song_source(UUID song, Playlist playlist) {
 		if (playlist == null) playlist = Library.getAlbum(song.album).linked_playlist;
 		
@@ -208,6 +226,10 @@ public class MusicPlayer {
 	
 	public static void update() { 
 		
+//		for (PreviousSongData d : previous_songs) {
+//			Log.send(d.index + ", " + d.playlist); // debug
+//		}
+		
 		if (current_song != null && isBroken(current_song.uuid()) && Settings.skip_broken_songs()) {
 			next();
 		}
@@ -244,6 +266,10 @@ public class MusicPlayer {
 	public static void next(boolean auto) { 	
 		if (playlist.equals(NO_PLAYLIST)) return;
 		
+		// using a local variable since currentFromPlaylist needs to read the
+		// old song index to add it to the previous songs list
+		int song_index = MusicPlayer.song_index;
+		
 		song_index++;
 		ArrayList<Song> songs = Library.getPlaylist(playlist).listSongs();
 		if (playback_mode == SHUFFLE) {
@@ -257,32 +283,47 @@ public class MusicPlayer {
 			song_index = 0;
 		}
 		
-		Song next_song = songs.get(song_index);
-		current(next_song.uuid());
-		seek(0);
-		if (playing) play();
+		currentFromPlaylist(song_index, Library.getPlaylist(playlist));
+		
+//		Song next_song = songs.get(song_index);
+//		current(next_song.uuid());
+//		seek(0);
+//		if (playing) play();
 	}
 	
 	public static void previous() { 
 		
-		int threshold = Settings.previous_song_buffer_threshold();
-		int time = Utility.MStoSeconds(current_song_audio.currentTimeMillis());
-		if (threshold != 0 && time > threshold ) {
-			seek(0);
-			if (playing) play();
-			return;
+		// Seek threshold
+		if (current_song_audio != null) {
+			int threshold = Settings.previous_song_buffer_threshold();
+			int time = Utility.MStoSeconds(current_song_audio.currentTimeMillis());
+			if (threshold != 0 && time > threshold ) {
+				seek(0);
+				if (playing) play();
+				return;
+			}
 		}
 		
-		if (playlist.equals(NO_PLAYLIST)) return;
+		if (previous_songs.isEmpty()) return;
 		
-		song_index--;
-		if (song_index < 0) {
-			song_index = 0;
-		}
-		Song next_song = Library.getPlaylist(playlist).listSongs().get(song_index);
-		current(next_song.uuid());
-		seek(0);
-		if (playing) play();
+		PreviousSongData last_song = previous_songs.pop();
+		String last_playlist = last_song.playlist;
+		
+		if (last_playlist.equals(NO_PLAYLIST)) return;
+		
+		currentFromPlaylist(last_song.index, Library.getPlaylist(last_playlist));
+		previous_songs.pop(); // currentFromPlaylist adds to the stack, so remove immediately
+		
+//		if (playlist.equals(NO_PLAYLIST)) return;
+//		
+//		song_index--;
+//		if (song_index < 0) {
+//			song_index = 0;
+//		}
+//		Song next_song = Library.getPlaylist(playlist).listSongs().get(song_index);
+//		current(next_song.uuid());
+//		seek(0);
+//		if (playing) play();
 	}
 
 	public static long songTime() {
@@ -301,7 +342,7 @@ public class MusicPlayer {
 
 	public static boolean playing() {
 		return playing;
-//		if (current_song_audio != null) {
+//		if (current_song_audio != nu/ll) {
 //			return current_song_audio.playing();
 //		} else 
 //			return false;
