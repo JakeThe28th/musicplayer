@@ -137,7 +137,7 @@ public class G_SongControls extends G_Element {
 
 		center_icons.halign(Alignment.MIDDLE);
 		
-		title.force_scroll = Settings.always_scroll_current_song_title();
+		title.force_scroll = Settings.always_scroll_current_song_title_in_song_controls();
 		
 		addSubElement(title);
 		addSubElement(progress_bar);

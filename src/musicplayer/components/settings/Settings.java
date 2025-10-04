@@ -65,10 +65,12 @@ public class Settings {
 		
 		setFloat("volume", 0.5f);
 		
-		setBoolean("always_scroll_current_song_title", true);
-		register("always_scroll_current_song_title", (name, value) -> {
+		setBoolean("always_scroll_current_song_title_in_song_controls", true);
+		register("always_scroll_current_song_title_in_song_controls", (name, value) -> {
 			if (MainProgram.controls != null) MainProgram.controls.setForceScroll(((BooleanSetting) value).value);
 		});
+		
+		setBoolean("always_scroll_current_song_title_in_playlist", false);
 		
 		setBoolean("skip_broken_songs", true);
 		
@@ -144,8 +146,12 @@ public class Settings {
 		return getFloat("volume");
 	}
 	
-	public static boolean always_scroll_current_song_title() {
-		return getBoolean("always_scroll_current_song_title");
+	public static boolean always_scroll_current_song_title_in_playlist() {
+		return getBoolean("always_scroll_current_song_title_in_playlist");
+	}
+	
+	public static boolean always_scroll_current_song_title_in_song_controls() {
+		return getBoolean("always_scroll_current_song_title_in_song_controls");
 	}
 	
 	public static boolean skip_broken_songs() {

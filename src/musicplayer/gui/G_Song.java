@@ -262,7 +262,7 @@ public class G_Song extends G_Element implements I_DraggableElement {
 		}
 
 		if (this_is_the_current_song) {
-			name.force_scroll = Settings.always_scroll_current_song_title();
+			name.force_scroll = Settings.always_scroll_current_song_title_in_playlist();
 		} else {
 			name.force_scroll = false;
 		}
