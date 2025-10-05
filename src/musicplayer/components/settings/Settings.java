@@ -125,6 +125,7 @@ public class Settings {
 		setBoolean("enable_anti_aliasing_requires_restart", true);
 		setRangedInteger("anti_aliasing_samples_requires_restart", 4, 1, 16);
 
+		setBoolean("enable_experimental_optimizations_requires_restart", false);
 		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)

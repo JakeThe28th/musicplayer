@@ -38,11 +38,11 @@ public class Library {
 	}
 	
 	public static void add_album_group(String group_name) {
-		Utility.append(Library.album_group_order, group_name);
+		Library.album_group_order = Utility.append(Library.album_group_order, group_name);
 	}
 
 	public static void add_playlist_group(String group_name) {
-		Utility.append(Library.playlist_group_order, group_name);
+		Library.playlist_group_order = Utility.append(Library.playlist_group_order, group_name);
 	}
 
 	public static String[] album_group_order = null;
