@@ -12,7 +12,7 @@ public class G_Icon extends G_Element {
 	
 	public String icon_name = "stop";
 	//int icon_size = 20;
-	double icon_size = 1;
+	public double icon_size = 1;
 
 	@Override
 	public void recalculate_size() {

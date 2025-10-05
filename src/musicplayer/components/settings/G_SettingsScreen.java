@@ -8,6 +8,7 @@ import musicplayer.components.settings.types.BooleanSetting;
 import musicplayer.components.settings.types.ColorSetting;
 import musicplayer.components.settings.types.RangedIntegerSetting;
 import musicplayer.components.settings.types.Setting;
+import musicplayer.components.settings.types.SongControlsLayoutSetting;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
@@ -50,10 +51,13 @@ class G_RealSettingsScreen extends G_Element {
 	G_Text color_header = new G_Text().text("Colors");
 	G_Text boolean_header = new G_Text().text("Toggles");
 	G_Text slider_header = new G_Text().text("Sliders");
+	G_Text misc_header = new G_Text().text("Miscellaneous");
 
 	G_List booleans;
 	G_List colors;
 	G_List ranged_integers;
+	
+	G_SongControlsLayout song_controls_layout;
 	
 	G_Text export_colors_text = new G_Text() {
 		@Override public void onClick() {
@@ -103,6 +107,8 @@ class G_RealSettingsScreen extends G_Element {
 		colors = new G_List();
 		ranged_integers = new G_List();
 		
+		song_controls_layout = null;
+		
 		// -- -=- -- //
 		
 		colors.verticalify();
@@ -147,12 +153,20 @@ class G_RealSettingsScreen extends G_Element {
 						0.5f
 						)); 
 			}
+			if (setting instanceof SongControlsLayoutSetting) {
+				if (song_controls_layout != null) {
+					removeSubElement(song_controls_layout);
+				}
+				song_controls_layout = new G_SongControlsLayout((SongControlsLayoutSetting) setting);
+				addSubElement(song_controls_layout);
+			}
 		}
 		
 		color_header.halign(Alignment.MIDDLE);
 		boolean_header.halign(Alignment.MIDDLE);
 		slider_header.halign(Alignment.MIDDLE);
-		
+		misc_header.halign(Alignment.MIDDLE);
+
 		home.halign(Alignment.MIDDLE);
 		
 		addSubElement(colors); 
@@ -162,6 +176,8 @@ class G_RealSettingsScreen extends G_Element {
 		addSubElement(boolean_header);
 		addSubElement(slider_header);
 		addSubElement(ranged_integers);
+		addSubElement(misc_header);
+
 	}
 
 	@Override
@@ -173,7 +189,8 @@ class G_RealSettingsScreen extends G_Element {
 		boolean_header.recalculate_size();
 		ranged_integers.recalculate_size();
 		slider_header.recalculate_size();
-		
+		if (song_controls_layout != null) song_controls_layout.recalculate_size();
+
 		this.unpadded_height = 
 				  colors.height() 
 				+ home.height() 
@@ -182,11 +199,14 @@ class G_RealSettingsScreen extends G_Element {
 				+ boolean_header.height() 
 				+ ranged_integers.height() 
 				+ slider_header.height()
+				+ misc_header.height()
+				+ (song_controls_layout != null ? song_controls_layout.height() : 0)
 				+ 10;
 	}
 	
 	Rectangle color_toggle_section_break;
 	Rectangle toggle_slider_section_break;
+	Rectangle misc_section_break;
 
 	int colors_width;
 	Rectangle color_preview_area;
@@ -256,6 +276,22 @@ class G_RealSettingsScreen extends G_Element {
 		
 		ranged_integers.layout(left, yy, right, yy+ranged_integers.height());
 		yy += ranged_integers.height();
+		
+		// Misc
+		
+		yy += 5;
+		misc_section_break = new Rectangle(left + 50, yy, right - 50, yy+2);
+		yy += 5;
+
+		misc_header.layout(left, yy, right, yy+misc_header.height());
+		
+		yy+= misc_header.height();
+		
+		if (song_controls_layout != null) {
+			song_controls_layout.layout(left, yy, right, yy+song_controls_layout.height());
+			yy += song_controls_layout.height();
+		}
+		
 
 	}
 
@@ -268,10 +304,13 @@ class G_RealSettingsScreen extends G_Element {
 		boolean_header.draw(depth);
 		slider_header.draw(depth);
 		ranged_integers.draw(depth);
+		misc_header.draw(depth);
+		if (song_controls_layout != null) song_controls_layout.draw(depth);
 		GraphicsAPI.color(Settings.LIGHT_COLOR());
 		GraphicsAPI.rect(color_toggle_section_break, depth);
 		GraphicsAPI.rect(toggle_slider_section_break, depth);
-		
+		GraphicsAPI.rect(misc_section_break, depth);
+
 		// preview stuff vvv
 		
 		GraphicsAPI.color(Settings.DARKEST_COLOR());

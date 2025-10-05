@@ -118,6 +118,8 @@ class Icons {
 	// Drawing //
 	
 	public static void icon(int x, int y, int z, String name, int size) {
+		if (Icons.icons.get(name) == null) throw new Error("No such icon: " + name);
+		
 		float scale = size;
 		RenderQueue.queue(
 				Icons.icons.get(name), 

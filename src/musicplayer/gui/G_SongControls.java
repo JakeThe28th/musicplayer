@@ -281,9 +281,17 @@ public class G_SongControls extends G_Element {
 			  if (volume_slider_visible()) volume_slider.dot_size = volume_slider_dot_size();
 		yy += volume_slider_height();
 		
-		left_icons		.layout(left, 							yy, left +left_icons .width(), 	bottom);
-		center_icons	.layout(left +left_icons.width(), 		yy, right-right_icons.width(), 	bottom);
-		right_icons		.layout(right-right_icons.width(), 		yy, right, 						bottom);	
+		int left_size = left_icons.width();
+		int right_size = right_icons.width();
+		
+		if (Settings.force_song_conrols_buttons_centered()) {
+			if (left_size > right_size) right_size = left_size;
+			if (left_size < right_size) left_size = right_size;
+		}
+				
+		left_icons		.layout(left, 					yy, left +left_size, 	bottom);
+		center_icons	.layout(left +left_size, 		yy, right-right_size, 	bottom);
+		right_icons		.layout(right-right_size, 		yy, right, 				bottom);	
 	}
 	
 	@Override

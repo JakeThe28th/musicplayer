@@ -128,14 +128,12 @@ public class Settings {
 
 		setBoolean("enable_experimental_optimizations_requires_restart", false);
 		
-//		setBoolean("force_song_conrols_buttons_centered", false);
-//		setBoolean("show_stop_button", true);
-//		register("show_stop_button", (name, value) -> {
-//			MainProgram.controls.showStopButton(((BooleanSetting) value).value);
-//		});
+		setBoolean("force_song_conrols_buttons_centered", false);
 		
 		set("song_controls_layout", new SongControlsLayoutSetting());
-		
+		register("song_controls_layout", (name, value) -> {
+			if (MainProgram.controls != null) MainProgram.controls.makeIconsLayout((SongControlsLayoutSetting) value);
+		});
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
@@ -242,12 +240,16 @@ public class Settings {
 		return getInt("anti_aliasing_samples_requires_restart");
 	}
 	
-	public static boolean show_stop_button() {
-		return getBoolean("show_stop_button");
-	}
-	
 	public static boolean force_song_conrols_buttons_centered() {
 		return getBoolean("force_song_conrols_buttons_centered");
+	}
+	
+	public static SongControlsLayoutSetting song_controls_layout() {
+		return ((SongControlsLayoutSetting) get("song_controls_layout"));
+	}
+	
+	public static void song_controls_layout(SongControlsLayoutSetting setting) {
+		set("song_controls_layout", setting);
 	}
 	
 	// -- + setting/getting + -- //
@@ -289,11 +291,6 @@ public class Settings {
 	
 	public static void setFloat(String key, float value) {
 		set(key, new FloatSetting(value));
-	}
-	
-	public static SongControlsLayoutSetting song_controls_layout() {
-		return ((SongControlsLayoutSetting) get("song_controls_layout"));
-
 	}
 	
 	// -- Getters -- //
