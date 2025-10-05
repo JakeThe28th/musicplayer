@@ -15,6 +15,7 @@ import musicplayer.components.settings.types.ColorSetting;
 import musicplayer.components.settings.types.FloatSetting;
 import musicplayer.components.settings.types.RangedIntegerSetting;
 import musicplayer.components.settings.types.Setting;
+import musicplayer.components.settings.types.SongControlsLayoutSetting;
 import musicplayer.components.settings.types.StringSetting;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Grid;
@@ -127,6 +128,14 @@ public class Settings {
 
 		setBoolean("enable_experimental_optimizations_requires_restart", false);
 		
+//		setBoolean("force_song_conrols_buttons_centered", false);
+//		setBoolean("show_stop_button", true);
+//		register("show_stop_button", (name, value) -> {
+//			MainProgram.controls.showStopButton(((BooleanSetting) value).value);
+//		});
+		
+		set("song_controls_layout", new SongControlsLayoutSetting());
+		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
@@ -232,6 +241,15 @@ public class Settings {
 	public static int anti_aliasing_samples_requires_restart() {
 		return getInt("anti_aliasing_samples_requires_restart");
 	}
+	
+	public static boolean show_stop_button() {
+		return getBoolean("show_stop_button");
+	}
+	
+	public static boolean force_song_conrols_buttons_centered() {
+		return getBoolean("force_song_conrols_buttons_centered");
+	}
+	
 	// -- + setting/getting + -- //
 		
 	// -- Setters -- //
@@ -271,6 +289,11 @@ public class Settings {
 	
 	public static void setFloat(String key, float value) {
 		set(key, new FloatSetting(value));
+	}
+	
+	public static SongControlsLayoutSetting song_controls_layout() {
+		return ((SongControlsLayoutSetting) get("song_controls_layout"));
+
 	}
 	
 	// -- Getters -- //
@@ -371,6 +394,7 @@ public class Settings {
 					case "boolean": set(key, new BooleanSetting(Setting.unescape(value))); break;
 					case "ranged_integer": set(key, new RangedIntegerSetting(Setting.unescape(value))); break;
 					case "float": set(key, new FloatSetting(Setting.unescape(value))); break;
+					case "song_controls_layout": set(key, new SongControlsLayoutSetting(Setting.unescape(value))); break;
 				}
 			}
 		} catch (IOException e) {

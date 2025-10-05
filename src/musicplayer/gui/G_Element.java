@@ -64,7 +64,9 @@ public abstract class G_Element {
 	// Interaction //
 	protected Rectangle hover_rectangle = new Rectangle(0,0,0,0);
 	
-	/** is_hovered_with_held_left_click */
+	/** is_hovered_with_held_left_click 
+	 *  basically to allow for checking if
+	 *  left click was pressed before it was release for a click */
 	private boolean can_click = false;
 	
 	public boolean input() {

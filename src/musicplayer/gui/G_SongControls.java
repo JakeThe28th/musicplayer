@@ -4,11 +4,14 @@ import org.lwjgl.glfw.GLFW;
 
 import musicplayer.MainProgram;
 import musicplayer.components.settings.Settings;
+import musicplayer.components.settings.types.SongControlsLayoutSetting;
+import musicplayer.components.settings.types.SongControlsLayoutSetting.SongControlsIcon;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
 import musicplayer.parts.UUID;
+import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 import musicplayer.utility.Utility;
 
@@ -123,11 +126,46 @@ public class G_SongControls extends G_Element {
 			}
 		};
 
+	// Overridden by makeIconsLayout(), but this is the old default if it's ever needed
 	G_List		center_icons	= new G_List(previous, stop, play_pause, next);
 	G_List		left_icons		= new G_List(volume);
 	G_List		right_icons		= new G_List(pin, shuffle);
 	
+	public void makeIconsLayout(SongControlsLayoutSetting layout) {
+		
+		left_icons.clear();
+		for (SongControlsIcon icon : layout.left_icons) {
+			if (icon.visible) left_icons.add(makeIcon(icon));
+		}
+		
+		center_icons.clear();
+		for (SongControlsIcon icon : layout.middle_icons) {
+			if (icon.visible) center_icons.add(makeIcon(icon));
+		}
+		
+		right_icons.clear();
+		for (SongControlsIcon icon : layout.right_icons) {
+			if (icon.visible) right_icons.add(makeIcon(icon));
+		}
+	}	
+	
+	private G_Element makeIcon(SongControlsIcon icon) {
+		switch (icon) {
+			case NEXT: return next;
+			case PAUSE: return play_pause;
+			case PIN: return pin;
+			case PREVIOUS: return previous;
+			case SHUFFLE: return shuffle;
+			case STOP: return stop;
+			case VOLUME: return volume;
+		}
+		Log.send("Error: " + icon.name() + " is an unknown icon constant" + G_SongControls.class);
+		return null;
+	}
+
 	{
+		makeIconsLayout(Settings.song_controls_layout());
+		
 		base_color = Settings.LIGHT_COLOR();
 
 		title.halign(Alignment.MIDDLE);
@@ -281,6 +319,6 @@ public class G_SongControls extends G_Element {
 
 	public void setForceScroll(boolean value) {
 		title.force_scroll = value;
-	}	
+	}
 	
 }
