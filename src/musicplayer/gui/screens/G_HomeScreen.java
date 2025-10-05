@@ -3,10 +3,12 @@ package musicplayer.gui.screens;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import musicplayer.MainProgram;
+import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_DraggableNamedGroup;
 import musicplayer.gui.G_Element;
@@ -77,17 +79,22 @@ public class G_HomeScreen extends G_Element implements Screen {
 		
 		for (int i = 0; i < album_groups.length(); i++) {
 			G_DraggableNamedGroup group = (G_DraggableNamedGroup) album_groups.get(i);
-			addEmptyTextIfEmpty(group);
+			boolean empty = addEmptyTextIfEmpty(group);
+			if (Settings.hide_empty_sections() && empty) album_groups.setraw(null, i);
 		}
+		album_groups.removeIf(Objects::isNull);
+
 		for (int i = 0; i < playlist_groups.length(); i++) {
 			G_DraggableNamedGroup group = (G_DraggableNamedGroup) playlist_groups.get(i);
-			addEmptyTextIfEmpty(group);
+			boolean empty = addEmptyTextIfEmpty(group);
+			if (Settings.hide_empty_sections() && empty) playlist_groups.setraw(null, i);
 		}
+		playlist_groups.removeIf(Objects::isNull);
 		
 	}
 	
 	/** helper method only here to reduce copy pasting code */
-	private static void addEmptyTextIfEmpty(G_DraggableNamedGroup group) {
+	private static boolean addEmptyTextIfEmpty(G_DraggableNamedGroup group) {
 		G_Grid grid = (G_Grid) group.root();
 		if (grid.isEmpty()) {
 			G_Text text = new G_Text();
@@ -95,7 +102,9 @@ public class G_HomeScreen extends G_Element implements Screen {
 			text.base_color = GraphicsAPI.TRANSPARENT_WHITE;
 			text.halign(Alignment.MIDDLE);
 			group.root(text);
+			return true;
 		}
+		return false;
 	}
 
 	/** helper method only here to reduce copy pasting code */

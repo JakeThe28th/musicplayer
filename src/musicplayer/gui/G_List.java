@@ -1,6 +1,7 @@
 package musicplayer.gui;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
@@ -32,6 +33,15 @@ public class G_List extends G_Element {
 	
 	public void set(G_Element e, int index) {
 		this.elements.set(index, e);
+		this.recalculate_size();
+	}
+	
+	public void setraw(G_Element e, int index) {
+		this.elements.set(index, e);
+	}
+	
+	public void removeIf(Predicate<? super G_Element> predicate) {
+		this.elements.removeIf(predicate);
 		this.recalculate_size();
 	}
 	

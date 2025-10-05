@@ -19,6 +19,8 @@ import musicplayer.components.settings.types.SongControlsLayoutSetting;
 import musicplayer.components.settings.types.StringSetting;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.G_Grid;
+import musicplayer.gui.screens.G_HomeScreen;
+import musicplayer.parts.Library;
 import musicplayer.utility.Log;
 
 public class Settings {
@@ -134,6 +136,18 @@ public class Settings {
 		register("song_controls_layout", (name, value) -> {
 			if (MainProgram.controls != null) MainProgram.controls.makeIconsLayout((SongControlsLayoutSetting) value);
 		});
+		
+		setBoolean("use_heart_as_favorite_icon", false);
+		register("use_heart_as_favorite_icon", (name, value) -> {
+			if (Library.is_initialized) G_HomeScreen.update_playlist_views();
+		});
+		
+		setBoolean("hide_empty_sections", false);
+		register("hide_empty_sections", (name, value) -> {
+			if (Library.is_initialized) G_HomeScreen.update_playlist_views();
+		});
+		
+		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
@@ -143,6 +157,7 @@ public class Settings {
 			Log.trace(e);
 			System.exit(0);
 		}
+		
 	}
 	
 	// -- + setting/getting + -- //
@@ -252,6 +267,13 @@ public class Settings {
 		set("song_controls_layout", setting);
 	}
 	
+	public static boolean use_heart_as_favorite_icon() {
+		return getBoolean("use_heart_as_favorite_icon");
+	}
+	
+	public static boolean hide_empty_sections() {
+		return getBoolean("hide_empty_sections");
+	}
 	// -- + setting/getting + -- //
 		
 	// -- Setters -- //
