@@ -89,9 +89,9 @@ public class G_DraggableNamedGroup extends G_Element {
 		
 		if (name.startsWith("§")) {
 			switch (name.charAt(1)) {
-				case 'e': this.name.base_color = GraphicsAPI.YELLOW;
-				case '6': this.name.base_color = GraphicsAPI.GOLD;
-				case '[': this.name.base_color = Settings.FAVORITES_COLOR();
+				case 'e': this.name.base_color = GraphicsAPI.YELLOW; break;
+				case '6': this.name.base_color = GraphicsAPI.GOLD; break;
+				case '[': this.name.base_color = Settings.FAVORITES_COLOR(); break;
 			}
 			if (name.length() > 2) {
 				this.name.text(name.substring(2));
