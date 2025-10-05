@@ -71,15 +71,17 @@ public class G_SongControlsLayout extends G_Element {
 		@Override
 		public void draw(int depth) {
 			super.draw(depth);
-			visibility.draw(depth);
+			if (dragging != this) visibility.draw(depth);
 		}
 		
 		SongControlsIcon real_icon;
-		G_List parent;
+		G_List parent;		
+		int index_in_parent;
 		LinkedHashSet<SongControlsIcon> original_setting_list;
-		public ControlsIcon(String name, G_List parent, SongControlsIcon real_icon, LinkedHashSet<SongControlsIcon> original_setting_list) {
+		public ControlsIcon(String name, G_List parent, SongControlsIcon real_icon, LinkedHashSet<SongControlsIcon> original_setting_list, int index) {
 			super(name);
 			this.parent = parent;
+			this.index_in_parent = index;
 			this.real_icon = real_icon;
 			this.original_setting_list = original_setting_list;
 			visibility.setVisible(real_icon.visible);
@@ -106,18 +108,23 @@ public class G_SongControlsLayout extends G_Element {
 		}
 
 		public void trySetDown() {
-			if (GraphicsAPI.left_click_released() && target_list != null) {
-				target_list.add(this, target_index);
-				dragging = null;
-				boolean first = target_index == 0;
-				original_setting_list.remove(real_icon);
-				if (first) {
-					target_setting_list.addFirst(real_icon);
+			if (GraphicsAPI.left_click_released()) {
+				if (target_list != null) {
+					target_list.add(this, target_index);
+					dragging = null;
+					boolean first = target_index == 0;
+					original_setting_list.remove(real_icon);
+					if (first) {
+						target_setting_list.addFirst(real_icon);
+					} else {
+						target_setting_list.add(real_icon);
+					}
+					setLayout(setting);
+					Settings.song_controls_layout(setting);
 				} else {
-					target_setting_list.add(real_icon);
+					parent.add(this, index_in_parent);
+					dragging = null;
 				}
-				setLayout(setting);
-				Settings.song_controls_layout(setting);
 			}
 			target_list = null;
 			target_setting_list = null;
@@ -186,7 +193,7 @@ public class G_SongControlsLayout extends G_Element {
 
 	private void addIcons(G_List icon_elements, LinkedHashSet<SongControlsIcon> icon_objects) {
 		for (SongControlsIcon iobj : icon_objects) {
-			icon_elements.add(new ControlsIcon(iobj.icon, icon_elements, iobj, icon_objects));
+			icon_elements.add(new ControlsIcon(iobj.icon, icon_elements, iobj, icon_objects, icon_elements.length()));
 		}
 	}
 
