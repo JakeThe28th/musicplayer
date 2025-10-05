@@ -4,6 +4,7 @@ import org.joml.Vector4f;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import musicplayer.MainProgram;
+import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.screens.G_HomeScreen;
@@ -90,6 +91,7 @@ public class G_DraggableNamedGroup extends G_Element {
 			switch (name.charAt(1)) {
 				case 'e': this.name.base_color = GraphicsAPI.YELLOW;
 				case '6': this.name.base_color = GraphicsAPI.GOLD;
+				case '[': this.name.base_color = Settings.FAVORITES_COLOR();
 			}
 			if (name.length() > 2) {
 				this.name.text(name.substring(2));

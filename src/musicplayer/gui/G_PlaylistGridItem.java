@@ -40,7 +40,7 @@ public class G_PlaylistGridItem extends G_Element {
 	
 	{
 		favorite.icon_size = 0.75f;
-		favorite.base_color = GraphicsAPI.GOLD;
+		favorite.base_color = Settings.FAVORITES_COLOR();
 		
 		favorite.base_color = new Vector4f(
 				favorite.base_color.x, 

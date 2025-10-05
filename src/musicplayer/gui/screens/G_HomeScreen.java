@@ -273,7 +273,7 @@ public class G_HomeScreen extends G_Element implements Screen {
 	private G_HomeScreen() {};
 	public static final G_HomeScreen INSTANCE = new G_HomeScreen();
 	public static final String IDENTIFIER = "library";
-	public static final String FAVORITES_GROUP = "§6Favorites";
+	public static final String FAVORITES_GROUP = "§[Favorites";
 
 	{ 
 		addSubElement(albums_scroll);  

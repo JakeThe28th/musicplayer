@@ -49,7 +49,13 @@ public class Settings {
 		setColor("DARKEST_COLOR", new Vector4f(10 / 255f, 24 / 255f, 23 / 255f, 1));
 		setColor("SEMIDARK_COLOR",  new Vector4f(80 / 255f, 100 / 255f, 100 / 255f, 1));
 		setColor("TRANSPARENT_ACCENT_COLOR", new Vector4f(67 / 255f, 194 / 255f, 168 / 255f, 0.25f));
-
+		
+		setColor("FAVORITES_COLOR", new Vector4f(255 / 255f, 177 / 255f, 0, 1f));
+		register("FAVORITES_COLOR", (name, value) -> {
+			if (Library.is_initialized) G_HomeScreen.update_playlist_views();
+		});
+		
+		
 		setBoolean("use_native_window_decorations", true);
 		register("use_native_window_decorations", (name, value) -> {
 			if (GraphicsAPI.is_initialized()) {
@@ -169,6 +175,9 @@ public class Settings {
 	public static Vector4f DARKEST_COLOR() { return getColor("DARKEST_COLOR"); }
 	public static Vector4f SEMIDARK_COLOR() { return getColor("SEMIDARK_COLOR"); }
 	public static Vector4f TRANSPARENT_ACCENT_COLOR() { return getColor("TRANSPARENT_ACCENT_COLOR"); }
+	
+	public static Vector4f FAVORITES_COLOR() { return getColor("FAVORITES_COLOR"); }
+
 	
 	public static boolean use_native_window_decorations() {
 		return getBoolean("use_native_window_decorations");
