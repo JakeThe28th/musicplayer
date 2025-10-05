@@ -3,6 +3,7 @@ package musicplayer.gui;
 import java.util.ArrayList;
 
 import musicplayer.components.settings.Settings;
+import musicplayer.gui.screens.G_HomeScreen;
 
 public class G_Grid extends G_Element {
 
@@ -25,7 +26,7 @@ public class G_Grid extends G_Element {
 
 	int columns = 3;
 	int item_size = 10;
-	
+		
 	@Override
 	public void recalculate_size() {
 		for (G_Element e : elements) e.recalculate_size();
@@ -40,6 +41,28 @@ public class G_Grid extends G_Element {
 		int xx = left + left_margin;
 		int yy = top + top_margin;
 		int width = ( (right-right_margin) - xx );
+
+		G_HomeScreen.previous_grid_width = width;
+		
+		calculate_grid_dimensions(width);
+				
+		int current_column = 0;
+		for (G_Element element : elements) {
+
+			element.layout(xx, yy, xx+item_size, yy+item_size);
+			
+			current_column++;
+			xx += item_size;
+			if (current_column >= columns) {
+				yy += item_size;
+				xx = left + left_margin;
+				current_column = 0;
+			}
+		}
+
+	}
+
+	public void calculate_grid_dimensions(int width) {
 		
 		if (width < 0) return;
 		
@@ -59,27 +82,11 @@ public class G_Grid extends G_Element {
 			columns--;
 			item_size = width / columns;
 		}
-				
-		int current_column = 0;
-		for (G_Element element : elements) {
-
-			element.layout(xx, yy, xx+item_size, yy+item_size);
-			
-			current_column++;
-			xx += item_size;
-			if (current_column >= columns) {
-				yy += item_size;
-				xx = left + left_margin;
-				current_column = 0;
-			}
-		}
-
 	}
 
 	@Override
 	public void draw(int depth) {
 		for (G_Element e : elements) e.draw(depth+1);
 	}
-	
 
 }

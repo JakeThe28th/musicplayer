@@ -175,5 +175,58 @@ public class Utility {
 	public static int MStoSeconds(long ms) {
 		return (int) (ms / 1000);
 	}
+
+	public static String readStringDefaulted(String path, String default_value) {
+		try {
+			return Files.readString(Paths.get(path));
+		} catch (IOException e) {
+			e.printStackTrace();
+			Log.trace(e);
+			return default_value;
+		}
+	}
+
+	public static void writeArray(String location, String[] arr) {
+		String write = "";
+		for (String s : arr) write += s + "\n";
+		try {
+			Files.writeString(Paths.get(location), write);
+		} catch (IOException e) {
+			e.printStackTrace();
+			Log.trace(e);
+		}
+	}
+
+	public static String[] relative_swap(String[] array, String target_string, int offset) {
+		
+		int index = -1;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i].equals(target_string)) {
+				index = i;
+				break;
+			}
+		}
+		
+		if (index == -1) {
+			Log.send("couldn't find index of target, didn't swap // Utility");
+			return array; // couldn't find string
+		}
+		
+		int new_index = index + offset;
+		
+		if (new_index < 0) {
+			Log.send("new index out of bounds, didn't swap // Utility");
+			return array; // oob 1
+		}
+		if (new_index >= array.length) {
+			Log.send("new index out of bounds, didn't swap // Utility");
+			return array; // oob 2
+		}
+
+		array[index] = array[new_index];
+		array[new_index] = target_string;
+		
+		return array;
+	}
 	
 }
