@@ -102,6 +102,9 @@ public class G_HomeScreen extends G_Element implements Screen {
 			text.base_color = GraphicsAPI.TRANSPARENT_WHITE;
 			text.halign(Alignment.MIDDLE);
 			group.root(text);
+			if (group.group_name.equals(G_HomeScreen.FAVORITES_GROUP)) {
+				group.move_icons.remove(group.delete);
+			}
 			return true;
 		}
 		return false;

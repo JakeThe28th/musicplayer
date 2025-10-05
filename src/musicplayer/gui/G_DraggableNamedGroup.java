@@ -16,7 +16,7 @@ import musicplayer.utility.Utility;
 
 public class G_DraggableNamedGroup extends G_Element {
 	
-	String group_name;
+	public String group_name;
 	G_Text name = new G_Text();
 	G_Icon up_button = new G_Icon("up") {
 		@Override public void onClick() {
@@ -32,7 +32,7 @@ public class G_DraggableNamedGroup extends G_Element {
 			G_HomeScreen.update_playlist_views();
 		}
 	};
-	G_Icon delete = new G_Icon("giant_trash") {
+	public G_Icon delete = new G_Icon("giant_trash") {
 		@Override public void onClick() {
 			boolean remove = TinyFileDialogs.tinyfd_messageBox(
 					" " + MainProgram.PROGRAM_TITLE, 
@@ -67,7 +67,7 @@ public class G_DraggableNamedGroup extends G_Element {
 	};
 	G_Element root;
 	
-	G_List move_icons = new G_List(up_button, down_button, delete).verticalify();
+	public G_List move_icons = new G_List(up_button, down_button, delete).verticalify();
 	
 	int base_drag_width = 0;
 	int drag_width = 0;
