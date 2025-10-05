@@ -228,4 +228,28 @@ public class Utility {
 		return array;
 	}
 	
+	public static String[] remove(String target_string, String[] array) {
+		
+		int index = -1;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i].equals(target_string)) {
+				index = i;
+				break;
+			}
+		}
+		
+		if (index == -1) {
+			Log.send("couldn't find index of target, didn't remove // Utility");
+			return array; // couldn't find string
+		}
+		
+		String[] new_array = new String[array.length-1];
+		for (int i = 0, j = 0; i < new_array.length; i++, j++) {
+			if (i == index) j++;
+			new_array[i] = array[j];
+		}
+		
+		return new_array;
+	}
+	
 }
