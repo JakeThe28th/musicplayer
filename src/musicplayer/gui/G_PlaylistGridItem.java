@@ -22,8 +22,13 @@ public class G_PlaylistGridItem extends G_Element {
 	
 	G_Icon favorite = new G_Icon(Settings.use_heart_as_favorite_icon() ? "heart" : "star") {
 		@Override public void onClick() {
-			playlist.metadata("group", G_HomeScreen.FAVORITES_GROUP);
+			if (!G_HomeScreen.FAVORITES_GROUP.equals(playlist.metadata("group"))) {
+				playlist.metadata("group", G_HomeScreen.FAVORITES_GROUP);
+			} else {
+				playlist.metadata("group", null);
+			}
 			G_HomeScreen.update_playlist_views();
+
 		}
 		@Override public void draw(int depth) {
 			if (hovering) {
