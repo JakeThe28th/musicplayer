@@ -19,14 +19,14 @@ public class G_DraggableNamedGroup extends G_Element {
 	
 	String group_name;
 	G_Text name = new G_Text();
-	G_Icon up_button = new G_Icon("previous") {
+	G_Icon up_button = new G_Icon("up") {
 		@Override public void onClick() {
 			Library.album_group_order = Utility.relative_swap(Library.album_group_order, group_name, -1);
 			Library.save_group_order();
 			G_HomeScreen.update_playlist_views();
 		}
 	};
-	G_Icon down_button = new G_Icon("next") {
+	G_Icon down_button = new G_Icon("down") {
 		@Override public void onClick() {
 			Library.album_group_order = Utility.relative_swap(Library.album_group_order, group_name, 1);
 			Library.save_group_order();

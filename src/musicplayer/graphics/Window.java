@@ -10,6 +10,8 @@ import java.nio.IntBuffer;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
 
@@ -25,6 +27,7 @@ class Window {
 	public static int 			window_width;
 
 	protected static void init(int width, int height, String title) {
+
 		// Configure GLFW
 		glfwDefaultWindowHints(); // optional, the current window hints are already the default
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
@@ -33,6 +36,10 @@ class Window {
 		if (!Settings.use_native_window_decorations()) {
 			glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 			GraphicsAPI.decorated = false;
+		}
+		
+		if (Settings.enable_anti_aliasing_requires_restart()) {
+			glfwWindowHint(GLFW_SAMPLES, Settings.anti_aliasing_samples_requires_restart());
 		}
 
 		// Create the window
@@ -88,6 +95,10 @@ class Window {
 		Graphics.fixViewScale(window_width, window_height);
 		
 		Input.setCallbacks(window);
+		
+		if (Settings.enable_anti_aliasing_requires_restart()) {
+			GL13.glEnable(GL13.GL_MULTISAMPLE);
+		}
 		
 	}
 

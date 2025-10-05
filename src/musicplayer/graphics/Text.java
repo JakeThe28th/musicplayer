@@ -3,6 +3,7 @@ package musicplayer.graphics;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
@@ -10,6 +11,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector2i;
 import org.joml.Vector4f;
 
+import musicplayer.components.settings.Settings;
 import musicplayer.utility.Log;
 
 class Text {
@@ -153,6 +155,11 @@ class Text {
 			Font f = font.deriveFont(font_size);
 			
 			Graphics2D g = texture.createGraphics();
+				if (Settings.enable_anti_aliasing_requires_restart()) {
+					g.setRenderingHint(
+				        RenderingHints.KEY_TEXT_ANTIALIASING,
+				        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				}
 				g.setColor(Color.white);
 		    	g.setFont(f);
 		    	g.drawString(character+"", real_x, real_y);

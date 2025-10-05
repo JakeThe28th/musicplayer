@@ -17,7 +17,7 @@ public class G_PlaylistGridItem extends G_Element {
 	Texture cover;
 	Playlist playlist;
 	
-	G_Icon favorite = new G_Icon("paper") {
+	G_Icon favorite = new G_Icon("star") {
 		@Override public void onClick() {
 			playlist.metadata("group", G_HomeScreen.FAVORITES_GROUP);
 			G_HomeScreen.update_playlist_views();

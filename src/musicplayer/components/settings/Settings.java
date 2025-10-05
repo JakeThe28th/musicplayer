@@ -120,6 +120,10 @@ public class Settings {
 			G_Grid.TARGET_COLUMN_COUNT = ((RangedIntegerSetting) value).value;
 		});
 		
+		setBoolean("enable_anti_aliasing_requires_restart", true);
+		setRangedInteger("anti_aliasing_samples_requires_restart", 4, 1, 16);
+
+		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
@@ -217,7 +221,14 @@ public class Settings {
 	public static int album_grid_colum_target() {
 		return getInt("album_grid_colum_target");
 	}
+
+	public static boolean enable_anti_aliasing_requires_restart() {
+		return getBoolean("enable_anti_aliasing_requires_restart");
+	}
 	
+	public static int anti_aliasing_samples_requires_restart() {
+		return getInt("anti_aliasing_samples_requires_restart");
+	}
 	// -- + setting/getting + -- //
 		
 	// -- Setters -- //
