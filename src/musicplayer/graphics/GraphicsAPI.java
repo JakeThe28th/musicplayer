@@ -31,7 +31,9 @@ public class GraphicsAPI {
 	public static final Vector4f BLACK 				= new Vector4f(0,0,0,1);
 	public static final Vector4f WHITE 				= new Vector4f(1,1,1,1);
 	public static final Vector4f TRANSLUCENT_BLACK 	= new Vector4f(0, 0, 0, 0.5f);
-	public static final Vector4f RED 	= new Vector4f(1, 0, 0, 1);
+	public static final Vector4f RED 				= new Vector4f(1, 0, 0, 1);
+	public static final Vector4f YELLOW 			= new Vector4f(1, 1, 0, 1);
+	public static final Vector4f GOLD 				= new Vector4f(1, 0.66f, 0, 1);
 
 	public static final Vector4f BLACK75 			= new Vector4f(0,0,0,0.75f);
 	

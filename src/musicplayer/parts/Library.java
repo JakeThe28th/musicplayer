@@ -66,8 +66,8 @@ public class Library {
 			}
 		}
 		
-		album_group_order = Utility.readStringDefaulted(album_group_order_location, "Default").split("\n");
-		playlist_group_order = Utility.readStringDefaulted(playlist_group_order_location, "Default").split("\n");
+		album_group_order = Utility.readStringDefaulted(album_group_order_location, G_HomeScreen.FAVORITES_GROUP + "\nDefault").split("\n");
+		playlist_group_order = Utility.readStringDefaulted(playlist_group_order_location, G_HomeScreen.FAVORITES_GROUP + "\nDefault").split("\n");
 		
 		is_initialized = true;
 		G_HomeScreen.update_playlist_views();

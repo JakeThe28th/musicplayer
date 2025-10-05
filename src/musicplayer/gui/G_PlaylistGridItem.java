@@ -1,5 +1,7 @@
 package musicplayer.gui;
 
+import org.joml.Vector4f;
+
 import musicplayer.MainProgram;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.graphics.Texture;
@@ -15,10 +17,31 @@ public class G_PlaylistGridItem extends G_Element {
 	Texture cover;
 	Playlist playlist;
 	
+	G_Icon favorite = new G_Icon("paper") {
+		@Override public void onClick() {
+			playlist.metadata("group", G_HomeScreen.FAVORITES_GROUP);
+			G_HomeScreen.update_playlist_views();
+		}
+	};
+	
+	G_List icons = new G_List(favorite).verticalify();
+	
 	G_Text name = new G_Text();;
 	
+	float hover_opacity = 0;
+	
 	{
+		favorite.icon_size = 0.75f;
+		favorite.base_color = GraphicsAPI.GOLD;
+		
+		favorite.base_color = new Vector4f(
+				favorite.base_color.x, 
+				favorite.base_color.y, 
+				favorite.base_color.z,
+				hover_opacity);
+		
 		sub_elements.add(name);
+		addSubElement(icons);
 	}
 	
 	public G_PlaylistGridItem(Playlist playlist) {
@@ -30,6 +53,8 @@ public class G_PlaylistGridItem extends G_Element {
 	public void recalculate_size() {
 		// TODO Auto-generated method stub
 		name.recalculate_size();
+		icons.recalculate_size();
+		icons.allmargins(0);
 	}
 
 	Rectangle area;
@@ -43,12 +68,36 @@ public class G_PlaylistGridItem extends G_Element {
 		name_area = new Rectangle(left+left_margin, text_top, right-right_margin, bottom-bottom_margin);
 		name.layout(name_area.left(), name_area.top(), name_area.right(), name_area.bottom());
 		
+		icons.layout(area.right()-icons.width(), area.top(), area.right(), text_top);
+		
 		Rectangle b = GraphicsAPI.scissor();
 		this.hover_rectangle = new Rectangle(
 				left, 
 				(top > b.top()) ? top : b.top(), 
 				right,
 				(bottom < b.bottom()) ? bottom : b.bottom());
+		
+		if (hover_rectangle.contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY())) {
+			if (hover_opacity < 1) {
+				hover_opacity += 4/60f;
+				if (hover_opacity > 1) hover_opacity = 1;
+				favorite.base_color = new Vector4f(
+						favorite.base_color.x, 
+						favorite.base_color.y, 
+						favorite.base_color.z,
+						hover_opacity);
+			}
+		} else {
+			if (hover_opacity > 0) {
+				hover_opacity -= 4/60f;
+				if (hover_opacity < 0) hover_opacity = 0;
+				favorite.base_color = new Vector4f(
+						favorite.base_color.x, 
+						favorite.base_color.y, 
+						favorite.base_color.z,
+						hover_opacity);
+			}
+		}
 	}
 
 	@Override
@@ -61,6 +110,7 @@ public class G_PlaylistGridItem extends G_Element {
 		GraphicsAPI.rect(name_area, depth + 1);
 		
 		name.draw(depth+2);
+		icons.draw(depth+3);
 	}
 	
 	@Override

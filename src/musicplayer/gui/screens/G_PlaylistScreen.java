@@ -97,6 +97,10 @@ public class G_PlaylistScreen extends G_Element implements Screen {
 			}
 			G_HomeScreen.update_playlist_views();
 		}));
+		playlist_menu_options.add(new Option("Favorite", () -> {
+			MusicPlayer.current_view_playlist().metadata("group", G_HomeScreen.FAVORITES_GROUP);
+			G_HomeScreen.update_playlist_views();
+		}));
 	}
 
 	@Override

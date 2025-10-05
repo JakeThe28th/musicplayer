@@ -81,6 +81,16 @@ public class G_DraggableNamedGroup extends G_Element {
 		group_name = name;
 		this.name.text(name);
 		root(element);
+		
+		if (name.startsWith("§")) {
+			switch (name.charAt(1)) {
+				case 'e': this.name.base_color = GraphicsAPI.YELLOW;
+				case '6': this.name.base_color = GraphicsAPI.GOLD;
+			}
+			if (name.length() > 2) {
+				this.name.text(name.substring(2));
+			}
+		}
 	}
 	
 	public void root(G_Element element) {

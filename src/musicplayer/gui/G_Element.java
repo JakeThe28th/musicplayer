@@ -82,6 +82,7 @@ public abstract class G_Element {
 
 			GraphicsAPI.rect(hover_rectangle, 0);
 			onHover();
+			return true;
 		}
 		
 		return false;
