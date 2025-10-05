@@ -81,7 +81,7 @@ public class MusicPlayer {
 	public static final int SHUFFLE   = 3; // Shuffle
 
 	// Variables for the current playlist
-	private static final String NO_PLAYLIST = "No playlist";
+	static final String NO_PLAYLIST = "No playlist";
 	public static String playlist = NO_PLAYLIST;
 	public static String view_playlist = NO_PLAYLIST;
 	public static int song_index = 0;
@@ -94,6 +94,11 @@ public class MusicPlayer {
 	}
 	
 	static public void set_current_view_playlist(String name) {
+		if (name == null) {
+			playlist = NO_PLAYLIST;
+			view_playlist = NO_PLAYLIST;
+			return;
+		}
 		view_playlist = name;
 		G_PlaylistScreen.playlist_header.set_playlist(name);
 		double scroll_y = G_PlaylistScreen.playlist_gui_scroll.scroll_y;
@@ -265,6 +270,7 @@ public class MusicPlayer {
 	public static void next() { next(false); }
 	public static void next(boolean auto) { 	
 		if (playlist.equals(NO_PLAYLIST)) return;
+		if (Library.getPlaylist(playlist) == null) return;
 		
 		// using a local variable since currentFromPlaylist needs to read the
 		// old song index to add it to the previous songs list

@@ -35,6 +35,11 @@ public class G_HomeScreen extends G_Element implements Screen {
 		if (update) update_playlist_views();
 	}
 	
+	public static void removePlaylist(Playlist playlist, boolean update) {
+		playlists.remove(playlist);
+		if (update) update_playlist_views();
+	}
+	
 	// Playlist/Album groups creation //
 	
 	public static int previous_grid_width = -1;

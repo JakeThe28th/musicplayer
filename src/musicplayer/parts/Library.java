@@ -155,5 +155,34 @@ public class Library {
 			Log.send(song.uuid() + ", name=" + song.name());
 		}
 	}
+
+	
+	
+	public static void deletePlaylist(String identifier) {
+		Playlist playlist = getPlaylist(identifier);
+		playlists.remove(identifier);
+		File dir = new File(playlist_directory + identifier);
+		Utility.delete(dir);
+		G_HomeScreen.removePlaylist(playlist, true);
+		Log.send("Deleted " + playlist.name);
+		MainProgram.showError("Deleted " + playlist.name);
+
+	}
+
+	public static void deleteAlbum(String identifier) {
+		Album album = getAlbum(identifier);
+		playlists.remove(identifier);
+		albums.remove(identifier);
+		
+		G_HomeScreen.removePlaylist(album.linked_playlist, true);
+		MusicPlayer.set_current_view_playlist(null);
+		MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
+		
+		File dir = new File(album_directory + identifier);
+		Utility.delete(dir);
+		
+		Log.send("Deleted " + album.linked_playlist.name);
+		MainProgram.showError("Deleted " + album.linked_playlist.name);
+	}
 	
 }

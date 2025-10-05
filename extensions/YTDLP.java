@@ -27,6 +27,7 @@ import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Song;
 import musicplayer.gui.extra.Popup.Option;
 import musicplayer.gui.screens.G_HomeScreen;
+import musicplayer.gui.screens.G_PlaylistScreen;
 import musicplayer.parts.Album;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
@@ -116,6 +117,8 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 		addAlbumHooks();
 		
 		download_thread.start();
+		
+		G_PlaylistScreen.album_deletion_messages += "[(YT-DLP) Note: Deleting the album will not delete cached songs.] ";
 		
 	}
 	

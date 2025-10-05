@@ -99,9 +99,8 @@ public class Utility {
 	public static void delete(File file) {
 		if (file.isDirectory()) {
 			for (File c : file.listFiles()) delete(c);
-		} else {
-			file.delete();
-		}
+		}			
+		file.delete();
 	}
 
 	public static HashMap<String, String> readKeyValue(Path path) throws IOException {

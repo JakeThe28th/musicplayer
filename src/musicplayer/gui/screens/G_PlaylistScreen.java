@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
+import musicplayer.MainProgram;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
 import musicplayer.gui.G_List;
@@ -15,7 +16,9 @@ import musicplayer.gui.G_PlaylistHeader;
 import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Text;
 import musicplayer.gui.extra.Popup.Option;
+import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
+import musicplayer.utility.Log;
 
 public class G_PlaylistScreen extends G_Element implements Screen {
 	
@@ -39,6 +42,8 @@ public class G_PlaylistScreen extends G_Element implements Screen {
 	public static ArrayList<Option> playlist_menu_options = new ArrayList<Option>();
 	public static ArrayList<Option> album_menu_options = new ArrayList<Option>();
 	public static ArrayList<Option> song_menu_options = new ArrayList<Option>();
+	
+	public static String album_deletion_messages = "";
 
 	static {
 		album_menu_options.add(new Option("Temporarily unlock", () -> {
@@ -53,6 +58,30 @@ public class G_PlaylistScreen extends G_Element implements Screen {
 				MusicPlayer.reload_view_playlist();
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+		}));
+		playlist_menu_options.add(new Option("Delete", () -> {			
+			
+			String extra_delete_messages = "";
+			if (MusicPlayer.current_view_playlist().is_album) {
+				extra_delete_messages += album_deletion_messages;
+			}
+		//	Log.send(extra_delete_messages);
+			
+			boolean remove = TinyFileDialogs.tinyfd_messageBox(
+					" " + MainProgram.PROGRAM_TITLE, 
+					"Really delete " + 			MusicPlayer.current_view_playlist().name() + "? This cannot be undone. " + extra_delete_messages, 
+					"yesno", 
+					"warning", 
+					false);
+			if (remove) {
+				Log.send("Deleting playlist" + MusicPlayer.current_view_playlist().identifier());
+				if (MusicPlayer.current_view_playlist().is_album) {
+					Library.deleteAlbum(MusicPlayer.current_view_playlist().identifier());
+				} else {
+					Library.deletePlaylist(MusicPlayer.current_view_playlist().identifier());
+				}
+				
 			}
 		}));
 	}
