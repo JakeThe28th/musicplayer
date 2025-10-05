@@ -48,14 +48,18 @@ public class G_DraggableNamedGroup extends G_Element {
 							a.linked_playlist.metadata("group", null);
 						}
 					}
-					Library.album_group_order = Utility.remove(group_name, Library.album_group_order);
-					Library.save_group_order();
+					if (!G_HomeScreen.FAVORITES_GROUP.equals(group_name)) {
+						Library.album_group_order = Utility.remove(group_name, Library.album_group_order);
+						Library.save_group_order();
+					}
 				} else {
 					for (Playlist p : Library.listPlaylists()) {
 						if (!p.is_album && group_name.equals(p.metadata("group"))) p.metadata("group", null);
 					}
-					Library.playlist_group_order = Utility.remove(group_name, Library.playlist_group_order);
-					Library.save_group_order();
+					if (!G_HomeScreen.FAVORITES_GROUP.equals(group_name)) {
+						Library.playlist_group_order = Utility.remove(group_name, Library.playlist_group_order);
+						Library.save_group_order();
+					}
 				}
 				G_HomeScreen.update_playlist_views();
 			}
