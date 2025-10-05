@@ -278,7 +278,6 @@ public class MusicPlayer {
 		
 		song_index++;
 		ArrayList<Song> songs = Library.getPlaylist(playlist).listSongs();
-		song_index = (int) (Math.random() * (songs.size()));
 		if (playback_mode == SHUFFLE) {
 			song_index = (int) (Math.random() * (songs.size()));
 		} else if (playback_mode != LOOP_LIST && auto) {
