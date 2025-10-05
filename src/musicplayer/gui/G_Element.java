@@ -64,6 +64,9 @@ public abstract class G_Element {
 	// Interaction //
 	protected Rectangle hover_rectangle = new Rectangle(0,0,0,0);
 	
+	/** is_hovered_with_held_left_click */
+	private boolean can_click = false;
+	
 	public boolean input() {
 				
 		if (MainProgram.popups.size() > 0) return false;
@@ -73,17 +76,22 @@ public abstract class G_Element {
 		}
 		
 		if (!GraphicsAPI.windowIsHovered()) return false;
-		
+			
 		if (hover_rectangle.contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY())) {
-			GraphicsAPI.color(hover_color);
-			if (GraphicsAPI.left_click_down()) { GraphicsAPI.color(GraphicsAPI.TRANSLUCENT_WHITE); }
-			if (GraphicsAPI.left_click_released()) { onClick(); return true; }
-			if (GraphicsAPI.left_click_pressed()) { onLeftMousePress(); return true; }
-
-			GraphicsAPI.rect(hover_rectangle, 0);
-			onHover();
-			return true;
+			if (can_click || (!GraphicsAPI.left_click_down() && !GraphicsAPI.left_click_released())) {
+				GraphicsAPI.color(hover_color);
+				if (GraphicsAPI.left_click_down()) { GraphicsAPI.color(GraphicsAPI.TRANSLUCENT_WHITE); }
+				if (GraphicsAPI.left_click_released()) { onClick(); return true; }
+				GraphicsAPI.rect(hover_rectangle, 0);
+				onHover();
+				return true;
+			}
+			if (GraphicsAPI.left_click_pressed()) { onLeftMousePress(); can_click = true; return true; }
+		} else {
+			can_click = false;
 		}
+		
+		if (GraphicsAPI.left_click_released()) { can_click = false; }
 		
 		return false;
 	}
