@@ -4,14 +4,12 @@ import org.joml.Vector4f;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import musicplayer.MainProgram;
-import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.parts.Album;
 import musicplayer.parts.Library;
 import musicplayer.parts.Playlist;
-import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 import musicplayer.utility.Utility;
 

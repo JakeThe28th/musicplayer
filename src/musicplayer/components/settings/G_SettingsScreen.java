@@ -1,6 +1,7 @@
 package musicplayer.components.settings;
 
 import org.joml.Vector4f;
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import musicplayer.MainProgram;
 import musicplayer.components.settings.types.BooleanSetting;
@@ -40,6 +41,7 @@ public class G_SettingsScreen extends G_Element implements Screen {
 }
 
 class G_RealSettingsScreen extends G_Element {
+	
 	G_Icon 		home 			= new G_Icon("home")
 	{ @Override public void onClick() { 
 		MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
@@ -53,7 +55,46 @@ class G_RealSettingsScreen extends G_Element {
 	G_List colors;
 	G_List ranged_integers;
 	
-	{ reload(); }
+	G_Text export_colors_text = new G_Text() {
+		@Override public void onClick() {
+			String export_path = TinyFileDialogs.tinyfd_saveFileDialog(
+					"Export Colors", 
+					"colors.txt", 
+					null,
+					MainProgram.PROGRAM_NAME + " setting files");
+			
+			if (export_path != null) {
+				Settings.save(export_path, Settings.onlyColorSettings());
+			}
+		}
+	};
+	
+	G_Text import_colors_text = new G_Text() {
+		@Override public void onClick() {
+			String import_path = TinyFileDialogs.tinyfd_openFileDialog(
+					"Import Colors", 
+					"colors.txt", 
+					null,
+					MainProgram.PROGRAM_NAME + " setting files",
+					false);
+			
+			if (import_path != null) {
+				Settings.load(import_path);
+			}
+		}
+	};
+	
+	G_ElementPair export_import_colors = new G_ElementPair(export_colors_text, import_colors_text, 0.5f);
+	
+	{ 
+		export_colors_text.can_click = true;
+		export_colors_text.text("Export Colors");
+		
+		import_colors_text.can_click = true;
+		import_colors_text.text("Import Colors");
+		
+		reload(); 
+	}
 	
 	public void reload() {
 		sub_elements.clear();
@@ -67,6 +108,8 @@ class G_RealSettingsScreen extends G_Element {
 		colors.verticalify();
 		booleans.verticalify();
 		ranged_integers.verticalify();
+		
+		colors.add(export_import_colors);
 		
 		for (String key : Settings.settings.keySet()) {
 			Setting setting = Settings.get(key);

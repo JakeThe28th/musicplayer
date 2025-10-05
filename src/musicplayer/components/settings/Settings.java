@@ -22,6 +22,8 @@ import musicplayer.utility.Log;
 
 public class Settings {
 	
+	public static final String SETTINGS_FILE = "config.txt";
+	
 	static HashMap<String, SettingChangeCallback> callbacks = new HashMap<>();
 	public static void register(String setting_name, SettingChangeCallback cb) {
 		callbacks.put(setting_name, cb);
@@ -127,7 +129,7 @@ public class Settings {
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
-		load();
+		load(SETTINGS_FILE);
 		
 		} catch (Exception e) {
 			Log.trace(e);
@@ -238,7 +240,7 @@ public class Settings {
 		if (callbacks.containsKey(key)) {
 			callbacks.get(key).onChange(key, value);
 		}
-		if (automatically_save) save();
+		if (automatically_save) save(SETTINGS_FILE, settings);
 	}
 	
 	public static void setColor(String key, String value) {
@@ -310,17 +312,15 @@ public class Settings {
 	}
 	
 	// -- + Saving/Loading from disk + -- //
-	
-	public static final String SETTINGS_FILE = "config.txt";
-	
+		
 	/** Save settings to disk */
-	public static void save() {
+	public static void save(String path, HashMap<String, Setting> settings) {
 		String serialized = "";
 		for (String key : settings.keySet()) {
 			serialized += key + "=" + settings.get(key).type() + "(" + Setting.escape(settings.get(key).serialize()) + ")\n";
 		}
 		try {
-			Files.writeString(Paths.get(SETTINGS_FILE), serialized, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+			Files.writeString(Paths.get(path), serialized, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 		} catch (IOException e) {
 			Log.send("Failed to save settings.");
 			Log.trace(e);
@@ -328,9 +328,9 @@ public class Settings {
 	}
 	
 	/** Load settings from disk */
-	public static void load() {
+	public static void load(String path) {
 		try {
-			String serialized = Files.readString(Paths.get(SETTINGS_FILE));
+			String serialized = Files.readString(Paths.get(path));
 			int index = 0;
 			while (index < serialized.length()) {
 				// Read until '=' (ex: read 'blah' in 'blah=(foo)';
@@ -376,6 +376,13 @@ public class Settings {
 			Log.send("Failed to read settings.");
 			Log.trace(e);
 		}
+	}
+	public static HashMap<String, Setting> onlyColorSettings() {
+		HashMap<String, Setting> ret = new HashMap<>();
+		for (String key : settings.keySet()) {
+			if (settings.get(key) instanceof ColorSetting) ret.put(key, settings.get(key));
+		}
+		return ret;
 	}
 	
 }
