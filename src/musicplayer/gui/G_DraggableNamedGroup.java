@@ -1,11 +1,16 @@
 package musicplayer.gui;
 
 import org.joml.Vector4f;
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
+import musicplayer.MainProgram;
 import musicplayer.components.settings.Settings;
+import musicplayer.graphics.GraphicsAPI;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.screens.G_HomeScreen;
+import musicplayer.parts.Album;
 import musicplayer.parts.Library;
+import musicplayer.parts.Playlist;
 import musicplayer.utility.Log;
 import musicplayer.utility.Rectangle;
 import musicplayer.utility.Utility;
@@ -28,11 +33,34 @@ public class G_DraggableNamedGroup extends G_Element {
 			G_HomeScreen.update_playlist_views();
 		}
 	};
+	G_Icon delete = new G_Icon("giant_trash") {
+		@Override public void onClick() {
+			boolean remove = TinyFileDialogs.tinyfd_messageBox(
+					" " + MainProgram.PROGRAM_TITLE, 
+					"Really ungroup " + group_name + "?", 
+					"yesno", 
+					"warning", 
+					false);
+			
+			if (remove) {
+				if (G_HomeScreen.current_tab == G_HomeScreen.Tab.ALBUMS) {
+					for (Album a : Library.listAlbums()) {
+						if (group_name.equals(a.linked_playlist.metadata("group"))) {
+							a.linked_playlist.metadata("group", null);
+						}
+					}
+				} else for (Playlist p : Library.listPlaylists()) {
+					if (!p.is_album && group_name.equals(p.metadata("group"))) p.metadata("group", null);
+				}
+				G_HomeScreen.update_playlist_views();
+			}
+		}
+	};
 	G_Element root;
 	
-	G_List move_icons = new G_List(up_button, down_button).verticalify();
+	G_List move_icons = new G_List(up_button, down_button, delete).verticalify();
 	
-	int base_drag_width = 40;
+	int base_drag_width = 0;
 	int drag_width = 0;
 	int min_element_height = 40;
 		
@@ -41,23 +69,27 @@ public class G_DraggableNamedGroup extends G_Element {
 		addSubElement(move_icons);
 		up_button.icon_size = 0.75;
 		down_button.icon_size = 0.75;
+		delete.icon_size = 0.75;
 		move_icons.valign(Alignment.MIDDLE);
 		name.halign(Alignment.MIDDLE);
 		base_drag_width = (int) (up_button.width()*2.75);
-		drag_width = base_drag_width;
+		drag_width = G_HomeScreen.editing() ? base_drag_width : 0;
 	}
 	
 	public G_DraggableNamedGroup(String name, G_Element element) {
+		if (name.equals("Default")) move_icons.remove(delete);
 		group_name = name;
 		this.name.text(name);
 		root(element);
 	}
 	
-	private void root(G_Element element) {
+	public void root(G_Element element) {
 		if (this.root != null) removeSubElement(root);
 		root = element;
 		addSubElement(element);
 	}
+	
+	public G_Element root() { return root; }
 
 
 	@Override
@@ -65,6 +97,16 @@ public class G_DraggableNamedGroup extends G_Element {
 		name.recalculate_size();
 		move_icons.recalculate_size();
 		root.recalculate_size();
+				
+		if (G_HomeScreen.editing()) {
+			min_element_height = move_icons.height();
+		} else {
+			min_element_height = 0;
+		}
+		
+		if (!G_HomeScreen.editing_transition_complete()) {
+			min_element_height = (int) Utility.lerp(0, move_icons.height(), G_HomeScreen.current_edit_anim_time());
+		}
 		
 		int element_height = ( min_element_height > root.height()) ? min_element_height : root.height();
 		this.unpadded_height = name.height() + element_height;
@@ -78,6 +120,7 @@ public class G_DraggableNamedGroup extends G_Element {
 		if (!G_HomeScreen.editing_transition_complete()) {
 			up_button.base_color = new Vector4f(1, 1, 1, G_HomeScreen.current_edit_anim_time());
 			down_button.base_color = new Vector4f(1, 1, 1, G_HomeScreen.current_edit_anim_time());
+			delete.base_color = new Vector4f(1, 1, 1, G_HomeScreen.current_edit_anim_time());
 			drag_width = (int) Utility.lerp(0, base_drag_width, G_HomeScreen.current_edit_anim_time());
 		}
 
@@ -90,7 +133,12 @@ public class G_DraggableNamedGroup extends G_Element {
 		this.hover_rectangle = new Rectangle(0,0,0,0);
 		
 		name.layout(left+drag_width, top, right, top+name.height());
-		move_icons.layout(left, top+name.height(), left+drag_width, bottom);
+		
+		if (G_HomeScreen.editing()) {
+			move_icons.layout(left, top+name.height(), left+drag_width, bottom);
+		} else {
+			move_icons.layout(0,0,0,0);
+		}
 		
 		//Log.send(top, bottom);
 		root.layout(left+drag_width, top+name.height(), right, bottom);
@@ -110,8 +158,5 @@ public class G_DraggableNamedGroup extends G_Element {
 		}
 	}
 
-	
-	
-	
 
 }

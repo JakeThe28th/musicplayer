@@ -75,8 +75,29 @@ public class G_HomeScreen extends G_Element implements Screen {
 			
 		}
 		
+		for (int i = 0; i < album_groups.length(); i++) {
+			G_DraggableNamedGroup group = (G_DraggableNamedGroup) album_groups.get(i);
+			addEmptyTextIfEmpty(group);
+		}
+		for (int i = 0; i < playlist_groups.length(); i++) {
+			G_DraggableNamedGroup group = (G_DraggableNamedGroup) playlist_groups.get(i);
+			addEmptyTextIfEmpty(group);
+		}
+		
 	}
 	
+	/** helper method only here to reduce copy pasting code */
+	private static void addEmptyTextIfEmpty(G_DraggableNamedGroup group) {
+		G_Grid grid = (G_Grid) group.root();
+		if (grid.isEmpty()) {
+			G_Text text = new G_Text();
+			text.text("Empty");
+			text.base_color = GraphicsAPI.TRANSPARENT_WHITE;
+			text.halign(Alignment.MIDDLE);
+			group.root(text);
+		}
+	}
+
 	/** helper method only here to reduce copy pasting code */
 	private static void ensure(HashMap<String, G_Grid> grids, String group, boolean update_group_order, boolean is_album) {
 		if (!grids.containsKey(group)) {
@@ -124,8 +145,8 @@ public class G_HomeScreen extends G_Element implements Screen {
 		return (System.currentTimeMillis() > edit_anim_end_time);
 	}
 	
-	enum Tab { ALBUMS, PLAYLISTS }
-	static Tab current_tab = Tab.ALBUMS;
+	public static enum Tab { ALBUMS, PLAYLISTS }
+	public static Tab current_tab = Tab.ALBUMS;
 	
 	@Override public G_Element instance() { return INSTANCE; }
 	@Override public String identifier() { return IDENTIFIER; }

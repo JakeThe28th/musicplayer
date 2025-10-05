@@ -89,4 +89,8 @@ public class G_Grid extends G_Element {
 		for (G_Element e : elements) e.draw(depth+1);
 	}
 
+	public boolean isEmpty() {
+		return elements.size() == 0;
+	}
+
 }

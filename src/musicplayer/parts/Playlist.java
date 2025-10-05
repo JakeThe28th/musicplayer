@@ -140,6 +140,10 @@ public class Playlist {
 	}
 	
 	public void metadata(String key, String value) {
+		if (value == null) {
+			fields.remove(key);
+			return;
+		}
 		fields.put(key, value);
 	}
 

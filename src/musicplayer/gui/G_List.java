@@ -30,6 +30,14 @@ public class G_List extends G_Element {
 		this.recalculate_size();
 	}
 	
+	public void set(G_Element e, int index) {
+		this.elements.set(index, e);
+		this.recalculate_size();
+	}
+	
+	public int length() 			{ return elements.size();     }
+	public G_Element get(int index) { return elements.get(index); }
+	
 	ArrayList<G_Element> elements = new ArrayList<G_Element>();
 	
 	{	sub_elements = elements;	}

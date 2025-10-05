@@ -18,6 +18,7 @@ import musicplayer.gui.G_Text;
 import musicplayer.gui.extra.Popup.Option;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
+import musicplayer.parts.Playlist;
 import musicplayer.utility.Log;
 
 public class G_PlaylistScreen extends G_Element implements Screen {
@@ -83,6 +84,18 @@ public class G_PlaylistScreen extends G_Element implements Screen {
 				}
 				
 			}
+		}));
+		playlist_menu_options.add(new Option("Set group", () -> {
+			String name = TinyFileDialogs.tinyfd_inputBox( MainProgram.PROGRAM_TITLE + " ", 
+					"Group name: ", 
+					"Default");
+			Playlist p = MusicPlayer.current_view_playlist();
+			if (name.equals("Default")) {
+				p.metadata("group", null);
+			} else {
+				p.metadata("group", name);
+			}
+			G_HomeScreen.update_playlist_views();
 		}));
 	}
 
