@@ -54,11 +54,19 @@ class Text {
 	 * Consolas is monospace, so the width is the same for every character. 
 	 * Kerning can be dealt with later...  */
 	public static final float CHARACTER_WIDTH = 0.60f;
+	
+	/* Same as the above, but for unsupported characters that don't use the
+	 * defined font. They need a different size since otherwise they're way
+	 * too small to read... All of the ones I've encountered so far other than
+	 * punctuation are kanji or kana, which are pretty square, so this should
+	 * be fine until proper kerning and stuff is added later. */
+	public static final float UNSUPPORTED_CHARACTER_WIDTH = 1f;
 
 	public Vector2i size(String text) {
 		int xx = 0;
 		for (int i = 0; i < text.length(); i++) {
-			xx += font_size * CHARACTER_WIDTH;
+			if (font.canDisplay(text.charAt(i)))  xx += font_size * CHARACTER_WIDTH;
+			if (!font.canDisplay(text.charAt(i))) xx += font_size * UNSUPPORTED_CHARACTER_WIDTH;
 		}
 		return new Vector2i(xx, (int) (font_size * CHARACTER_HEIGHT));
 	}	
@@ -74,7 +82,8 @@ class Text {
 		for (int i = 0; i < text.length(); i++) {
 			character(xx, y, z, text.charAt(i));
 			// even though it doesn't throw an error, not casting here before adding to x causes weird drift
-			xx += (int) (font_size * CHARACTER_WIDTH);
+			if (font.canDisplay(text.charAt(i)))  xx += (int) (font_size * CHARACTER_WIDTH);
+			if (!font.canDisplay(text.charAt(i))) xx += (int) (font_size * UNSUPPORTED_CHARACTER_WIDTH);
 		}
 	}
 	
@@ -161,7 +170,7 @@ class Text {
 				        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 				}
 				g.setColor(Color.white);
-				g.setFont(g.getFont().deriveFont(Font.BOLD, (float) (font_size*0.65))); // barely readable but we'll deal with this in the future
+				g.setFont(g.getFont().deriveFont(Font.BOLD, (float) (font_size))); // barely readable but we'll deal with this in the future
 				if (f.canDisplay(character)) g.setFont(f);
 				
 		    	g.drawString(character+"", real_x, real_y);
