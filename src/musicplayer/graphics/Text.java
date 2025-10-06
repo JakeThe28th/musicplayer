@@ -161,7 +161,9 @@ class Text {
 				        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 				}
 				g.setColor(Color.white);
-		    	g.setFont(f);
+				g.setFont(g.getFont().deriveFont(Font.BOLD, (float) (font_size*0.65))); // barely readable but we'll deal with this in the future
+				if (f.canDisplay(character)) g.setFont(f);
+				
 		    	g.drawString(character+"", real_x, real_y);
 		    	
 		    int w = texture.getWidth();

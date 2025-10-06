@@ -36,6 +36,15 @@ class RenderQueue {
 	
 	public static void render() {
 		Graphics.clear();
+		
+		if (EXPERIMENTAL_OPTIMIZATIONS) {
+			// breaks without and theoretically i have no clue why
+			// i don't think anything is destroyed between frames
+			last_mesh = null;
+			last_texture = null;
+			last_scissor = null;
+		}
+		
 		for (RenderState state : queue) {
 			
 			if (EXPERIMENTAL_OPTIMIZATIONS) {
