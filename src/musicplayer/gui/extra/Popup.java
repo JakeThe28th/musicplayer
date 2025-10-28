@@ -13,10 +13,14 @@ import musicplayer.utility.Rectangle;
 
 public class Popup {
 	
-	public record Option(String name, GenericSingleObjectInterface run, Object optional) {
+	public record Option(String name, GenericSingleObjectInterface run, Object optional, boolean keep_open) {
 		
 		public Option(String name, GenericInterface run) {
-			this(name, (o) -> { run.run(); }, null);
+			this(name, (o) -> { run.run(); }, null, false);
+		}
+		
+		public Option(String name, GenericInterface run, boolean keep_open) {
+			this(name, (o) -> { run.run(); }, null, keep_open);
 		}
 
 		public static Option[] from(ArrayList<Option> optionarray) {
@@ -76,7 +80,7 @@ public class Popup {
 				GraphicsAPI.color(GraphicsAPI.WHITE);
 				if (GraphicsAPI.left_click_released()) {
 					o.run().run(o.optional());
-					MainProgram.popups.remove(this);
+					if (!o.keep_open) MainProgram.popups.remove(this);
 				}
 			}
 			yy+=size.y;
@@ -89,6 +93,15 @@ public class Popup {
 			return false;
 		}
 	}
-
+	
+	public static int widthOf(ArrayList<Option> option_arrays) {
+		int width = 0;
+		for (Option o : option_arrays ) {
+			Vector2i size = GraphicsAPI.size(o.name);
+			width = (size.x > width) ? size.x : width;
+		}
+		width += 10;
+		return width;
+	}
 
 }

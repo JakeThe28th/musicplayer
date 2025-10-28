@@ -39,17 +39,21 @@ public class G_Song extends G_Element implements I_DraggableElement {
 				option_arrays.add(new Option("Add to", () -> {
 					ArrayList<Option> others = new ArrayList<Option>();
 						for (Playlist p : Library.listPlaylists()) {
+							if (p.is_album) continue;
 							others.add(new Option(p.name(), () -> {
-								MainProgram.showError("Not implemented yet");
+								//MainProgram.showError("Not implemented yet");
 								// TODO
 								// rethink options stuff so this can be in G_PlaylistScreen
+								// todo: jank
+								p.add(song);
+								MainProgram.showError("Added '" + Library.getSongFromAlbum(song).name() + "' to '" + p.name() + "'.");
 							}));
 						}
-					MainProgram.popups.add(new Popup(x + width(), y + height(), Alignment.RIGHT, Alignment.LEFT, Option.from(others)));
-				}));
+					MainProgram.popups.add(new Popup((x + width() - 10) - (Popup.widthOf(option_arrays)), y + height(), Alignment.RIGHT, Alignment.LEFT, Option.from(others)));
+				},true));
 				
 			Option[] options = Option.from(option_arrays);
-			MainProgram.popups.add(new Popup(x + width(), y + height(), Alignment.RIGHT, Alignment.LEFT, options));
+			MainProgram.popups.add(new Popup(x + width() - 10, y + height(), Alignment.RIGHT, Alignment.LEFT, options));
 		} };
 		
 	G_Icon drag = new G_Icon("up_down_arrow")
