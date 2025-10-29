@@ -104,6 +104,7 @@ public class MusicPlayer {
 		double scroll_y = G_PlaylistScreen.playlist_gui_scroll.scroll_y;
 		double scroll_target = G_PlaylistScreen.playlist_gui_scroll.scroll_target();
 		G_PlaylistScreen.set_playlist_list(new G_List().verticalify());
+		G_PlaylistScreen.playlist_gui_list.force_no_recalculate_size = true;
 		int index = 0;
 		for (Song song : Library.getPlaylist(view_playlist).listSongs()) {
 			G_Song song_element = new G_Song(song.uuid(), index, Library.getPlaylist(view_playlist));
@@ -111,6 +112,8 @@ public class MusicPlayer {
 			ExtensionAPI.modifyGUI(song_element);
 			index++;
 		}
+		G_PlaylistScreen.playlist_gui_list.force_no_recalculate_size = false;
+		G_PlaylistScreen.playlist_gui_list.recalculate_size();
 		G_PlaylistScreen.playlist_gui_scroll.scroll_y = scroll_y;
 		G_PlaylistScreen.playlist_gui_scroll.scroll_target(scroll_target);
 

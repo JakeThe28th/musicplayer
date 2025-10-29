@@ -97,11 +97,14 @@ public class G_SearchScreen extends G_Element implements Screen {
 		SearchResult result0 = all_items.get(0);
 		if (result0.item() instanceof Song) {
 			G_List new_results = new G_List().verticalify();
+			new_results.force_no_recalculate_size = true;
 			for (SearchResult result : all_items) {
 				G_Song song = new G_Song(((Song) result.item()).uuid(), result.count(), result.playlist(), true);
 				if (result.count() <= 1) song.name.base_color = GraphicsAPI.TRANSLUCENT_WHITE;
 				new_results.add(song);
 			}
+			new_results.force_no_recalculate_size = false;
+			new_results.recalculate_size();
 			results(new_results);
 		}
 	}

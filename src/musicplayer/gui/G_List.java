@@ -9,11 +9,16 @@ import musicplayer.gui.enums.Alignment;
 import musicplayer.utility.Rectangle;
 
 public class G_List extends G_Element {
+	
+	public boolean force_no_recalculate_size = false; // workaround to fix some lag
 		
 	public G_List(G_Element...elements) {
+		force_no_recalculate_size = true;
 		for (G_Element e : elements) {
 			this.elements.add(e);
 		}
+		force_no_recalculate_size = false;
+		this.recalculate_size();
 	}
 	
 	public G_List verticalify() {
@@ -57,6 +62,7 @@ public class G_List extends G_Element {
 
 	@Override
 	public void recalculate_size() {
+		if (force_no_recalculate_size) return;
 		for (G_Element e : elements) {
 			e.recalculate_size();
 		}
