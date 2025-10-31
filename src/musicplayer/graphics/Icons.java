@@ -160,9 +160,16 @@ class Icons {
 	
 	static void bitmap_icon(int x, int y, int z, String name, int size) {
 		if (Icons.bitmap_icons.get(name) == null) throw new Error("No such icon: " + name);
+		float mul = Settings.bitmap_icon_scale();
+		
+		x+= size/2;
+		y+= size/2;
+		
+		size*= mul;
+
 		x-= size/2;
 		y-= size/2;
-		size*=2;
+		
 		Shapes.rect(x, y, x+size, y+size, z, Icons.bitmap_icons.get(name));
 	}
 

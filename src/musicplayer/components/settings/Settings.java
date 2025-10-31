@@ -169,6 +169,8 @@ public class Settings {
 			}
 		});
 		
+		setRangedInteger("bitmap_icon_scale", 175, 1, 300);
+		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
 		automatically_save = true;
@@ -301,6 +303,10 @@ public class Settings {
 	
 	public static boolean use_programmer_art_icons() {
 		return getBoolean("use_programmer_art_icons");
+	}
+	
+	public static float bitmap_icon_scale() {
+		return getInt("bitmap_icon_scale") / 100f;
 	}
 	
 	// -- + setting/getting + -- //
