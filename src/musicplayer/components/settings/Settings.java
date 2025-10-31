@@ -158,13 +158,15 @@ public class Settings {
 		
 		setRangedInteger("bitmap_icon_filtering", 3, 0, 3);
 		register("bitmap_icon_filtering", (name, value) -> {
-			int filter_mode = GL40.GL_LINEAR;
-			switch (((RangedIntegerSetting) value).value) {
-				case 0: filter_mode = GL40.GL_NEAREST; break;
-				case 1: filter_mode = GL40.GL_LINEAR; break;
-				case 2: filter_mode = GL40.GL_LINEAR_MIPMAP_LINEAR; break;
+			if (GraphicsAPI.is_initialized()) {
+				int filter_mode = GL40.GL_LINEAR;
+				switch (((RangedIntegerSetting) value).value) {
+					case 0: filter_mode = GL40.GL_NEAREST; break;
+					case 1: filter_mode = GL40.GL_LINEAR; break;
+					case 2: filter_mode = GL40.GL_LINEAR_MIPMAP_LINEAR; break;
+				}
+				GraphicsAPI.setIconFilteringMode(filter_mode);
 			}
-			GraphicsAPI.setIconFilteringMode(filter_mode);
 		});
 		
 		// Load settings from disk

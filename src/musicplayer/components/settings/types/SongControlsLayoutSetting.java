@@ -33,21 +33,24 @@ public class SongControlsLayoutSetting implements Setting {
 	public LinkedHashSet<SongControlsIcon> right_icons;
 
 	public SongControlsLayoutSetting() {
+		usedefault();
+	}
+	
+	private void usedefault() {
 		this.left_icons = new LinkedHashSet<SongControlsIcon>();
 			left_icons.add(SongControlsIcon.VOLUME);
-			
+		
 		this.middle_icons = new LinkedHashSet<SongControlsIcon>();
 			middle_icons.add(SongControlsIcon.PREVIOUS);
 			middle_icons.add(SongControlsIcon.STOP);
 			middle_icons.add(SongControlsIcon.PAUSE);
 			middle_icons.add(SongControlsIcon.NEXT);
-
+	
 		this.right_icons = new LinkedHashSet<SongControlsIcon>();
 			right_icons.add(SongControlsIcon.PIN);
 			right_icons.add(SongControlsIcon.SHUFFLE);
-
 	}
-	
+
 	public SongControlsLayoutSetting(
 			LinkedHashSet<SongControlsIcon> l, 
 			LinkedHashSet<SongControlsIcon> m, 
@@ -87,8 +90,10 @@ public class SongControlsLayoutSetting implements Setting {
 			}
 		
 		} catch (Exception e) {
-			MainProgram.showError("Error loading song controls layout...");
+			//MainProgram.showError("Error loading song controls layout...");
+			Log.send("Error loading song controls layout...");
 			Log.trace(e);
+			usedefault();
 		}
 
 		return this;
