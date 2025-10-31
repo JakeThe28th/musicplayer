@@ -4,7 +4,7 @@ public enum IconType {
 	// ... his names are so much more standardized than mine...
 	CONTROL_MODE_LOOP_ALL		("loop", 				"control_mode_loop_all"),
 	CONTROL_MODE_LOOP_NONE		("play_once", 			"control_mode_loop_none"),
-	CONTROL_MODE_LOOP_ONCE		("loop_once", 			"control_mode_loop_once"),
+	CONTROL_MODE_LOOP_ONCE		("loop_once", 			"control_mode_loop_one"),
 	CONTROL_MODE_SHUFFLE		("shuffle", 			"control_mode_shuffle"),
 	CONTROL_PAUSE				("pause", 				"control_pause"),
 	CONTROL_PIN					("pin", 				"control_pin"),
