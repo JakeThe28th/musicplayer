@@ -5,9 +5,11 @@ import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.io.IOException;
 import java.nio.IntBuffer;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
@@ -16,6 +18,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
 
 import musicplayer.components.settings.Settings;
+import musicplayer.utility.Log;
 
 
 class Window {
@@ -49,7 +52,7 @@ class Window {
 		
 		window_height = height;
 		window_width = width;
-		
+				
 		// Set up a callback to correct the viewport size when the window is resized
 		GLFW.glfwSetWindowSizeCallback(window, (window, w, h) -> {
 			window_height = h;

@@ -4,21 +4,56 @@ import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.opengl.GL11.*;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+import javax.imageio.ImageIO;
+
 import org.joml.Matrix4f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.Version;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.opengl.GL11;
 
 import musicplayer.MainProgram;
 import musicplayer.components.settings.Settings;
+import musicplayer.utility.Log;
 
 class Graphics {
 	
 	public static void setup(int width, int height, String name) {
 		init();
 		Window.init(width, height, name);
+		try { Graphics.loadProgramIcon(); } catch (IOException e) { Log.trace(e); }
 		Graphics.clearColor(Settings.DARK_COLOR().x, Settings.DARK_COLOR().y, Settings.DARK_COLOR().z, 0.8f);
 		Shader.shader();
+	}
+
+	public static void loadProgramIcon() throws IOException {
+		// Window icon
+		BufferedImage logo_b = ImageIO.read(new File("assets/logo.png"));
+
+		ByteBuffer icon_bytes = BufferUtils.createByteBuffer((logo_b.getWidth()*logo_b.getHeight())*4);
+		for (int y = 0; y < logo_b.getWidth(); y++)
+		for (int x = 0; x < logo_b.getHeight(); x++) {
+			icon_bytes.putInt(logo_b.getRGB(x, y));
+		}
+		icon_bytes.flip();
+		
+		GLFWImage image = GLFWImage.malloc();
+					image.pixels(icon_bytes);
+					image.height(logo_b.getHeight());
+					image.width(logo_b.getWidth());
+					
+		GLFWImage.Buffer images = GLFWImage.malloc(1);
+        images.put(0, image);
+        
+		GLFW.glfwSetWindowIcon(Window.identifier(), images);
 	}
 
 	public static void 		quit() 		{ Window.free(); free(); }
