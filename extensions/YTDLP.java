@@ -372,12 +372,16 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 	Path cache_path;
 	
 	public void migrateOldCache() throws IOException {
+		
+		Log.send("Migrating old cache...");
 
 		String cached_song_list_filename;
 		ArrayList<String> cached_urls = new ArrayList<String>();
 		ArrayList<String> cached_url_types = new ArrayList<String>();
 		
 		cached_song_list_filename = working_directory + "cachedsongs.txt";
+		
+		Log.send("...Reading old cache...");
 		
 		// Read list of already downloaded links
 		File cache = new File(cached_song_list_filename);
@@ -389,17 +393,33 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 			}
 		}
 		
+		Log.send("...Converting cache...");
+		
 		for (int i = 0; i < cached_urls.size(); i++ ) {
+			Log.send("... ... Finding song usages (for song " + i +" / " + cached_urls.size() + ") ...");
+			GraphicsAPI.center_text(0, 0, "Migrating cache (song " + i + " / " + cached_urls.size() + ")");
+
 			ArrayList<UUID> usages = new ArrayList<UUID>();
 				for (Song song : Library.listSongs()) {
 					if (!song.file_extension().equals("webloader")) continue;
 					String url = Files.readString(Paths.get(song.file_path())).strip();
-					if (url.equals(cached_urls.get(i))) usages.add(song.uuid());
+					if (url.equals(cached_urls.get(i))) {
+						Log.send("... ... ... Found usage of '" + cached_urls.get(i) + "' as " + song.uuid());
+						GraphicsAPI.center_text(0, 0, "Migrating cache (song " + i + " / " + cached_urls.size() + ")");
+						GraphicsAPI.center_text(0, 50, cached_urls.get(i));
+						GraphicsAPI.center_text(0, 80, song.uuid().toString());
+						if (!GraphicsAPI.isOpen()) System.exit(17);
+						GraphicsAPI.render();
+						usages.add(song.uuid());
+					}
 				}
+			Log.send("... ... Cached '" + cached_urls.get(i) + "' ");
 			this.cache.put(cached_urls.get(i), new CachedSong(i, cached_url_types.get(i), usages));
 			last_song_index++;
 		}
 		
+		Log.send("...Saving new cache...");
+
 		saveCache();
 		
 	}
