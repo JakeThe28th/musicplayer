@@ -1,5 +1,6 @@
 package musicplayer.graphics;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -7,13 +8,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.joml.Matrix4f;
+
+import musicplayer.components.settings.Settings;
 import musicplayer.utility.Log;
 
 class Icons {
 	
 	static HashMap<String, Mesh> icons = new HashMap<String, Mesh>();
 	
-	// Load the icons at startup
+	// Load the vector icons at startup
 	
 	static {
 		
@@ -115,9 +118,32 @@ class Icons {
 		
 	}
 	
+	static HashMap<String, Texture> bitmap_icons = new HashMap<String, Texture>();
+	
+	// Load the bitmap icons at startup
+	
+	static {
+		File bitmap_icons_dir = new File("assets/icons/");
+		for (File iconimg : bitmap_icons_dir.listFiles()) {
+			try {
+				bitmap_icons.put(iconimg.getName().substring(0, iconimg.getName().lastIndexOf('.')), new Texture(iconimg.getPath()));
+			} catch (IOException e) {
+				Log.trace(e);
+			}
+		}
+	}
+	
 	// Drawing //
 	
-	public static void icon(int x, int y, int z, String name, int size) {
+	public static void icon(int x, int y, int z, IconType icon, int size) {
+		if (Settings.use_programmer_art_icons()) {
+			vector_icon(x, y, z, icon.vector, size);
+		} else {
+			bitmap_icon(x, y, z, icon.bitmap, size);
+		}
+	}
+	
+	static void vector_icon(int x, int y, int z, String name, int size) {
 		if (Icons.icons.get(name) == null) throw new Error("No such icon: " + name);
 		
 		float scale = size;
@@ -130,6 +156,14 @@ class Icons {
 					 // negative size cuz i didn't realize i was modeling the icons upside down....
 					.scale(size, -size, size),
 				Shapes.color, Shapes.white);
+	}
+	
+	static void bitmap_icon(int x, int y, int z, String name, int size) {
+		if (Icons.bitmap_icons.get(name) == null) throw new Error("No such icon: " + name);
+		x-= size/2;
+		y-= size/2;
+		size*=2;
+		Shapes.rect(x, y, x+size, y+size, z, Icons.bitmap_icons.get(name));
 	}
 
 }

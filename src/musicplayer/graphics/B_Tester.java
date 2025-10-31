@@ -53,8 +53,11 @@ public class B_Tester {
 			
 			//RenderQueue.queue(mesh, new Matrix4f().translate(0, 0, 2), new Vector4f(1,1,1,1), khronos);
 
-			Icons.icon(20, 30, 0, "stop", 10);
-			Icons.icon(40, 30, 0, "volume", 10);
+			Icons.vector_icon(20, 30, 0, "stop", 10);
+			Icons.vector_icon(40, 30, 0, "volume", 10);
+			
+			Icons.bitmap_icon(20, 60, 0, "control_stop", 10);
+			Icons.bitmap_icon(40, 60, 0, "control_volume", 60);
 
 			//textrenderer.text(10, 100, 10, "Hello, World!");
 			
