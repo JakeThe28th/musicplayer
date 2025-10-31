@@ -10,6 +10,7 @@ import musicplayer.components.settings.types.ColorSetting;
 import musicplayer.components.settings.types.Setting;
 import musicplayer.components.settings.types.StringSetting;
 import musicplayer.extensions.Extension;
+import musicplayer.graphics.IconType;
 import musicplayer.gui.G_Icon;
 import musicplayer.gui.extra.Popup.Option;
 import musicplayer.gui.screens.G_HomeScreen;
@@ -24,7 +25,7 @@ public class ProgramSettings extends Extension  {
 	@Override public String   identifier() 		{ return "builtin;settings"; }
 
 
-	G_Icon 		settings_home_icon 				= new G_Icon("gear")
+	G_Icon 		settings_home_icon 				= new G_Icon(IconType.GENERIC_SETTINGS)
 	{ @Override public void onClick() { 
 		MainProgram.change_screen(settings_screen.identifier());
 		G_SettingsScreen.INSTANCE.reload();

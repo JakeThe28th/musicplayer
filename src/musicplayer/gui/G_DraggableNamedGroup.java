@@ -6,6 +6,7 @@ import org.lwjgl.util.tinyfd.TinyFileDialogs;
 import musicplayer.MainProgram;
 import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.IconType;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.parts.Album;
@@ -18,21 +19,21 @@ public class G_DraggableNamedGroup extends G_Element {
 	
 	public String group_name;
 	G_Text name = new G_Text();
-	G_Icon up_button = new G_Icon("up") {
+	G_Icon up_button = new G_Icon(IconType.GENERIC_ARROW_UP) {
 		@Override public void onClick() {
 			Library.album_group_order = Utility.relative_swap(Library.album_group_order, group_name, -1);
 			Library.save_group_order();
 			G_HomeScreen.update_playlist_views();
 		}
 	};
-	G_Icon down_button = new G_Icon("down") {
+	G_Icon down_button = new G_Icon(IconType.GENERIC_ARROW_DOWN) {
 		@Override public void onClick() {
 			Library.album_group_order = Utility.relative_swap(Library.album_group_order, group_name, 1);
 			Library.save_group_order();
 			G_HomeScreen.update_playlist_views();
 		}
 	};
-	public G_Icon delete = new G_Icon("giant_trash") {
+	public G_Icon delete = new G_Icon(IconType.GENERIC_TRASH) {
 		@Override public void onClick() {
 			boolean remove = TinyFileDialogs.tinyfd_messageBox(
 					" " + MainProgram.PROGRAM_TITLE, 

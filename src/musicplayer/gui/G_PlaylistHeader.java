@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import musicplayer.MainProgram;
 import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.IconType;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.extra.Popup;
 import musicplayer.gui.extra.Popup.Option;
@@ -18,11 +19,11 @@ import musicplayer.utility.Rectangle;
 public class G_PlaylistHeader extends G_Element {
 	
 	G_Text 		title			= new G_Text().text("No Playlist");
-	G_Icon 		home 			= new G_Icon("home")
+	G_Icon 		home 			= new G_Icon(IconType.GENERIC_HOME)
 		{ @Override public void onClick() { 
 			MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
 		}};
-	G_Icon 		menu 			= new G_Icon("hamburger")
+	G_Icon 		menu 			= new G_Icon(IconType.GENERIC_HAMBURGER)
 		{ @Override public void onClick() {
 			ArrayList<Option> option_arrays = new ArrayList<Option>();
 				option_arrays.addAll(G_PlaylistScreen.playlist_menu_options);

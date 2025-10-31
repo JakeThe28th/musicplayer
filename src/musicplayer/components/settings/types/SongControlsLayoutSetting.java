@@ -5,21 +5,23 @@ import java.util.regex.Pattern;
 
 import org.joml.Vector4f;
 
+import musicplayer.MainProgram;
+import musicplayer.graphics.IconType;
 import musicplayer.utility.Log;
 
 public class SongControlsLayoutSetting implements Setting {
 	
 	public static enum SongControlsIcon {
-		VOLUME("volume", true),
-		PREVIOUS("previous", true),
-		STOP("stop", true),
-		PAUSE("pause", true),
-		NEXT("next", true),
-		PIN("pin", true),
-		SHUFFLE("shuffle", true),;
-		public String icon;
+		VOLUME(IconType.CONTROL_VOLUME, true),
+		PREVIOUS(IconType.CONTROL_SKIP_PREVIOUS, true),
+		STOP(IconType.CONTROL_STOP, true),
+		PAUSE(IconType.CONTROL_PAUSE, true),
+		NEXT(IconType.CONTROL_SKIP_NEXT, true),
+		PIN(IconType.CONTROL_PIN, true),
+		SHUFFLE(IconType.CONTROL_MODE_SHUFFLE, true),;
+		public IconType icon;
 		public boolean visible;
-		SongControlsIcon(String icon, boolean visible) {
+		SongControlsIcon(IconType icon, boolean visible) {
 			this.icon = icon;
 			this.visible = visible;
 		}
@@ -65,21 +67,28 @@ public class SongControlsLayoutSetting implements Setting {
 		this.left_icons = new LinkedHashSet<SongControlsIcon>();
 		this.middle_icons = new LinkedHashSet<SongControlsIcon>();
 		this.right_icons = new LinkedHashSet<SongControlsIcon>();
+		
+		try {
 
-		String[] areas = serialized.split(Pattern.quote(";"));
-		for (int i = 0; i < 3; i++) {
-			LinkedHashSet<SongControlsIcon> set = null;
-			if (i == 0) set = left_icons;
-			if (i == 1) set = middle_icons;
-			if (i == 2) set = right_icons;
-			String[] icons = areas[i].split(Pattern.quote("&"));
-			for (String icondata : icons) {
-				String[] icon = icondata.split(Pattern.quote("|"));
-				SongControlsIcon icon_obj = SongControlsIcon.valueOf(icon[0]);
-				icon_obj.icon = icon[1];
-				icon_obj.visible = icon[2].equals("true");
-				set.add(icon_obj);
+			String[] areas = serialized.split(Pattern.quote(";"));
+			for (int i = 0; i < 3; i++) {
+				LinkedHashSet<SongControlsIcon> set = null;
+				if (i == 0) set = left_icons;
+				if (i == 1) set = middle_icons;
+				if (i == 2) set = right_icons;
+				String[] icons = areas[i].split(Pattern.quote("&"));
+				for (String icondata : icons) {
+					String[] icon = icondata.split(Pattern.quote("|"));
+					SongControlsIcon icon_obj = SongControlsIcon.valueOf(icon[0]);
+					icon_obj.icon = IconType.valueOf(icon[1]);
+					icon_obj.visible = icon[2].equals("true");
+					set.add(icon_obj);
+				}
 			}
+		
+		} catch (Exception e) {
+			MainProgram.showError("Error loading song controls layout...");
+			Log.trace(e);
 		}
 
 		return this;

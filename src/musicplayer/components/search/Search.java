@@ -13,6 +13,7 @@ import musicplayer.MainProgram;
 import musicplayer.components.search.SearchRecords.*;
 import musicplayer.extensions.Extension;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.IconType;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
 import musicplayer.gui.G_List;
@@ -140,17 +141,17 @@ public class Search extends Extension  {
 
 	@Override public String   identifier() 		{ return "builtin;search"; }
 	
-	G_Icon 		add_to_playlist_icon 				= new G_Icon("+")
+	G_Icon 		add_to_playlist_icon 				= new G_Icon(IconType.GENERIC_PLUS)
 	{ @Override public void onClick() {
 		Search.playlist_to_add_to = MusicPlayer.view_playlist;
 		setSearchQueryAndGo("");
 
 	} };
-	G_Icon 		search_in_playlist_icon 			= new G_Icon("magnifying_glass")
+	G_Icon 		search_in_playlist_icon 			= new G_Icon(IconType.GENERIC_SEARCH)
 	{ @Override public void onClick() { 
 		setSearchQueryAndGo("playlist:" + MusicPlayer.view_playlist);
 	} };
-	G_Icon 		search_in_home_icon 				= new G_Icon("magnifying_glass")
+	G_Icon 		search_in_home_icon 				= new G_Icon(IconType.GENERIC_SEARCH)
 	{ @Override public void onClick() { 
 		setSearchQueryAndGo("");
 	} };

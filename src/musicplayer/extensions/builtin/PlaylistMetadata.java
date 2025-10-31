@@ -4,6 +4,7 @@ import musicplayer.MainProgram;
 import musicplayer.components.search.Search;
 import musicplayer.components.settings.G_ElementPair;
 import musicplayer.extensions.Extension;
+import musicplayer.graphics.IconType;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
 import musicplayer.gui.G_List;
@@ -27,7 +28,7 @@ public class PlaylistMetadata extends Extension {
 		G_PlaylistScreen.register_header_icon(edit_playlist_icon, false);
 	}
 	
-	G_Icon 		edit_playlist_icon 			= new G_Icon("pencil")
+	G_Icon 		edit_playlist_icon 			= new G_Icon(IconType.GENERIC_EDIT)
 	{ @Override public void onClick() { 
 		MainProgram.change_screen(G_PlaylistMetadataScreen.instance.identifier());
 		G_PlaylistMetadataScreen.instance.setPlaylist(MusicPlayer.current_view_playlist());
@@ -57,11 +58,11 @@ public class PlaylistMetadata extends Extension {
 		@Override public G_Element instance() { return instance; }
 		@Override public String identifier() { return "builtin;playlistmetadata"; }
 		
-		G_Icon home = new G_Icon("home")
+		G_Icon home = new G_Icon(IconType.GENERIC_HOME)
 		{ @Override public void onClick() { 
 			MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
 		}};
-		G_Icon back = new G_Icon("previous")
+		G_Icon back = new G_Icon(IconType.CONTROL_SKIP_PREVIOUS)
 		{ @Override public void onClick() { 
 			// TODO: add an onChange or something event to Screen, and put this in G_PlayListScreen
 			if (MusicPlayer.current_view_playlist() != null) MusicPlayer.reload_view_playlist();

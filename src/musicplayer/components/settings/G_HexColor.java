@@ -12,6 +12,7 @@ import org.joml.Vector4f;
 import musicplayer.MainProgram;
 import musicplayer.components.settings.types.ColorSetting;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.IconType;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
 import musicplayer.gui.G_Text;
@@ -26,7 +27,7 @@ public class G_HexColor extends G_Element {
 
 	G_Text 		color_text 	= new G_Text("");
 	Vector4f 	color 		= new Vector4f();
-	G_Icon 		copy		= new G_Icon("copy") {
+	G_Icon 		copy		= new G_Icon(IconType.GENERIC_CLIPBOARD_COPY) {
 		@Override
 		public void onClick() {
 			StringSelection selection = new StringSelection(ColorSetting.toHex(color));
@@ -35,7 +36,7 @@ public class G_HexColor extends G_Element {
 		}
 	};
 	
-	G_Icon 		paste		= new G_Icon("paste") {
+	G_Icon 		paste		= new G_Icon(IconType.GENERIC_CLIPBOARD_PASTE) {
 		@Override
 		public void onClick() {
 	        try {

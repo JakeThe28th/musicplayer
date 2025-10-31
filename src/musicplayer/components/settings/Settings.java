@@ -7,6 +7,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 
 import org.joml.Vector4f;
+import org.lwjgl.opengl.GL40;
 
 import musicplayer.MainProgram;
 import musicplayer.components.settings.interfaces.SettingChangeCallback;
@@ -153,6 +154,18 @@ public class Settings {
 			if (Library.is_initialized) G_HomeScreen.update_playlist_views();
 		});
 		
+		setBoolean("use_programmer_art_icons", false);
+		
+		setRangedInteger("bitmap_icon_filtering", 3, 0, 3);
+		register("bitmap_icon_filtering", (name, value) -> {
+			int filter_mode = GL40.GL_LINEAR;
+			switch (((RangedIntegerSetting) value).value) {
+				case 0: filter_mode = GL40.GL_NEAREST; break;
+				case 1: filter_mode = GL40.GL_LINEAR; break;
+				case 2: filter_mode = GL40.GL_LINEAR_MIPMAP_LINEAR; break;
+			}
+			GraphicsAPI.setIconFilteringMode(filter_mode);
+		});
 		
 		// Load settings from disk
 		// (overrides but doesn't clear existing settings)
@@ -283,6 +296,11 @@ public class Settings {
 	public static boolean hide_empty_sections() {
 		return getBoolean("hide_empty_sections");
 	}
+	
+	public static boolean use_programmer_art_icons() {
+		return getBoolean("use_programmer_art_icons");
+	}
+	
 	// -- + setting/getting + -- //
 		
 	// -- Setters -- //

@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import musicplayer.components.settings.types.SongControlsLayoutSetting;
 import musicplayer.components.settings.types.SongControlsLayoutSetting.SongControlsIcon;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.IconType;
 import musicplayer.gui.GUIUtility;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
@@ -18,7 +19,7 @@ public class G_SongControlsLayout extends G_Element {
 	class ControlsIcon extends G_Icon {
 		
 		class G_VisibilityIcon extends G_Icon {
-			public G_VisibilityIcon(String name) { super(name); }
+			public G_VisibilityIcon(IconType name) { super(name); }
 			boolean visible = false;
 			@Override public void onClick() {
 				setVisible(!visible);
@@ -40,7 +41,7 @@ public class G_SongControlsLayout extends G_Element {
 			}
 		}
 		
-		G_VisibilityIcon visibility = new G_VisibilityIcon("eye");
+		G_VisibilityIcon visibility = new G_VisibilityIcon(IconType.GENERIC_VISIBILITY_ON);
 		
 		{
 			addSubElement(visibility);
@@ -78,7 +79,7 @@ public class G_SongControlsLayout extends G_Element {
 		G_List parent;		
 		int index_in_parent;
 		LinkedHashSet<SongControlsIcon> original_setting_list;
-		public ControlsIcon(String name, G_List parent, SongControlsIcon real_icon, LinkedHashSet<SongControlsIcon> original_setting_list, int index) {
+		public ControlsIcon(IconType name, G_List parent, SongControlsIcon real_icon, LinkedHashSet<SongControlsIcon> original_setting_list, int index) {
 			super(name);
 			this.parent = parent;
 			this.index_in_parent = index;
@@ -174,7 +175,7 @@ public class G_SongControlsLayout extends G_Element {
 
 	private G_Element emptyIcon(G_List list, LinkedHashSet<SongControlsIcon> settings_list) {
 		int index = list.length();
-		return new G_Icon("hollow_square") {
+		return new G_Icon(IconType.GENERIC_SQUARE_OUTLINE) {
 			{
 				base_color = GraphicsAPI.TRANSPARENT_WHITE;
 			}

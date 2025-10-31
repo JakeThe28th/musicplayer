@@ -2,15 +2,16 @@ package musicplayer.gui;
 
 import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.IconType;
 import musicplayer.utility.Rectangle;
 
 public class G_Icon extends G_Element {
 		
-	public G_Icon(String name) {
+	public G_Icon(IconType name) {
 		icon_name = name;
 	}
 	
-	public String icon_name = "stop";
+	public IconType icon_name = IconType.CONTROL_STOP;
 	//int icon_size = 20;
 	public double icon_size = 1;
 

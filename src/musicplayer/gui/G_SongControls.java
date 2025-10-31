@@ -7,6 +7,7 @@ import musicplayer.components.settings.Settings;
 import musicplayer.components.settings.types.SongControlsLayoutSetting;
 import musicplayer.components.settings.types.SongControlsLayoutSetting.SongControlsIcon;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.IconType;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;
@@ -43,11 +44,11 @@ public class G_SongControls extends G_Element {
 			  }
 			  
 			};
-		G_Icon 		previous 		= new G_Icon("previous")
+		G_Icon 		previous 		= new G_Icon(IconType.CONTROL_SKIP_PREVIOUS)
 			{ @Override public void onClick() { MusicPlayer.previous(); }};
-		G_Icon 		stop 			= new G_Icon("stop")
-			{ @Override public void onClick() { MusicPlayer.stop(); play_pause.icon_name = "play"; }};
-		G_Icon 		play_pause 		= new G_Icon("play") 
+		G_Icon 		stop 			= new G_Icon(IconType.CONTROL_STOP)
+			{ @Override public void onClick() { MusicPlayer.stop(); play_pause.icon_name = IconType.CONTROL_PLAY; }};
+		G_Icon 		play_pause 		= new G_Icon(IconType.CONTROL_PLAY) 
 			{ @Override public void onClick() { 
 				if (MusicPlayer.playing()) {
 					MusicPlayer.pause(); 
@@ -55,14 +56,14 @@ public class G_SongControls extends G_Element {
 					MusicPlayer.play();
 				}
 				}};
-		G_Icon 		next 			= new G_Icon("next")
+		G_Icon 		next 			= new G_Icon(IconType.CONTROL_SKIP_NEXT)
 			{ @Override public void onClick() { MusicPlayer.next(); }};
-		G_Icon 		volume 			= new G_Icon("volume")
+		G_Icon 		volume 			= new G_Icon(IconType.CONTROL_VOLUME)
 		{ @Override public void onClick() { 
 			show_volume_slider = !show_volume_slider;
 			volume_slider_transition_timer = System.currentTimeMillis();
 			}};
- public G_Icon 		shuffle 		= new G_Icon("shuffle") { 
+ public G_Icon 		shuffle 		= new G_Icon(IconType.CONTROL_MODE_SHUFFLE) { 
 	 @Override public void onClick() { MusicPlayer.cyclePlaybackMode(); }
 	 @Override public void onHover() {
 		 
@@ -101,7 +102,7 @@ public class G_SongControls extends G_Element {
 			Settings.volume((float) new_value);
 		} };
 		
-		G_Icon 		pin    = new G_Icon("pin") { 
+		G_Icon 		pin    = new G_Icon(IconType.CONTROL_PIN) { 
 			boolean pinned = Settings.use_native_window_decorations();
 			public void layout(int left, int top, int right, int bottom) {
 				setPinned(!Settings.use_native_window_decorations());
@@ -116,10 +117,10 @@ public class G_SongControls extends G_Element {
 				if (p != pinned) {
 					pinned = p;
 					if (pinned) {
-						icon_name = "x";
+						icon_name = IconType.CONTROL_PIN_CANCEL;
 						Settings.use_native_window_decorations(false);
 					} else {
-						icon_name = "pin";
+						icon_name = IconType.CONTROL_PIN;
 						Settings.use_native_window_decorations(true);
 					}
 				}
@@ -322,7 +323,7 @@ public class G_SongControls extends G_Element {
 	}
 
 	public void setPlaying(boolean b) {
-		play_pause.icon_name = b ? "pause" : "play";
+		play_pause.icon_name = b ? IconType.CONTROL_PAUSE : IconType.CONTROL_PLAY;
 	}
 
 	public void setForceScroll(boolean value) {

@@ -129,7 +129,7 @@ class Window {
 	}
 
 	public static void setVsync(boolean value) {
-		glfwSwapInterval(value ? 1 : 0);		
+		if (window != -1) glfwSwapInterval(value ? 1 : 0);		
 	}
 
 }

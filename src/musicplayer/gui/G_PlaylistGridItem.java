@@ -5,6 +5,7 @@ import org.joml.Vector4f;
 import musicplayer.MainProgram;
 import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.IconType;
 import musicplayer.graphics.Texture;
 import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.gui.screens.G_PlaylistScreen;
@@ -20,7 +21,7 @@ public class G_PlaylistGridItem extends G_Element {
 	
 	protected Vector4f hover_item_background_color = GraphicsAPI.TRANSLUCENT_BLACK;
 	
-	G_Icon favorite = new G_Icon(Settings.use_heart_as_favorite_icon() ? "heart" : "star") {
+	G_Icon favorite = new G_Icon(Settings.use_heart_as_favorite_icon() ? IconType.FAVORITE_HEART : IconType.FAVORITE_STAR) {
 		@Override public void onClick() {
 			if (!G_HomeScreen.FAVORITES_GROUP.equals(playlist.metadata("group"))) {
 				playlist.metadata("group", G_HomeScreen.FAVORITES_GROUP);

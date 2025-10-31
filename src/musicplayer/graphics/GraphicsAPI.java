@@ -3,6 +3,11 @@ package musicplayer.graphics;
 import static org.lwjgl.glfw.GLFW.GLFW_DECORATED;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
+import static org.lwjgl.opengl.GL11.GL_LINEAR_MIPMAP_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.glfw.GLFW.GLFW_FLOATING;
 
 import java.io.IOException;
@@ -114,7 +119,7 @@ public class GraphicsAPI {
 	}
 	
 
-	public static void icon(int x, int y, int z, String name, int size) {
+	public static void icon(int x, int y, int z, IconType name, int size) {
 		Icons.icon(x, y, z, name, size);
 	}
 	
@@ -288,6 +293,13 @@ public class GraphicsAPI {
 
 	public static void setVsync(boolean value) {
 		Window.setVsync(value);
+	}
+
+	public static void setIconFilteringMode(int filter_mode) {
+		for (Texture texture : Icons.bitmap_icons.values()) {
+			glBindTexture(GL_TEXTURE_2D, texture.texture);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter_mode);
+		}
 	}
 
 }

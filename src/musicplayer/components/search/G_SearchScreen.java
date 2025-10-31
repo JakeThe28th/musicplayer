@@ -8,6 +8,7 @@ import musicplayer.MainProgram;
 import musicplayer.components.search.SearchRecords.*;
 import musicplayer.components.settings.ProgramSettings;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.IconType;
 import musicplayer.graphics.KeybindAPI;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
@@ -42,13 +43,13 @@ public class G_SearchScreen extends G_Element implements Screen {
 		addSubElement(terms);
 	}
 	
-	G_Icon home = new G_Icon("home")
+	G_Icon home = new G_Icon(IconType.GENERIC_HOME)
 	{ @Override public void onClick() { 
 		Search.playlist_to_add_to = null;
 		MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
 	}};
 	
-	G_Icon back = new G_Icon("previous")
+	G_Icon back = new G_Icon(IconType.CONTROL_SKIP_PREVIOUS)
 	{ @Override public void onClick() { 
 		Search.playlist_to_add_to = null;
 		// TODO: add an onChange or something event to Screen, and put this in G_PlayListScreen
@@ -75,7 +76,7 @@ public class G_SearchScreen extends G_Element implements Screen {
 		}
 	};
 	
-	public G_Icon search_go_button = new G_Icon("play") {
+	public G_Icon search_go_button = new G_Icon(IconType.CONTROL_PLAY) {
 		@Override public void onClick() { 
 			Search.queueGetSearchResults();
 		}

@@ -14,6 +14,7 @@ import musicplayer.audio.AudioSource;
 import musicplayer.components.settings.Settings;
 import musicplayer.extensions.ExtensionAPI;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.IconType;
 import musicplayer.gui.G_List;
 import musicplayer.gui.G_Scrollable;
 import musicplayer.gui.G_Song;
@@ -390,11 +391,11 @@ public class MusicPlayer {
 		if (playback_mode > 3) playback_mode = 0;
 		
 		MainProgram.controls.shuffle.icon_name = switch (playback_mode) {
-			case LOOP_NONE -> "play_once";
-			case LOOP_SONG -> "loop_once";		// TODO
-			case LOOP_LIST -> "loop";		// TODO
-			case SHUFFLE   -> "shuffle";
-			default -> "";
+			case LOOP_NONE -> IconType.CONTROL_MODE_LOOP_NONE;
+			case LOOP_SONG -> IconType.CONTROL_MODE_LOOP_ONCE;		// TODO
+			case LOOP_LIST -> IconType.CONTROL_MODE_LOOP_ALL;		// TODO
+			case SHUFFLE   -> IconType.CONTROL_MODE_SHUFFLE;
+			default -> IconType.FAVORITE_DINOSAUR_OUTLINE;
 		};
 	}
 

@@ -10,6 +10,7 @@ import org.lwjgl.util.tinyfd.TinyFileDialogs;
 import musicplayer.MainProgram;
 import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.IconType;
 import musicplayer.gui.G_DraggableNamedGroup;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Grid;
@@ -174,20 +175,20 @@ public class G_HomeScreen extends G_Element implements Screen {
 	public static G_Text album_tab_text = new G_Text()
 			{ @Override public void onClick() { current_tab = Tab.ALBUMS; } };
 			
-	public static G_Icon new_collection 	= new G_Icon("+")
+	public static G_Icon new_collection 	= new G_Icon(IconType.GENERIC_PLUS)
 		{ @Override public void onClick() {
 			Option[] options = Option.from(current_tab == Tab.ALBUMS ? menu_options_album : menu_options_playlist);
 			MainProgram.popups.add(new Popup( x, y + height(), Alignment.LEFT, Alignment.LEFT, options ) );
 		} };
 		
-	public static G_Icon edit_collections 	= new G_Icon("pencil")
+	public static G_Icon edit_collections 	= new G_Icon(IconType.GENERIC_EDIT)
 		{ @Override public void onClick() {
 			editing = !editing;
 			edit_change_time = System.currentTimeMillis();
 			edit_anim_end_time = System.currentTimeMillis() + EDIT_TRANSITION_TIME_MS;
 		} };
 		
-	public static G_Icon menu 			= new G_Icon("hamburger")
+	public static G_Icon menu 			= new G_Icon(IconType.GENERIC_HAMBURGER)
 		{ @Override public void onClick() {
 			Option[] options = Option.from(library_menu_options);
 			MainProgram.popups.add(new Popup(x + width(), y + height(), Alignment.RIGHT, Alignment.LEFT, options));

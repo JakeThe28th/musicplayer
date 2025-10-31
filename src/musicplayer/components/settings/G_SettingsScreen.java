@@ -10,6 +10,7 @@ import musicplayer.components.settings.types.RangedIntegerSetting;
 import musicplayer.components.settings.types.Setting;
 import musicplayer.components.settings.types.SongControlsLayoutSetting;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.IconType;
 import musicplayer.gui.G_Element;
 import musicplayer.gui.G_Icon;
 import musicplayer.gui.G_List;
@@ -43,7 +44,7 @@ public class G_SettingsScreen extends G_Element implements Screen {
 
 class G_RealSettingsScreen extends G_Element {
 	
-	G_Icon 		home 			= new G_Icon("home")
+	G_Icon 		home 			= new G_Icon(IconType.GENERIC_HOME)
 	{ @Override public void onClick() { 
 		MainProgram.change_screen(G_HomeScreen.IDENTIFIER);
 	}};

@@ -9,6 +9,7 @@ import musicplayer.MainProgram;
 import musicplayer.components.search.Search;
 import musicplayer.components.settings.Settings;
 import musicplayer.graphics.GraphicsAPI;
+import musicplayer.graphics.IconType;
 import musicplayer.gui.enums.Alignment;
 import musicplayer.gui.extra.Popup;
 import musicplayer.gui.extra.Popup.Option;
@@ -31,7 +32,7 @@ public class G_Song extends G_Element implements I_DraggableElement {
 	
 	Playlist playlist;
 	
-	G_Icon menu = new G_Icon("hamburger")
+	G_Icon menu = new G_Icon(IconType.GENERIC_HAMBURGER)
 		{ @Override public void onClick() {
 			ArrayList<Option> option_arrays = new ArrayList<Option>();
 				option_arrays.addAll(G_PlaylistScreen.song_menu_options);
@@ -56,10 +57,10 @@ public class G_Song extends G_Element implements I_DraggableElement {
 			MainProgram.popups.add(new Popup(x + width() - 10, y + height(), Alignment.RIGHT, Alignment.LEFT, options));
 		} };
 		
-	G_Icon drag = new G_Icon("up_down_arrow")
+	G_Icon drag = new G_Icon(IconType.GENERIC_ARROWS_VERTICAL)
 		{ @Override public void onLeftMousePress() { MainProgram.pickup(G_Song.this ); } };
 		
-	G_Icon remove = new G_Icon("giant_trash")
+	G_Icon remove = new G_Icon(IconType.GENERIC_TRASH)
 		{ @Override public void onLeftMousePress() { 
 			boolean remove = TinyFileDialogs.tinyfd_messageBox(
 					" " + MainProgram.PROGRAM_TITLE, 
