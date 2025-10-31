@@ -34,9 +34,19 @@ public class G_SongControlsLayout extends G_Element {
 			private void setVisible(boolean vb) {
 				visible = vb;
 				if (!visible) {
-					this.base_color = GraphicsAPI.TRANSLUCENT_WHITE;
+					if (Settings.use_programmer_art_icons()) {
+						this.base_color = GraphicsAPI.TRANSLUCENT_WHITE;
+					} else {
+						this.base_color = GraphicsAPI.WHITE;
+						this.icon_name = IconType.GENERIC_VISIBILITY_OFF;
+					}
 				} else {
-					this.base_color = GraphicsAPI.WHITE;
+					if (Settings.use_programmer_art_icons()) {
+						this.base_color = GraphicsAPI.WHITE;
+					} else {
+						this.base_color = GraphicsAPI.WHITE;
+						this.icon_name = IconType.GENERIC_VISIBILITY_ON;
+					}
 				}
 			}
 		}

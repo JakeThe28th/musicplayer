@@ -21,14 +21,21 @@ public class G_PlaylistGridItem extends G_Element {
 	
 	protected Vector4f hover_item_background_color = GraphicsAPI.TRANSLUCENT_BLACK;
 	
+
+	private boolean is_favorited() {
+		if (playlist == null) return false;
+		return G_HomeScreen.FAVORITES_GROUP.equals(playlist.metadata("group"));
+	}
+	
 	G_Icon favorite = new G_Icon(Settings.use_heart_as_favorite_icon() ? IconType.FAVORITE_HEART : IconType.FAVORITE_STAR) {
 		@Override public void onClick() {
-			if (!G_HomeScreen.FAVORITES_GROUP.equals(playlist.metadata("group"))) {
+			if (!is_favorited()) {
 				playlist.metadata("group", G_HomeScreen.FAVORITES_GROUP);
 			} else {
 				playlist.metadata("group", null);
 			}
 			G_HomeScreen.update_playlist_views();
+			updateFavoriteIcon();
 
 		}
 		@Override public void draw(int depth) {
@@ -61,7 +68,19 @@ public class G_PlaylistGridItem extends G_Element {
 	public G_PlaylistGridItem(Playlist playlist) {
 		this.playlist = playlist;
 		name.text(playlist.name());
+		
+		updateFavoriteIcon();
 	}
+
+
+	private void updateFavoriteIcon() {
+		if (is_favorited()) {
+			favorite.icon_name = Settings.use_heart_as_favorite_icon() ? IconType.FAVORITE_HEART : IconType.FAVORITE_STAR;
+		} else {
+			favorite.icon_name = Settings.use_heart_as_favorite_icon() ? IconType.FAVORITE_HEART_OUTLINE : IconType.FAVORITE_STAR_OUTLINE;
+		}
+	}
+
 
 	@Override
 	public void recalculate_size() {
