@@ -129,7 +129,7 @@ public class MainProgram {
 		GraphicsAPI.render();
 		ComponentAPI.init();
 		
-		GraphicsAPI.center_text(0, 0, "Initializing Extensions...");
+		GraphicsAPI.center_text(0, 0, "Initializing Extensions (1/2) ...");
 		GraphicsAPI.render();
 		ExtensionAPI.init();
 
@@ -137,8 +137,10 @@ public class MainProgram {
 		GraphicsAPI.render();
 		Library.init();
 		
+		GraphicsAPI.center_text(0, 0, "Initializing Extensions (2/2) ...");
 		ExtensionAPI.postLibraryLoaded();
-		
+		GraphicsAPI.render();
+
 		KeybindAPI.bindkey("play/pause", GLFW_KEY_SPACE, GLFW_RELEASE, () -> { MusicPlayer.toggleplay(); } ); 
 		KeybindAPI.bindkey("previous", GLFW_KEY_LEFT, GLFW_RELEASE, () -> { MusicPlayer.previous(); } ); 
 		KeybindAPI.bindkey("next", GLFW_KEY_RIGHT, GLFW_RELEASE, () -> { MusicPlayer.next(); } ); 
