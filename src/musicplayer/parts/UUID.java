@@ -1,6 +1,8 @@
 
 package musicplayer.parts;
 
+import musicplayer.utility.Log;
+
 public class UUID {
 	
 	public UUID(String album, String identifier) {
@@ -26,6 +28,10 @@ public class UUID {
 	@Override
 	public int hashCode() {
 		return (album + identifier).hashCode();
+	}
+
+	public static UUID from(String uuid) {
+		return new UUID(uuid.split(":")[0], uuid.split(":")[1]);
 	}
 	
 }

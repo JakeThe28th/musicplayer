@@ -52,6 +52,12 @@ public class ExtensionAPI {
 	
 	}
 	
+	public static void postLibraryLoaded() throws IOException {
+		for (String extension : extensions.keySet()) {
+			extensions.get(extension).postLibraryLoaded();
+		}
+	}
+	
 	public static void tick() {
 		for (String extension : extensions.keySet()) {
 			extensions.get(extension).onTick();

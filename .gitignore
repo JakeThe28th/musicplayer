@@ -17,3 +17,5 @@ extensions/FFMPEG.class
 *.class
 /library/albums - Copy
 latest.log
+extensions/utility;ytdlp/new_cache.txt
+extensions/utility;ytdlp/backup_cache.txt

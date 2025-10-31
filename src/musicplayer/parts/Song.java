@@ -49,6 +49,12 @@ public class Song {
 		return audio;
 	}
 	
+	public String file_path() {
+		String value = fields.get("file");
+		String path  = directory.getPath() + "\\" + value;
+		return path;
+	}
+	
 	public void free_audio() { 
 		if (audio != null) {
 			if (audio != MusicPlayer.EMPTY) audio.end();

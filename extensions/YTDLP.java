@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
@@ -46,11 +49,6 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 	
 	public static String download_file_type = "m4a";
 	
-	String cached_song_directory;
-	String cached_song_list_filename;
-	ArrayList<String> cached_urls = new ArrayList<String>();
-	ArrayList<String> cached_url_types = new ArrayList<String>();
-
 	// Download Thread //
 	static record QueuedDownload(String url, UUID song) {}
 	private static ArrayList<QueuedDownload> queue = new ArrayList<>();
@@ -92,38 +90,40 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 	    }  
 	};
 	// ... //
-
+	
+	String cache_directory;
+	
 	@Override
 	public void onLoad() throws IOException {
-		// TODO Auto-generated method stub
 		ExtensionAPI.registerAudioReader(this);
 		ExtensionAPI.registerGUIModifier(this);
 		
 		new File(working_directory).mkdirs();
 		
-		cached_song_directory = working_directory + "cache/";
-		cached_song_list_filename = working_directory + "cachedsongs.txt";
-
-		// Read list of already downloaded links
-		File cache = new File(cached_song_list_filename);
-		if (cache.exists()) {
-			String[] lines = Files.readString(cache.toPath()).split("\n");
-			for (int i = 0; i < lines.length / 2; i++) {
-				cached_urls.add(lines[(i*2) + 0].strip());
-				cached_url_types.add(lines[(i*2) + 1].strip());
-			}
-		}
+		cache_directory = working_directory + "cache/";
+		cache_path = Paths.get(working_directory + "/new_cache.txt");
+		loadCache();
 		
 		addAlbumHooks();
-		
 		download_thread.start();
 		
 		G_PlaylistScreen.album_deletion_messages += "[(YT-DLP) Note: Deleting the album will not delete cached songs.] ";
-		
+	}
+	
+	@Override
+	public void postLibraryLoaded() throws IOException {
+		if (!Files.exists(cache_path)) migrateOldCache();
 	}
 	
 	@Override
 	public void onClose() {
+		try {
+			saveCache();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		try {
 			download_thread.interrupt();
 		} catch (Exception e) {
@@ -136,15 +136,14 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 		try { 
 			String url = Files.readString(Paths.get(filename)).strip();
 			
-			if (!cached_urls.contains(url)) {
+			if (!cache.keySet().contains(url)) {
 				if (MusicPlayer.hasLoadProgress(song)) return MusicPlayer.EMPTY;
 				MusicPlayer.setLoadProgress(song, 0.02f);
 				DLqueue(new QueuedDownload(url, song));
 				return MusicPlayer.EMPTY;
 			} else {
-				int index = cached_urls.indexOf(url);
-				String type = cached_url_types.get(index);
-				return ExtensionAPI.readAudio(cached_song_directory + index + "." + type, type, song);
+				CachedSong cached_song = cache.get(url);
+				return ExtensionAPI.readAudio(cache_directory + cached_song.song_number + "." + cached_song.format, cached_song.format, song);
 			}
 			
 		} catch (IOException e) { e.printStackTrace(); }
@@ -152,7 +151,7 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 	}
 	
 	private void cache(String url, UUID song) throws IOException {
-		String location = cached_song_directory + cached_urls.size() + "." + download_file_type;
+		String location = cache_directory + last_song_index + "." + download_file_type;
 		download(url, location, download_file_type, song); 
 		
 		if (!new File(location).exists()) {
@@ -164,20 +163,11 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 			return;
 		}
 		
-		cached_urls.add(url);
-		cached_url_types.add(download_file_type);
+		cache.put(url, new CachedSong(last_song_index, download_file_type, new ArrayList<UUID> ()));
+		checkForUsages(cache.get(url), url);
+		last_song_index++;
 		
-		// save cache to disk
-		String cachestring = "";
-		for (int i = 0; i < cached_urls.size(); i++) {
-			cachestring += cached_urls.get(i) + "\n";
-			cachestring += cached_url_types.get(i) + "\n";
-		}
-		
-		if (Files.exists(Paths.get(cached_song_list_filename))) {
-			Files.delete(Paths.get(cached_song_list_filename));
-		}
-		Files.writeString(Paths.get(cached_song_list_filename), cachestring, StandardOpenOption.CREATE);
+		saveCache();
 		
 		MusicPlayer.finishLoading(song);
 
@@ -185,7 +175,6 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 	
 	long sleeping_start_time = 0;
 	long sleeping_length = 6 * 1000;
-
 	
 	/** Download w/ YT-DLP on the command line*/
 	private void download(String url, String output_file, String format, UUID song) throws IOException {
@@ -310,7 +299,8 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 			String song_title = Files.readString(Paths.get(working_directory + "temp\\"+num+"_title.txt")).strip();
 			String song_id = Files.readString(Paths.get(working_directory + "temp\\"+num+"_id.txt")).strip();
 			
-			byte[] data = ("https://www.youtube.com/watch?v=" + song_id).getBytes();
+			String url = "https://www.youtube.com/watch?v=" + song_id;
+			byte[] data = (url).getBytes();
 			
 			HashMap<String, String> fields = new HashMap<String, String>();
 			fields.put("file", "song.webloader");
@@ -319,6 +309,10 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 			Song song = new Song(new UUID(album.getIdentifier(), song_id), fields);
 			song.temporary_file = data;
 			album.set(song);
+			
+			if (cache.keySet().contains(url)) {
+				cache.get(url).usages.add(song.uuid());
+			}
 		}
 		
 		album.save();
@@ -355,7 +349,7 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 				try {
 					String url = Files.readString(Paths.get(real_song.directory + "\\" + real_song.field("file"))).strip();
 					// TODO: Checking the base color like this is kinda scuffed...
-					if (!cached_urls.contains(url) && song.name.base_color == G_Song.NAME_BASE_COLOR) {
+					if (!cache.keySet().contains(url) && song.name.base_color == G_Song.NAME_BASE_COLOR) {
 						song.name.base_color = GraphicsAPI.TRANSLUCENT_WHITE;
 					}
 				} catch (IOException e) { e.printStackTrace(); }				
@@ -365,6 +359,115 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 				Log.send("(YT-DLP) null file extensions????");
 			}
 		}
+	}
+	
+	
+	// new caching stuff //
+	
+	static record CachedSong(int song_number, String format, ArrayList<UUID> usages) {}
+
+	int last_song_index = 0;
+	HashMap<String, CachedSong> cache = new HashMap<>();
+	
+	Path cache_path;
+	
+	public void migrateOldCache() throws IOException {
+
+		String cached_song_list_filename;
+		ArrayList<String> cached_urls = new ArrayList<String>();
+		ArrayList<String> cached_url_types = new ArrayList<String>();
+		
+		cached_song_list_filename = working_directory + "cachedsongs.txt";
+		
+		// Read list of already downloaded links
+		File cache = new File(cached_song_list_filename);
+		if (cache.exists()) {
+			String[] lines = Files.readString(cache.toPath()).split("\n");
+			for (int i = 0; i < lines.length / 2; i++) {
+				cached_urls.add(lines[(i*2) + 0].strip());
+				cached_url_types.add(lines[(i*2) + 1].strip());
+			}
+		}
+		
+		for (int i = 0; i < cached_urls.size(); i++ ) {
+			ArrayList<UUID> usages = new ArrayList<UUID>();
+				for (Song song : Library.listSongs()) {
+					if (!song.file_extension().equals("webloader")) continue;
+					String url = Files.readString(Paths.get(song.file_path())).strip();
+					if (url.equals(cached_urls.get(i))) usages.add(song.uuid());
+				}
+			this.cache.put(cached_urls.get(i), new CachedSong(i, cached_url_types.get(i), usages));
+			last_song_index++;
+		}
+		
+		saveCache();
+		
+	}
+	
+	private void checkForUsages(CachedSong cached_song, String match_url) {
+		try {
+			for (Song song : Library.listSongs()) {
+				if (!song.file_extension().equals("webloader")) continue;
+				String url = Files.readString(Paths.get(song.file_path())).strip();
+				if (url.equals(match_url)) cached_song.usages.add(song.uuid());
+			} 
+		} catch (IOException e) { e.printStackTrace(); }
+	}
+	
+	public void saveCache() throws IOException {
+		String out = "#CACHE_VERSION 0" + "\n";
+			out += "#LAST_SONG_INDEX " + last_song_index + "\n";
+			
+		Files.copy(cache_path, cache_path.resolveSibling("backup_cache.txt"), StandardCopyOption.REPLACE_EXISTING);
+		Files.delete(cache_path);
+
+		for (String url : cache.keySet()) {
+			out += "	#URL " + url + "\n";
+			out += "	#FILE " + cache.get(url).song_number + "\n";
+			out += "	#FORMAT " + cache.get(url).format + "\n";
+			out += "	#USED_IN " + "\n";
+			for (UUID uuid : cache.get(url).usages) {
+				out += "		" + uuid.toString() + " 	(song name: '" + Library.getSongFromAlbum(uuid).name() + "', album name '"+ Library.getAlbum(uuid.album).linked_playlist.name() +"')\n";
+			}
+			out += "#NEXT\n";
+
+		}
+		
+		Files.writeString(cache_path, out, StandardOpenOption.CREATE);
+	}
+	
+	public void loadCache() throws IOException {
+		if (!Files.exists(cache_path)) return;
+			
+		String[] serialized = Files.readString(cache_path).split("\n");
+			int version 		= Integer.parseInt(serialized[0].split(Pattern.quote(" "))[1]);
+			last_song_index 	= Integer.parseInt(serialized[1].split(Pattern.quote(" "))[1]);
+		
+		for (int i = 2; i < serialized.length; i++) {
+			String[] line;
+			
+			line = serialized[i].trim().split(Pattern.quote(" "));
+				String url = line[1];
+				i++;
+			line = serialized[i].trim().split(Pattern.quote(" "));
+				int file = Integer.parseInt(line[1]);
+				i++;
+			line = serialized[i].trim().split(Pattern.quote(" "));
+				String format = line[1];
+				i++;
+			Utility._assert(serialized[i].trim().equals("#USED_IN"));
+				i++;
+			ArrayList<UUID> usages = new ArrayList<UUID>();
+			usages_loop: while (true) {
+				line = serialized[i].trim().split(Pattern.quote(" "));
+				if (line[0].trim().equals("#NEXT")) break usages_loop;
+				String uuid = line[0];
+				usages.add(UUID.from(uuid));
+				i++;
+			}
+			cache.put(url, new CachedSong(file, format, usages));
+		}
+
 	}
 	
 }

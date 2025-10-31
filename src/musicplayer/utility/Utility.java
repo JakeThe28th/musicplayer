@@ -251,5 +251,12 @@ public class Utility {
 		
 		return new_array;
 	}
+
+	public static void _assert(boolean v) {
+		if (!v) {
+			Log.send("Unexpected value at...");
+			Log.trace(new Exception("Unexpected value at..."));
+		}
+	}
 	
 }
