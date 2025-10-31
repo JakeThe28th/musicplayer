@@ -89,6 +89,7 @@ public class G_PlaylistScreen extends G_Element implements Screen {
 			String name = TinyFileDialogs.tinyfd_inputBox( MainProgram.PROGRAM_TITLE + " ", 
 					"Group name: ", 
 					"Default");
+			if (name == null) return;
 			Playlist p = MusicPlayer.current_view_playlist();
 			if (name.equals("Default")) {
 				p.metadata("group", null);
