@@ -459,6 +459,7 @@ public class YTDLP extends Extension implements AudioReaderExtension, GUIModifie
 		for (String url : song_usages.keySet()) {
 			usagesout += "	#URL " + url + "\n";
 			for (UUID uuid : song_usages.get(url)) {
+				if ( Library.getSongFromAlbum(uuid) == null ) continue;
 				usagesout += "		" + uuid.toString() + " 	(song name: '" + Library.getSongFromAlbum(uuid).name() + "', album name '"+ Library.getAlbum(uuid.album).linked_playlist.name() +"')\n";
 			}
 			usagesout += "#NEXT\n";
