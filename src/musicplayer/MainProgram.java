@@ -88,10 +88,7 @@ public class MainProgram {
 		if (GraphicsAPI.height()-controls.height() <= 1) return;
 			
 		G_Element screen = screens.get(screen_name).instance();
-		screen.recalculate_size();
-		screen.layout(xx, 0, GraphicsAPI.width() + xx, GraphicsAPI.height()-controls.height());
-		screen.draw(0);
-		if (input) screen.input();
+		G_Element.tick(screen, input, xx, 0, GraphicsAPI.width() + xx, GraphicsAPI.height()-controls.height());
 	}
 	
 
@@ -191,10 +188,7 @@ public class MainProgram {
 				}
 			}
 			
-			controls.recalculate_size();
-			controls.layout(0, GraphicsAPI.height() - controls.height(), GraphicsAPI.width(), GraphicsAPI.height());
-			controls.draw(0);
-			if (input) controls.input();
+			G_Element.tick(controls, input, 0, GraphicsAPI.height() - controls.height(), GraphicsAPI.width(), GraphicsAPI.height());
 			
 			int i = 10;
 			boolean should_close_popups = true;

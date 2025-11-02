@@ -34,7 +34,7 @@ public class G_TypingBox extends G_Element {
 
 	@Override
 	public void recalculate_size() {
-		text.recalculate_size();
+		// text.recalculate_size();
 		this.unpadded_height = text.height();
 		this.unpadded_width = text.width();
 	}
@@ -82,7 +82,8 @@ public class G_TypingBox extends G_Element {
 			KeybindAPI.lock_keybinds = true;
 			if (!rawtext.equals(GraphicsAPI.input_string())) {
 				rawtext = GraphicsAPI.input_string();
-				text.text = GraphicsAPI.input_string();
+				text.text(GraphicsAPI.input_string());
+				this.should_recalculate_size = true;
 				onChangeText(rawtext);
 			}
 			if (KeybindAPI.shouldStopTyping()) {
@@ -99,6 +100,18 @@ public class G_TypingBox extends G_Element {
 	}
 	
 	public void onChangeText(String new_text) {
+		
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
 		
 	}
 

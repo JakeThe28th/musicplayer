@@ -329,5 +329,17 @@ public class G_SongControls extends G_Element {
 	public void setForceScroll(boolean value) {
 		title.force_scroll = value;
 	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

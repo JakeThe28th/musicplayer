@@ -7,7 +7,7 @@ import musicplayer.utility.Rectangle;
 
 public class G_Text extends G_Element {
 		
-	public String 	text 		= "Unset Text";
+	String 	text 		= "Unset Text";
 	String  text_concat = "Unset T...";
 	int 	x 			= 0;
 	int 	y 			= 0;
@@ -22,8 +22,9 @@ public class G_Text extends G_Element {
 		text(string);
 	}
 
-	public G_Text text(String new_text) { text = new_text; recalculate_size(); return this; }
-
+	public G_Text text(String new_text) { text = new_text; this.should_recalculate_size = true;; return this; }
+	public String text() { return text; }
+	
 	@Override
 	public void recalculate_size() {
 		Vector2i size = GraphicsAPI.size(text);
@@ -76,6 +77,18 @@ public class G_Text extends G_Element {
 		} else {
 			GraphicsAPI.text(x, y, depth, text);
 		}
+		
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
 		
 	}
 

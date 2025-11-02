@@ -18,6 +18,33 @@ import musicplayer.utility.Rectangle;
  * just be... kind of overkill.
  */
 public abstract class G_Element {
+	
+	public boolean should_recalculate_size = true;
+	public boolean should_recalculate_layout = true;
+	
+	public void TRIGGER_recalculate_size() {
+		for (G_Element sub_element : sub_elements) sub_element.TRIGGER_recalculate_size();
+		if (should_recalculate_size) { recalculate_size(); should_recalculate_layout = true; }
+	}
+	
+	public void TRIGGER_layout(int left, int top, int right, int bottom) {
+		if (should_recalculate_layout) { 
+			layout(left, top, right, bottom);
+		} else {
+			for (G_Element sub_element : sub_elements) sub_element.TRIGGER_layout(left, top, right, bottom);
+		}
+	}
+	
+	public static void tick(G_Element element, boolean input, int left, int top, int right, int bottom) {
+		element.TRIGGER_recalculate_size();
+		element.TRIGGER_layout(left, top, right, bottom);
+		element.draw(0);
+		if (input) element.input();
+	}
+	
+	//
+	
+	public abstract void foo();
 			
 	public static final ArrayList<G_Element> EMPTY = new ArrayList<G_Element>();
 	
@@ -57,6 +84,9 @@ public abstract class G_Element {
 
 	// Run before drawing, calculates the placement of elements.
 	public abstract void layout(int left, int top, int right, int bottom);
+	
+	// Runs every frame before draw
+	public abstract void tickAnimation();
 		
 	// Actually draws the element
 	public abstract void draw(int depth);

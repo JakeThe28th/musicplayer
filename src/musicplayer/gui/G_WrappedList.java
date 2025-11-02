@@ -13,7 +13,7 @@ public class G_WrappedList extends G_Element {
 
 	@Override
 	public void recalculate_size() {
-		for (G_Element e : elements) e.recalculate_size();
+		// for (G_Element e : elements) e.recalculate_size();
 	}
 
 	@Override
@@ -65,6 +65,18 @@ public class G_WrappedList extends G_Element {
 
 	public void add(G_Element e) {
 		elements.add(e);
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
