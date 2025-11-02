@@ -31,7 +31,7 @@ public class G_Scrollable extends G_Element {
 	
 	@Override
 	public void recalculate_size() {
-		root.recalculate_size();
+		//root.recalculate_size();
 		// TODO Auto-generated method stub
 		
 	}
@@ -177,6 +177,15 @@ public class G_Scrollable extends G_Element {
 
 		
 		return super.input();
+	}
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void tickAnimation() {
+		this.should_recalculate_layout = true;
 	}
 
 }

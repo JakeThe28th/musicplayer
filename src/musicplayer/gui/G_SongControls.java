@@ -191,12 +191,12 @@ public class G_SongControls extends G_Element {
 	
 	@Override
 	public void recalculate_size() {
-		title.recalculate_size();
-		progress_bar.recalculate_size();
-		center_icons.recalculate_size();
-		left_icons.recalculate_size();
-		right_icons.recalculate_size();
-		volume_slider.recalculate_size();
+//		title.recalculate_size();
+//		progress_bar.recalculate_size();
+//		center_icons.recalculate_size();
+//		left_icons.recalculate_size();
+//		right_icons.recalculate_size();
+//		volume_slider.recalculate_size();
 		this.unpadded_height = title.height() + progress_bar.height() + center_icons.height();
 		this.unpadded_height += volume_slider_height();
 		this.unpadded_width = left_icons.width() + center_icons.width() + right_icons.width();
@@ -295,6 +295,12 @@ public class G_SongControls extends G_Element {
 		right_icons		.layout(right-right_size, 		yy, right, 				bottom);	
 	}
 	
+
+	@Override
+	public void tickAnimation() {
+		this.should_recalculate_layout = true;
+	}
+	
 	@Override
 	public void draw(int depth) {
 		GraphicsAPI.color(base_color);
@@ -317,9 +323,9 @@ public class G_SongControls extends G_Element {
 	UUID current_song = null;
 
 	public void current(UUID song) {
-		title.text = Library.getSongFromAlbum(song).name();
+		title.text(Library.getSongFromAlbum(song).name());
 		current_song = song;
-		recalculate_size();
+		this.should_recalculate_size = true;
 	}
 
 	public void setPlaying(boolean b) {
@@ -336,10 +342,5 @@ public class G_SongControls extends G_Element {
 		
 	}
 
-	@Override
-	public void tickAnimation() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

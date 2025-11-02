@@ -22,7 +22,6 @@ import musicplayer.gui.extra.Popup;
 import musicplayer.gui.screens.G_HomeScreen;
 import musicplayer.gui.screens.G_PlaylistScreen;
 import musicplayer.gui.screens.Screen;
-import musicplayer.gui.special.G_WindowDecorations;
 import musicplayer.parts.Album;
 import musicplayer.parts.Library;
 import musicplayer.parts.MusicPlayer;

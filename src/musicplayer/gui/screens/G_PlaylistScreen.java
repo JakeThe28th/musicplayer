@@ -106,8 +106,8 @@ public class G_PlaylistScreen extends G_Element implements Screen {
 
 	@Override
 	public void recalculate_size() {
-		playlist_header.recalculate_size();
-		playlist_gui_scroll.recalculate_size();
+//		playlist_header.recalculate_size();
+//		playlist_gui_scroll.recalculate_size();
 	}
 
 	@Override
@@ -131,5 +131,15 @@ public class G_PlaylistScreen extends G_Element implements Screen {
 
 	public static void register_header_icon(G_Icon icon, boolean show_while_locked) {
 		icons.add(new PlaylistOptionIcon(icon, show_while_locked));
+	}
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
 	}
 }

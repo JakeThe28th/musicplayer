@@ -34,11 +34,23 @@ public class G_SettingsScreen extends G_Element implements Screen {
 	
 	{ this.addSubElement(settings_scrollable); }
 
-	@Override public void recalculate_size() 					{ settings_scrollable.recalculate_size(); }
+	@Override public void recalculate_size() 					{// settings_scrollable.recalculate_size();
+		}
+	
 	@Override public void layout(int l, int t, int r, int b) 	{ settings_scrollable.layout(l, t, r, b); }
 	@Override public void draw(int depth) 						{ settings_scrollable.draw(depth); 		  }
 	
 	public void reload() { INSTANCE.real_screen.reload(); }
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
 
@@ -183,14 +195,14 @@ class G_RealSettingsScreen extends G_Element {
 
 	@Override
 	public void recalculate_size() {
-		colors.recalculate_size();
-		home.recalculate_size();
-		booleans.recalculate_size();
-		color_header.recalculate_size();
-		boolean_header.recalculate_size();
-		ranged_integers.recalculate_size();
-		slider_header.recalculate_size();
-		if (song_controls_layout != null) song_controls_layout.recalculate_size();
+//		colors.recalculate_size();
+//		home.recalculate_size();
+//		booleans.recalculate_size();
+//		color_header.recalculate_size();
+//		boolean_header.recalculate_size();
+//		ranged_integers.recalculate_size();
+//		slider_header.recalculate_size();
+//		if (song_controls_layout != null) song_controls_layout.recalculate_size();
 
 		this.unpadded_height = 
 				  colors.height() 
@@ -351,6 +363,18 @@ class G_RealSettingsScreen extends G_Element {
 			GraphicsAPI.rect(scb.left()+4, yy+12, scb.internal(0.80f, 0, 1, 1).left()-10, yy+hh-12, depth+8);
 			yy += hh;
 		}
+		
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
 		
 	}
 

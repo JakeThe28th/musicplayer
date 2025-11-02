@@ -80,8 +80,8 @@ public class PlaylistMetadata extends Extension {
 
 		@Override
 		public void recalculate_size() {
-			icons.recalculate_size();
-			properties.recalculate_size();
+//			icons.recalculate_size();
+//			properties.recalculate_size();
 		}
 
 		@Override
@@ -94,6 +94,16 @@ public class PlaylistMetadata extends Extension {
 		public void draw(int depth) {
 			icons.draw(depth+2);
 			properties.draw(depth+1);
+		}
+		@Override
+		public void foo() {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void tickAnimation() {
+			// TODO Auto-generated method stub
+			
 		}
 		 
 	 }

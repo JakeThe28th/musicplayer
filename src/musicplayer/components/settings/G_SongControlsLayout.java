@@ -210,9 +210,9 @@ public class G_SongControlsLayout extends G_Element {
 
 	@Override
 	public void recalculate_size() {
-		left_icons.recalculate_size();
-		center_icons.recalculate_size();
-		right_icons.recalculate_size();
+//		left_icons.recalculate_size();
+//		center_icons.recalculate_size();
+//		right_icons.recalculate_size();
 		this.unpadded_height = center_icons.height();
 		this.unpadded_width = Settings.icon_size();
 	}
@@ -233,6 +233,18 @@ public class G_SongControlsLayout extends G_Element {
 		center_icons.draw(depth);
 		right_icons.draw(depth);
 		if (dragging != null) dragging.draw(depth+3);
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -85,8 +85,8 @@ public class G_PlaylistGridItem extends G_Element {
 	@Override
 	public void recalculate_size() {
 		// TODO Auto-generated method stub
-		name.recalculate_size();
-		icons.recalculate_size();
+//		name.recalculate_size();
+//		icons.recalculate_size();
 		icons.allmargins(0);
 	}
 
@@ -113,6 +113,44 @@ public class G_PlaylistGridItem extends G_Element {
 				right,
 				(bottom < b.bottom()) ? bottom : b.bottom());
 		
+		
+	}
+
+	@Override
+	public void draw(int depth) {
+		cover = playlist.glcover();
+		GraphicsAPI.color(GraphicsAPI.WHITE);
+		GraphicsAPI.rect(area, depth, cover);
+		
+		GraphicsAPI.color(GraphicsAPI.TRANSLUCENT_BLACK);
+		GraphicsAPI.rect(name_area, depth + 1);
+		
+		if (hovering) {
+			GraphicsAPI.color(hover_item_background_color);
+			GraphicsAPI.rect(icons_rectangle, depth);
+		}
+		
+		name.draw(depth+2);
+		icons.draw(depth+3);
+	}
+	
+	@Override
+	public void onClick() {
+		MusicPlayer.set_current_view_playlist(playlist.identifier());
+		MainProgram.change_screen(G_PlaylistScreen.IDENTIFIER);
+		MusicPlayer.scroll_to_current();
+	}
+
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void tickAnimation() {
 		hovering  = false;
 		
 		if (hover_rectangle.contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY())) {
@@ -141,31 +179,6 @@ public class G_PlaylistGridItem extends G_Element {
 			}
 		}
 		
-	}
-
-	@Override
-	public void draw(int depth) {
-		cover = playlist.glcover();
-		GraphicsAPI.color(GraphicsAPI.WHITE);
-		GraphicsAPI.rect(area, depth, cover);
-		
-		GraphicsAPI.color(GraphicsAPI.TRANSLUCENT_BLACK);
-		GraphicsAPI.rect(name_area, depth + 1);
-		
-		if (hovering) {
-			GraphicsAPI.color(hover_item_background_color);
-			GraphicsAPI.rect(icons_rectangle, depth);
-		}
-		
-		name.draw(depth+2);
-		icons.draw(depth+3);
-	}
-	
-	@Override
-	public void onClick() {
-		MusicPlayer.set_current_view_playlist(playlist.identifier());
-		MainProgram.change_screen(G_PlaylistScreen.IDENTIFIER);
-		MusicPlayer.scroll_to_current();
 	}
 
 }

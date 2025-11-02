@@ -9,16 +9,12 @@ import musicplayer.gui.enums.Alignment;
 import musicplayer.utility.Rectangle;
 
 public class G_List extends G_Element {
-	
-	public boolean force_no_recalculate_size = false; // workaround to fix some lag
-		
+			
 	public G_List(G_Element...elements) {
-		force_no_recalculate_size = true;
 		for (G_Element e : elements) {
 			this.elements.add(e);
 		}
-		force_no_recalculate_size = false;
-		this.recalculate_size();
+		this.should_recalculate_size = true;
 	}
 	
 	public G_List verticalify() {
@@ -28,17 +24,17 @@ public class G_List extends G_Element {
 	
 	public void add(G_Element e) {
 		this.elements.add(e);
-		this.recalculate_size();
+		this.should_recalculate_size = true;
 	}
 	
 	public void add(G_Element e, int index) {
 		this.elements.add(index, e);
-		this.recalculate_size();
+		this.should_recalculate_size = true;
 	}
 	
 	public void set(G_Element e, int index) {
 		this.elements.set(index, e);
-		this.recalculate_size();
+		this.should_recalculate_size = true;
 	}
 	
 	public void setraw(G_Element e, int index) {
@@ -47,7 +43,7 @@ public class G_List extends G_Element {
 	
 	public void removeIf(Predicate<? super G_Element> predicate) {
 		this.elements.removeIf(predicate);
-		this.recalculate_size();
+		this.should_recalculate_size = true;
 	}
 	
 	public int length() 			{ return elements.size();     }
@@ -62,10 +58,9 @@ public class G_List extends G_Element {
 
 	@Override
 	public void recalculate_size() {
-		if (force_no_recalculate_size) return;
-		for (G_Element e : elements) {
-			e.recalculate_size();
-		}
+//		for (G_Element e : elements) {
+//			e.recalculate_size();
+//		}
 		
 		if (!vertical) {
 			this.unpadded_height = 0;
@@ -162,6 +157,18 @@ public class G_List extends G_Element {
 		}
 		
 		return false;
+		
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
 		
 	}
 

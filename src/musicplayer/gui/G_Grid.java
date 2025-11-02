@@ -29,7 +29,7 @@ public class G_Grid extends G_Element {
 		
 	@Override
 	public void recalculate_size() {
-		for (G_Element e : elements) e.recalculate_size();
+		//for (G_Element e : elements) e.recalculate_size();
 		this.unpadded_height = ( (int) Math.ceil(elements.size() / (float) columns) ) * item_size;
 	}
 	
@@ -91,6 +91,18 @@ public class G_Grid extends G_Element {
 
 	public boolean isEmpty() {
 		return elements.size() == 0;
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

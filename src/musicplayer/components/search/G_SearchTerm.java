@@ -30,8 +30,8 @@ public class G_SearchTerm extends G_Element {
 		segment_text = new G_Text[type.segments.length + (extra.isEmpty() ? 0 : 1)];
 		for (int i = 0; i < segment_text.length; i++) {
 			segment_text[i] = new G_Text();
-			if (i < type.segments.length) segment_text[i].text = type.segments[i];
-			if (i >= type.segments.length) segment_text[i].text = extra;
+			if (i < type.segments.length) segment_text[i].text( type.segments[i]);
+			if (i >= type.segments.length) segment_text[i].text(extra);
 		}
 	}
 
@@ -45,7 +45,7 @@ public class G_SearchTerm extends G_Element {
 		if (!extra.isEmpty()) this.unpadded_width += GraphicsAPI.size(extra).x;
 		
 		for (G_Text text : segment_text) text.allmargins(bottom_margin);;
-		for (G_Text text : segment_text) text.recalculate_size();
+		for (G_Text text : segment_text) text.should_recalculate_size = true;
 		
 	}
 	
@@ -96,5 +96,17 @@ public class G_SearchTerm extends G_Element {
 		GraphicsAPI.color(GraphicsAPI.WHITE);
 	  }
 	  for (G_Text text : segment_text) text.draw(depth+1);
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -54,4 +54,16 @@ public class G_Switch extends G_Element {
 
 	public void onChangeValue(boolean b) { }
 
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

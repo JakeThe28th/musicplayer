@@ -67,10 +67,10 @@ public class G_SearchScreen extends G_Element implements Screen {
 		@Override
 		public void onChangeText(String newtext) {
 			if (newtext.endsWith(" ")) {
-				text.text = "";
+				text.text("");
 			} else {
 				String [] split = newtext.split(" ");
-				text.text = split[split.length-1];
+				text.text(split[split.length-1]);
 			}
 			Search.queueSearchQuery(newtext);
 		}
@@ -90,7 +90,7 @@ public class G_SearchScreen extends G_Element implements Screen {
 		if (all_items.size() <= 0) {
 			G_List new_results = new G_List().verticalify();
 			G_Text oops = new G_Text();
-			oops.text = "No search results found.";
+			oops.text("No search results found.");
 			new_results.add(oops);
 			results(new_results);
 			return;
@@ -98,13 +98,11 @@ public class G_SearchScreen extends G_Element implements Screen {
 		SearchResult result0 = all_items.get(0);
 		if (result0.item() instanceof Song) {
 			G_List new_results = new G_List().verticalify();
-			new_results.force_no_recalculate_size = true;
 			for (SearchResult result : all_items) {
 				G_Song song = new G_Song(((Song) result.item()).uuid(), result.count(), result.playlist(), true);
 				if (result.count() <= 1) song.name.base_color = GraphicsAPI.TRANSLUCENT_WHITE;
 				new_results.add(song);
 			}
-			new_results.force_no_recalculate_size = false;
 			new_results.recalculate_size();
 			results(new_results);
 		}
@@ -145,12 +143,12 @@ public class G_SearchScreen extends G_Element implements Screen {
 
 	@Override
 	public void recalculate_size() {
-		icons.recalculate_size();
-		terms.recalculate_size();
-		results_scroll.recalculate_size();
-		input_box.recalculate_size();
-		search_go_button.recalculate_size();
-		info_text.recalculate_size();
+//		icons.recalculate_size();
+//		terms.recalculate_size();
+//		results_scroll.recalculate_size();
+//		input_box.recalculate_size();
+//		search_go_button.recalculate_size();
+//		info_text.recalculate_size();
 	}
 			
 	@Override
@@ -174,8 +172,8 @@ public class G_SearchScreen extends G_Element implements Screen {
 		
 		results_scroll.layout(left, yy, right, bottom);
 		
-		info_text.text = "";
-		if (Search.playlist_to_add_to != null) info_text.text = "Adding songs to [" + Library.getPlaylist(Search.playlist_to_add_to).name() + "]";
+		info_text.text("");
+		if (Search.playlist_to_add_to != null) info_text.text("Adding songs to [" + Library.getPlaylist(Search.playlist_to_add_to).name() + "]");
 	}
 
 	@Override
@@ -186,6 +184,18 @@ public class G_SearchScreen extends G_Element implements Screen {
 		input_box.draw(depth);
 		search_go_button.draw(depth);
 		info_text.draw(depth);
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

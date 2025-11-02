@@ -115,10 +115,10 @@ public class G_DraggableNamedGroup extends G_Element {
 
 	@Override
 	public void recalculate_size() {
-		name.recalculate_size();
-		move_icons.recalculate_size();
-		root.recalculate_size();
-				
+//		name.recalculate_size();
+//		move_icons.recalculate_size();
+//		root.recalculate_size();
+//				
 		if (G_HomeScreen.editing()) {
 			min_element_height = move_icons.height();
 		} else {
@@ -177,6 +177,17 @@ public class G_DraggableNamedGroup extends G_Element {
 		if (G_HomeScreen.editing()) {
 			move_icons.draw(depth+2);
 		}
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		if (!G_HomeScreen.editing_transition_complete()) this.should_recalculate_layout = true;
 	}
 
 

@@ -289,11 +289,11 @@ public class G_HomeScreen extends G_Element implements Screen {
 	
 	@Override
 	public void recalculate_size() {
-		albums_scroll.recalculate_size();
-		playlists_scroll.recalculate_size();
-		tab_selector.recalculate_size();
-		left_icons.recalculate_size();
-		right_icons.recalculate_size();
+//		albums_scroll.recalculate_size();
+//		playlists_scroll.recalculate_size();
+//		tab_selector.recalculate_size();
+//		left_icons.recalculate_size();
+//		right_icons.recalculate_size();
 	}
 
 	@Override
@@ -344,6 +344,18 @@ public class G_HomeScreen extends G_Element implements Screen {
 		} else {
 			playlists_scroll.draw(0);
 		}
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

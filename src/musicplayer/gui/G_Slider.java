@@ -84,7 +84,7 @@ public class G_Slider extends G_Element {
 		
 		if (hover_rectangle.contains(GraphicsAPI.mouseX(), GraphicsAPI.mouseY())) {
 			GraphicsAPI.color(GraphicsAPI.TRANSPARENT_WHITE);
-			if (GraphicsAPI.left_click_pressed()) { dragging = true; onDrag(amount); return true; }
+			if (GraphicsAPI.left_click_pressed()) { dragging = true; onDrag(amount); this.should_recalculate_layout = true; return true; }
 			GraphicsAPI.rect(hover_rectangle, 0);
 		}
 		if (dragging) {
@@ -93,6 +93,7 @@ public class G_Slider extends G_Element {
 				if (amount > 1) amount = 1;
 				if (amount < 0) amount = 0;
 			}
+			this.should_recalculate_layout = true;
 			onDrag(amount);
 			if (GraphicsAPI.left_click_released()) { dragging = false; }
 			return true;
@@ -101,5 +102,17 @@ public class G_Slider extends G_Element {
 	}
 	
 	public void onDrag(double new_value) { }
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

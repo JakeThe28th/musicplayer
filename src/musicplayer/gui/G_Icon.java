@@ -38,5 +38,17 @@ public class G_Icon extends G_Element {
 		GraphicsAPI.color(base_color);
 		GraphicsAPI.icon(x, y, depth, icon_name, (int) (icon_size * Settings.icon_size()));
 	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

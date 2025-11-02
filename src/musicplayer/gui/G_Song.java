@@ -162,8 +162,8 @@ public class G_Song extends G_Element implements I_DraggableElement {
 	public void recalculate_size() {
 		this.unpadded_height = name.height();
 		this.unpadded_width = name.width() + icons.width() + number_width;
-		icons.recalculate_size();
-		name.recalculate_size();
+//		icons.recalculate_size();
+//		name.recalculate_size();
 	}
 	
 	Rectangle song_rectangle;
@@ -290,6 +290,18 @@ public class G_Song extends G_Element implements I_DraggableElement {
 				Library.getPlaylist(Search.playlist_to_add_to).add(song);
 			}
 		}
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

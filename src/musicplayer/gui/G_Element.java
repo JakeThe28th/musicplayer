@@ -24,12 +24,13 @@ public abstract class G_Element {
 	
 	public void TRIGGER_recalculate_size() {
 		for (G_Element sub_element : sub_elements) sub_element.TRIGGER_recalculate_size();
-		if (should_recalculate_size) { recalculate_size(); should_recalculate_layout = true; }
+		if (should_recalculate_size) { recalculate_size(); should_recalculate_layout = true; should_recalculate_size = false; }
 	}
 	
 	public void TRIGGER_layout(int left, int top, int right, int bottom) {
 		if (should_recalculate_layout) { 
 			layout(left, top, right, bottom);
+			should_recalculate_layout = false;
 		} else {
 			for (G_Element sub_element : sub_elements) sub_element.TRIGGER_layout(left, top, right, bottom);
 		}

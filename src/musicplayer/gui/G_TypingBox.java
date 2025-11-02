@@ -25,7 +25,7 @@ public class G_TypingBox extends G_Element {
 	Vector4f selected_color = new Vector4f(0.8f,0.8f,1f,1);
 	
 	{
-		text.text = "";
+		text.text("");
 		text.base_color = GraphicsAPI.BLACK;
 		addSubElement(text);
 		hover_color = new Vector4f(0,0,0,0.2f);

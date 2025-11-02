@@ -37,7 +37,7 @@ public class G_PlaylistHeader extends G_Element {
 	public G_List right_icons 			= new G_List(menu);
 	
 	public void set_playlist(String name) {
-		title.text = Library.getPlaylist(name).name();
+		title.text(Library.getPlaylist(name).name());
 		
 		removeSubElement(right_icons);
 		right_icons = new G_List();
@@ -63,7 +63,7 @@ public class G_PlaylistHeader extends G_Element {
 		addSubElement(home);
 		addSubElement(right_icons);
 		
-		title.text = MusicPlayer.playlist;
+		title.text(MusicPlayer.playlist);
 		title.halign(Alignment.MIDDLE);
 		
 		title.left_margin = 10;
@@ -74,9 +74,9 @@ public class G_PlaylistHeader extends G_Element {
 
 	@Override
 	public void recalculate_size() {
-		title.recalculate_size();
-		home.recalculate_size();
-		right_icons.recalculate_size();
+//		title.recalculate_size();
+//		home.recalculate_size();
+//		right_icons.recalculate_size();
 		
 		this.unpadded_height = home.height() + 5;
 	}
@@ -105,6 +105,18 @@ public class G_PlaylistHeader extends G_Element {
 		title.draw(depth+1);
 		home.draw(depth+1);
 		right_icons.draw(depth+1);
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

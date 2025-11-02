@@ -30,8 +30,8 @@ public class G_ElementPair extends G_Element {
 
 	@Override
 	public void recalculate_size() {
-		a.recalculate_size();
-		b.recalculate_size();
+//		a.recalculate_size();
+//		b.recalculate_size();
 		
 		this.unpadded_height = a.height();
 		if (b.height() > this.unpadded_height) this.unpadded_height = b.height();
@@ -61,6 +61,18 @@ public class G_ElementPair extends G_Element {
 	public void draw(int depth) {
 		a.draw(depth);
 		b.draw(depth);
+	}
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

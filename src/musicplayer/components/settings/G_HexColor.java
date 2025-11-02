@@ -60,10 +60,10 @@ public class G_HexColor extends G_Element {
 
 	@Override
 	public void recalculate_size() {
-		for (G_Element e : sub_elements) {
-			e.recalculate_size();
-		}
-		color_text.text = ColorSetting.toHex(color);
+//		for (G_Element e : sub_elements) {
+//			e.recalculate_size();
+//		}
+		color_text.text( ColorSetting.toHex(color));
 		this.unpadded_height = color_text.height();
 		this.unpadded_width = color_text.width() + copy.width() + paste.width();
 	}
@@ -111,5 +111,17 @@ public class G_HexColor extends G_Element {
 	}
 	
 	public void onChangeColor(Vector4f newcolor) { }
+
+	@Override
+	public void foo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void tickAnimation() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
