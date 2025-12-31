@@ -14,4 +14,21 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>frost3d</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/frost3d/src</locationURI>
+		</link>
+		<link>
+			<name>nbt</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/nbt/src</locationURI>
+		</link>
+		<link>
+			<name>snowui</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/snowui/src</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

@@ -1,0 +1,104 @@
+{
+    default: {
+        contains: [],
+        properties: {
+            left_margin: "4",
+            right_margin: "4",
+            top_margin: "4",
+            bottom_margin: "4",
+            max_width: "flex",
+            min_width: "flex",
+            max_height: "flex",
+            min_height: "flex",
+            horizontal_alignment: "left",
+            vertical_alignment: "top",
+            base_color: "css_rgba(0,0,0,0)"
+        }
+    },
+    invisible: {
+        properties: {
+            base_color: "css_rgba(0,0,0,0)"
+        }
+    },
+    hover: {
+        properties: {
+            outline_color: "css_rgba(0,0,0,0)"
+        }
+    },
+    text: {
+        properties: {
+			size: "18",
+            base_color: "#F0F0F0",
+			outline_size: "0",
+        }
+    },
+	grayed_text: {
+        properties: {
+			size: "18",
+            base_color: "#A0A0A0"
+        }
+    },
+	home_screen_tab_text: {
+	  predicates: {
+            "SELECTED=true": "text"
+        },
+        contains: ["grayed_text"]
+    },
+    icon: {
+        properties: {
+			size: "18",
+            base_color: "#F0F0F0"
+        }
+    },
+    home_screen_tabs: {
+        properties: {
+            horizontal_alignment: "middle",
+            outline_margin: "0"
+        }
+    },
+    hoverable: {
+        predicates: {
+            "HOVERED=true": "DESBLUE"
+        }
+    },
+	settings_header_icons: {
+        properties: {
+            horizontal_alignment: "middle",
+        }
+    },
+	setting_section_title: {
+       contains: ["text"],
+	   properties: {
+		vertical_alignment: "middle",
+	  horizontal_alignment: "middle",
+        }
+    },
+	setting_section_icon: {
+       contains: ["text"],
+	   properties: {
+            size: "14",
+		vertical_alignment: "middle",
+        }
+    },
+	setting_collapsible: {
+	   properties: {
+	  min_width: "container",
+	  	  max_width: "container",
+
+        }
+    },
+	setting_list: {
+	   properties: {
+	  min_width: "container",
+	  	  max_width: "container",
+
+        }
+    },
+	section_line: {
+	   properties: {
+			min_width: "container",
+	  	    base_color: "#3A3A3A",
+			size: "2",
+        }
+    },
+}

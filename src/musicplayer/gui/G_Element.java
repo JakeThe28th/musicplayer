@@ -18,7 +18,7 @@ import musicplayer.utility.Rectangle;
  * just be... kind of overkill.
  */
 public abstract class G_Element {
-			
+				
 	public static final ArrayList<G_Element> EMPTY = new ArrayList<G_Element>();
 	
 	protected ArrayList<G_Element> sub_elements = new ArrayList<G_Element>();
