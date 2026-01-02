@@ -2,8 +2,10 @@ package nowplaying.settings.gui;
 
 import frost3d.enums.IconType;
 import frost3d.utility.Rectangle;
+import nowplaying.NowPlayingMain;
 import nowplaying.gui.abstracts.Screen;
 import nowplaying.gui.elements.GUIRollingText;
+import nowplaying.gui.screens.HomeScreen;
 import nowplaying.settings.Settings;
 import nowplaying.settings.data.SettingSlot;
 import nowplaying.settings.data.types.BooleanSetting;
@@ -32,7 +34,10 @@ public class SettingsScreen extends Screen {
 		this.registerSubElement(scroll);
 		header.identifier("settings_header_icons");
 		header.add(new GUIIcon(IconType.GENERIC_HOME) {
-			
+			@Override
+			public void onSingleClick() {
+				NowPlayingMain.screen_container.current(HomeScreen.instance());
+			}
 		});
 		
 		loadSettingsList();

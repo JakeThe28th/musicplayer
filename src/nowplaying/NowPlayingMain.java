@@ -9,6 +9,7 @@ import frost3d.GLState;
 import frost3d.data.BuiltinShaders;
 import frost3d.implementations.BitmapIconRenderer;
 import frost3d.implementations.SimpleWindow;
+import nowplaying.gui.GUIScreenContainer;
 import nowplaying.gui.screens.HomeScreen;
 import nowplaying.settings.gui.SettingsScreen;
 import snowui.GUIInstance;
@@ -19,6 +20,8 @@ public class NowPlayingMain {
 	public static int 			window_width 	= 512;
 	public static int 			window_height 	= 8*96;
 	public static SimpleWindow  window;
+	
+	public static GUIScreenContainer screen_container;
 	
 	public static void main(String[] args) throws IOException, ParseException {
 		
@@ -32,7 +35,10 @@ public class NowPlayingMain {
 		
 		//gui.root(HomeScreen.instance());
 		
-		gui.root(SettingsScreen.instance());
+		//gui.root(SettingsScreen.instance());
+		
+		screen_container = new GUIScreenContainer(HomeScreen.instance());
+		gui.root(screen_container);
 		
 		BitmapIconRenderer icons = new BitmapIconRenderer();
 		gui.iconrenderer(icons);
