@@ -2,7 +2,7 @@ package nowplaying.gui.screens;
 
 import frost3d.enums.IconType;
 import frost3d.utility.Rectangle;
-import nowplaying.gui.GUIHoverable;
+import musicplayer.utility.Log;
 import nowplaying.gui.abstracts.Screen;
 import snowui.GUIInstance;
 import snowui.coss.enums.PredicateKey;
@@ -32,9 +32,9 @@ public class HomeScreen extends Screen {
 		
 		int icons_ww = GUIUtility.max_width(GUIUtility.array(left_icons, right_icons));
 		int icons_hh = GUIUtility.max_height(GUIUtility.array(left_icons, right_icons));
- 
-		left_icons	.limit_rectangle(new Rectangle(b.left(), b.top(), b.left() + icons_ww, b.top() + icons_hh));
-		right_icons	.limit_rectangle(new Rectangle(b.right()-icons_ww, b.top(), b.right(), b.top() + icons_hh));
+
+		left_icons	.limit_rectangle(new Rectangle(b.left(), b.top(), b.left() + left_icons.width(), b.top() + icons_hh));
+		right_icons	.limit_rectangle(new Rectangle(b.right()-right_icons.width(), b.top(), b.right(), b.top() + icons_hh));
 
 		int yy = b.top();
 
@@ -64,26 +64,26 @@ public class HomeScreen extends Screen {
 				
 		tabs.identifier("home_screen_tabs");
 		
-		addLeftIcon(new GUIHoverable(new GUIIcon(IconType.GENERIC_EDIT)) {
+		addLeftIcon(new GUIIcon(IconType.GENERIC_EDIT) {
 			
 		});
 		
-		addRightIcon(new GUIHoverable(new GUIIcon(IconType.GENERIC_SETTINGS)) {
+		addRightIcon(new GUIIcon(IconType.GENERIC_SETTINGS) {
 			
 		});
 		
-		addRightIcon(new GUIHoverable(new GUIIcon(IconType.GENERIC_HAMBURGER)) {
+		addRightIcon(new GUIIcon(IconType.GENERIC_HAMBURGER) {
 			
 		});
 		
-		addTab(new GUIHoverable(new GUIText("Albums").identifier("home_screen_tab_text")) {
+		addTab(new GUIText("Albums") {
 			@Override public void onSingleClick() {
 				selectTab(this);
 			}
 			{ onSingleClick(); }
 		});
 		
-		addTab(new GUIHoverable(new GUIText("Playlists").identifier("home_screen_tab_text")) {
+		addTab(new GUIText("Playlists") {
 			@Override public void onSingleClick() {
 				selectTab(this);
 			}
@@ -91,15 +91,15 @@ public class HomeScreen extends Screen {
 		
 	}
 	
-	public void addLeftIcon	 (GUIHoverable icon) { left_icons 	.add(icon); }
-	public void addRightIcon (GUIHoverable icon) { right_icons	.add(icon); }
-	public void addTab	 	 (GUIHoverable text) { tabs 		.add(text); }
+	public void addLeftIcon	 (GUIIcon icon) { left_icons 	.add(icon); }
+	public void addRightIcon (GUIIcon icon) { right_icons	.add(icon); }
+	public void addTab	 	 (GUIText text) { tabs 			.add(text);  text.identifier("home_screen_tab_text"); }
 	
-	private void selectTab(GUIHoverable tab) {
+	private void selectTab(GUIText tab) {
 		for (GUIElement t : tabs.sub_elements()) {
-			((GUIHoverable) t).root().set(PredicateKey.SELECTED, false);
+			((GUIText) t).set(PredicateKey.SELECTED, false);
 		}
-		tab.root().set(PredicateKey.SELECTED, true);
+		tab.set(PredicateKey.SELECTED, true);
 	}
 
 }

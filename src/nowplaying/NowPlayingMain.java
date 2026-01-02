@@ -7,6 +7,7 @@ import disaethia.io.nbt.NBTCompound;
 import disaethia.io.nbt.NBTTag;
 import frost3d.GLState;
 import frost3d.data.BuiltinShaders;
+import frost3d.implementations.BitmapIconRenderer;
 import frost3d.implementations.SimpleWindow;
 import nowplaying.gui.screens.HomeScreen;
 import nowplaying.settings.gui.SettingsScreen;
@@ -27,13 +28,23 @@ public class NowPlayingMain {
 		
 		GUIInstance gui = new GUIInstance(window, window.input());
 		
+		gui.fps.show_fps = false;
+		
 		//gui.root(HomeScreen.instance());
 		
 		gui.root(SettingsScreen.instance());
 		
+		BitmapIconRenderer icons = new BitmapIconRenderer();
+		gui.iconrenderer(icons);
+		icons.centered_scale(1f);
+		gui.style(ComposingStyleSheet.from((NBTCompound) NBTTag.readUnnamedSNBTFromFile("default_style.snbt")));
+
+//		TODO: update everything to use background_color
+//		
+//		also commit that to snowui
+//		
 		while (!window.should_close()) {
 			
-			gui.style(ComposingStyleSheet.from((NBTCompound) NBTTag.readUnnamedSNBTFromFile("default_style.snbt")));
 			
 			gui.size(window.width(), window.height());
 			

@@ -1,6 +1,6 @@
-package nowplaying.settings.types;
+package nowplaying.settings.data.types;
 
-import nowplaying.settings.Setting;
+import nowplaying.settings.data.Setting;
 
 public class BooleanSetting implements Setting {
 	

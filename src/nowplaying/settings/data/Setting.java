@@ -1,4 +1,4 @@
-package nowplaying.settings;
+package nowplaying.settings.data;
 
 public interface Setting {
 

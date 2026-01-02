@@ -15,6 +15,22 @@
             base_color: "css_rgba(0,0,0,0)"
         }
     },
+    gui_clear_color: {
+        properties: {
+            base_color: "#090909ff"
+        }
+    },
+    accent_color: {
+        properties: {
+            base_color: "#1c73ff"
+        }
+    },
+    dark_color: {
+        properties: {
+            base_color: "#2c2c2cff",
+            outline_color: "#2c2c2cff"
+        }
+    },
     invisible: {
         properties: {
             base_color: "css_rgba(0,0,0,0)"
@@ -25,30 +41,46 @@
             outline_color: "css_rgba(0,0,0,0)"
         }
     },
+    hover_main: {
+        properties: {
+            background_color: "#404040",
+            outline_color: "#5d5d5dff",
+            outline_size: "0"
+        }
+    },
+    hoverable: {
+        predicates: {
+            "HOVERED=true": "hover_main"
+        }
+    },
     text: {
         properties: {
-			size: "18",
+            size: "18",
             base_color: "#F0F0F0",
-			outline_size: "0",
-        }
+            outline_size: "0"
+        },
+        contains: ["hoverable"]
     },
-	grayed_text: {
+    grayed_text: {
         properties: {
-			size: "18",
+            size: "18",
             base_color: "#A0A0A0"
-        }
+        },
+        contains: ["hoverable"]
     },
-	home_screen_tab_text: {
-	  predicates: {
+    home_screen_tab_text: {
+        predicates: {
             "SELECTED=true": "text"
         },
         contains: ["grayed_text"]
     },
     icon: {
         properties: {
-			size: "18",
-            base_color: "#F0F0F0"
-        }
+            size: "28",
+            base_color: "#F0F0F0",
+            background_margin: "2"
+        },
+        contains: ["hoverable"]
     },
     home_screen_tabs: {
         properties: {
@@ -56,49 +88,60 @@
             outline_margin: "0"
         }
     },
-    hoverable: {
-        predicates: {
-            "HOVERED=true": "DESBLUE"
-        }
-    },
-	settings_header_icons: {
+    settings_header_icons: {
         properties: {
+            horizontal_alignment: "middle"
+        }
+    },
+    setting_section_title: {
+        contains: ["text"],
+        properties: {
+            vertical_alignment: "middle",
             horizontal_alignment: "middle",
+            background_color: "css_rgba(0,0,0,0)"
         }
     },
-	setting_section_title: {
-       contains: ["text"],
-	   properties: {
-		vertical_alignment: "middle",
-	  horizontal_alignment: "middle",
+    setting_section_icon: {
+        contains: ["icon"],
+        properties: {
+            vertical_alignment: "middle",
+            background_margin: "-2"
         }
     },
-	setting_section_icon: {
-       contains: ["text"],
-	   properties: {
-            size: "14",
-		vertical_alignment: "middle",
+    setting_collapsible: {
+        properties: {
+            min_width: "container",
+            max_width: "container"
         }
     },
-	setting_collapsible: {
-	   properties: {
-	  min_width: "container",
-	  	  max_width: "container",
-
+    setting_list: {
+        properties: {
+            min_width: "container",
+            max_width: "container"
         }
     },
-	setting_list: {
-	   properties: {
-	  min_width: "container",
-	  	  max_width: "container",
-
+    section_line: {
+        properties: {
+            min_width: "container",
+            base_color: "#3A3A3A",
+            size: "1"
         }
     },
-	section_line: {
-	   properties: {
-			min_width: "container",
-	  	    base_color: "#3A3A3A",
-			size: "2",
-        }
+    setting_key: {
+        properties: {
+            background_color: "css_rgba(0,0,0,0)"
+        },
+        contains: ["text"]
     },
+    setting_boolean: {
+        predicates: {
+            "SELECTED=true": "accent_color"
+        },
+        properties: {
+            outline_size: "1",
+            outline_margin: "1",
+            background_margin: "0"
+        },
+        contains: ["hoverable", "dark_color"]
+    }
 }
