@@ -11,6 +11,7 @@ import frost3d.implementations.BitmapIconRenderer;
 import frost3d.implementations.SimpleWindow;
 import nowplaying.gui.GUIScreenContainer;
 import nowplaying.gui.screens.HomeScreen;
+import nowplaying.settings.Settings;
 import nowplaying.settings.gui.SettingsScreen;
 import snowui.GUIInstance;
 import snowui.coss.ComposingStyleSheet;
@@ -23,13 +24,15 @@ public class NowPlayingMain {
 	
 	public static GUIScreenContainer screen_container;
 	
+	static GUIInstance gui;
+	
 	public static void main(String[] args) throws IOException, ParseException {
 		
 		GLState.initializeGLFW();
 		window = new SimpleWindow(window_width, window_height, "music thingy");
 		BuiltinShaders.init();
 		
-		GUIInstance gui = new GUIInstance(window, window.input());
+		gui = new GUIInstance(window, window.input());
 		
 		gui.fps.show_fps = false;
 		
@@ -43,7 +46,8 @@ public class NowPlayingMain {
 		BitmapIconRenderer icons = new BitmapIconRenderer();
 		gui.iconrenderer(icons);
 		icons.centered_scale(1f);
-		gui.style(ComposingStyleSheet.from((NBTCompound) NBTTag.readUnnamedSNBTFromFile("default_style.snbt")));
+		
+		reloadStyle();
 
 //		TODO: update everything to use background_color
 //		
@@ -51,7 +55,8 @@ public class NowPlayingMain {
 //		
 		while (!window.should_close()) {
 			
-			
+			reloadStyle();
+
 			gui.size(window.width(), window.height());
 			
 			gui.render();
@@ -59,6 +64,25 @@ public class NowPlayingMain {
 			window.tick();
 		}
 		
+	}
+
+	public static void setFontSize(int size) {
+		gui.style().setProperty("font_size", "size", String.valueOf(size));
+		gui.force_update_all();
+	}
+	
+	public static void setIconSize(int size) {
+		gui.style().setProperty("icon_size", "size", String.valueOf(size));
+		gui.force_update_all();
+	}
+	
+	public static void reloadStyle() throws IOException, ParseException {
+		gui.style(ComposingStyleSheet.from((NBTCompound) NBTTag.readUnnamedSNBTFromFile("default_style.snbt")));
+		gui.style().setProperty("slider", "base_color", null);
+		gui.style().setProperty("slider_handle", "base_color", null);
+		gui.style().setProperty("text", "size", null);
+		setFontSize(Settings.font_size());
+		setIconSize((int) (Settings.font_size() * 1.555555555555555555555555555555555555555));
 	}
 
 }

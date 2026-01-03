@@ -15,6 +15,16 @@
             base_color: "css_rgba(0,0,0,0)"
         }
     },
+	font_size: {
+        properties: {
+            size: "18",
+        },
+    },
+	icon_size: {
+        properties: {
+            size: "28",
+        },
+    },
     gui_clear_color: {
         properties: {
             base_color: "#090909ff"
@@ -53,20 +63,23 @@
             "HOVERED=true": "hover_main"
         }
     },
+	 boundable: {
+        predicates: {
+            "BOUNDED=true": "hover_main"
+        }
+    },
     text: {
         properties: {
-            size: "18",
             base_color: "#F0F0F0",
             outline_size: "0"
         },
-        contains: ["hoverable"]
+        contains: ["font_size", "hoverable"]
     },
     grayed_text: {
         properties: {
-            size: "18",
             base_color: "#A0A0A0"
         },
-        contains: ["hoverable"]
+        contains: ["font_size", "hoverable"]
     },
     home_screen_tab_text: {
         predicates: {
@@ -76,11 +89,10 @@
     },
     icon: {
         properties: {
-            size: "28",
             base_color: "#F0F0F0",
             background_margin: "2"
         },
-        contains: ["hoverable"]
+        contains: ["icon_size", "hoverable"]
     },
     home_screen_tabs: {
         properties: {
@@ -143,5 +155,17 @@
             background_margin: "0"
         },
         contains: ["hoverable", "dark_color"]
+    },
+    slider: {
+        properties: {
+            size: "4",
+        },
+        contains: ["boundable", "dark_color"]
+    },
+	slider_handle: {
+        properties: {
+            size: "14",
+        },
+        contains: ["accent_color"]
     }
 }

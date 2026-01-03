@@ -5,26 +5,48 @@ import java.util.HashMap;
 import nowplaying.NowPlayingMain;
 import nowplaying.settings.data.Setting;
 import nowplaying.settings.data.SettingSlot;
+import nowplaying.settings.data.enums.SettingCategory;
 import nowplaying.settings.data.types.BooleanSetting;
+import nowplaying.settings.data.types.RangedIntegerSetting;
 
 public class Settings {
 	
-	public static HashMap<String, SettingSlot> settings = new HashMap<>();
-	public static HashMap<String, String> friendly_names = new HashMap<>();
+	public static HashMap<String, SettingSlot> 		settings 		= new HashMap<>();
+	public static HashMap<String, String> 			friendly_names 	= new HashMap<>();
+	public static HashMap<String, SettingCategory> 	categories		= new HashMap<>();
 
-	public static Setting 	get(String name) 				{ return settings.get(name).value(); 			 }
-	public static void 		set(String name, Setting value) { 		 settings.get(name).defined_value(value);}
+	public static Setting 	get(String key) 				{ return settings.get(key).value(); 			 }
+	public static void 		set(String key, Setting value)  { 		 settings.get(key).defined_value(value); }
 	
-	public static String	getname(String name) 			{ return friendly_names.get(name);				 }
-	public static void 	    setname(String name, String f)  { 	     friendly_names.put(name, f); 			 }
+	public static String			getname	   (String key) { return friendly_names.get(key);	}
+	public static SettingCategory	getcategory(String key) { return categories	   .get(key);	}
 
+	/** Initializes a setting */
+	private static void put(String setting_id, String name, SettingCategory category, SettingSlot slot) {
+		settings		.put(setting_id, slot		);
+		friendly_names	.put(setting_id, name		);
+		categories		.put(setting_id, category	);
+	}
+	
 	static {
-		settings.put("use_vsync", new SettingSlot(new BooleanSetting(true)) {
+		put("use_vsync", "Enable Vsync", SettingCategory.PERFORMANCE, 
+		  new SettingSlot(new BooleanSetting(true)) {
 			@Override public void onChange(Setting new_value) {
 				NowPlayingMain.window.setVsync(((BooleanSetting) new_value).value);
-			}
+		  }
 		});
-		setname("use_vsync", "Enable Vsync");
+		put("font_size", "Font Size", SettingCategory.THEME, 
+		  new SettingSlot(new RangedIntegerSetting(18, 4, 30)) {
+			@Override public void onChange(Setting new_value) {
+				NowPlayingMain.setFontSize(((RangedIntegerSetting) new_value).current);
+		  }
+		});
 	}
+	
+	public static boolean as_boolean(String setting) { return ((BooleanSetting) get(setting)).value; }
+	public static int 	  as_integer(String setting) { return ((RangedIntegerSetting) get(setting)).current; }
+
+	public static boolean use_vsync() { return as_boolean("use_vsync"); }
+	public static int 	  font_size() { return as_integer("font_size"); }
 
 }

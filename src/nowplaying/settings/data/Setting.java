@@ -3,6 +3,8 @@ package nowplaying.settings.data;
 public interface Setting {
 
 	public String serialize();
-	public void deserialize(String serialized);
+	/** Returns a copy of this Setting, with its value influenced by
+	 *  the serialized data. */
+	public Setting deserialize(String serialized);
 	
 }

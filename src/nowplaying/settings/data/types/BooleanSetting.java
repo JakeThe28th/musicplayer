@@ -12,6 +12,6 @@ public class BooleanSetting implements Setting {
 	public String serialize() { return String.valueOf(value); }
 
 	@Override
-	public void deserialize(String serialized) { value = serialized.equals("true"); }
+	public BooleanSetting deserialize(String serialized) { return new BooleanSetting(serialized.equals("true")); }
 
 }

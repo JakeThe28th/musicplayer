@@ -1,5 +1,7 @@
 package nowplaying.settings.gui;
 
+import java.util.HashMap;
+
 import frost3d.enums.IconType;
 import frost3d.utility.Rectangle;
 import nowplaying.NowPlayingMain;
@@ -8,7 +10,9 @@ import nowplaying.gui.elements.GUIRollingText;
 import nowplaying.gui.screens.HomeScreen;
 import nowplaying.settings.Settings;
 import nowplaying.settings.data.SettingSlot;
+import nowplaying.settings.data.enums.SettingCategory;
 import nowplaying.settings.data.types.BooleanSetting;
+import nowplaying.settings.data.types.RangedIntegerSetting;
 import nowplaying.settings.gui.types.GUIBooleanSetting;
 import snowui.GUIInstance;
 import snowui.elements.abstracts.GUIElement;
@@ -16,6 +20,7 @@ import snowui.elements.base.GUICollapsible;
 import snowui.elements.base.GUIIcon;
 import snowui.elements.base.GUIList;
 import snowui.elements.base.GUIScrollable;
+import snowui.elements.base.GUISlider;
 import snowui.elements.base.GUIText;
 import snowui.elements.docking.GUISplit;
 
@@ -56,17 +61,14 @@ public class SettingsScreen extends Screen {
 	public void loadSettingsList() {
 		list.clear();
 		
-		GUIList color_settings 		= new GUIList();
-		GUIList boolean_settings 	= new GUIList();
-		GUIList slider_settings 	= new GUIList();
+		HashMap<SettingCategory, GUIList> categories = new HashMap<>();
 		
-		list.add(section("Colors", color_settings));
-		list.add(section("Toggles", boolean_settings));
-		list.add(section("Sliders", slider_settings));
-		
-		color_settings.identifier("setting_list");
-		boolean_settings.identifier("setting_list");
-		slider_settings.identifier("setting_list");
+		for (SettingCategory category : SettingCategory.values()) {
+			GUIList category_list = new GUIList();
+					category_list.identifier("setting_list");
+			categories	.put(		 category, 		  category_list);
+			list		.add(section(category.friendlyname(), category_list));
+		}
 		
 		list.identifier("setting_list");
 
@@ -74,23 +76,33 @@ public class SettingsScreen extends Screen {
 		
 		for (String key : Settings.settings.keySet()) {
 
-			GUIElement element = switch (Settings.get(key)) {
-				case BooleanSetting s -> new GUIBooleanSetting(s.value) {
-					@Override public void onChangeValue(boolean b) { Settings.set(key, new BooleanSetting(b)); }
-				};
-				default -> new GUIText("Unknown Setting Type");
-			};
-			
 			GUISplit setting_split = new GUISplit();
-				setting_split.first(new GUIRollingText(Settings.getname(key)));
-				setting_split.second(element);
-				
-			setting_split.first().identifier("setting_key");
+				setting_split.first(new GUIRollingText(Settings.getname(key)).identifier("setting_key"));
 				
 			switch (Settings.get(key)) {
-				case BooleanSetting s : boolean_settings.add(setting_split);
-				default: break;
+				case BooleanSetting s : {
+					setting_split.second(new GUIBooleanSetting(s.value) {
+						@Override public void onChangeValue(boolean b) { Settings.set(key, new BooleanSetting(b)); }
+					});
+					break;
+				}
+				case RangedIntegerSetting s : {
+					setting_split.second(new GUISlider(s.percent()) {
+						{ display_amount_on_hover = true; }
+						@Override public void onChange(float v) { Settings.set(key, s.copyWithPercent(v)); }
+						protected String amountFormatted() {
+							return String.valueOf(s.fromPercent(amount));
+						}
+					});
+					break;
+				}
+				default: {
+					setting_split.second(new GUIText("Unknown Setting Type"));
+					break;
+				}
 			};
+			
+			categories.get(Settings.getcategory(key)).add(setting_split);
 			
 		}
 	}
