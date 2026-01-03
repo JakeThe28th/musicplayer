@@ -46,13 +46,33 @@ public class Settings {
 		  new SettingSlot(new BooleanSetting(true)) {
 			@Override public void onChange(Setting new_value) { }
 		});
+		put("skip_broken_songs", "Skip broken songs", SettingCategory.BEHAVIOR, 
+		  new SettingSlot(new BooleanSetting(true)) {
+			@Override public void onChange(Setting new_value) { }
+		});
+		put("previous_song_buffer_threshold", "[previous_song_buffer_threshold]", SettingCategory.BEHAVIOR, 
+		  new SettingSlot(new RangedIntegerSetting(5, 1, 30)) {
+			@Override public void onChange(Setting new_value) { }
+		});
+		put("use_logarithmic_volume", "Use logarithmic volume", SettingCategory.BEHAVIOR, 
+		  new SettingSlot(new BooleanSetting(true)) {
+			@Override public void onChange(Setting new_value) { }
+		});
 	}
 	
 	public static boolean as_boolean(String setting) { return ((BooleanSetting) get(setting)).value; }
 	public static int 	  as_integer(String setting) { return ((RangedIntegerSetting) get(setting)).current; }
 
-	public static boolean use_vsync() 			{ return as_boolean("use_vsync"); }
-	public static int 	  font_size() 			{ return as_integer("font_size"); }
-	public static boolean auto_reload_theme() 	{ return as_boolean("auto_reload_theme"); }
+	public static boolean use_vsync() 						{ return as_boolean("use_vsync"); }
+	public static int 	  font_size() 						{ return as_integer("font_size"); }
+	public static boolean auto_reload_theme() 				{ return as_boolean("auto_reload_theme"); }
+	public static boolean skip_broken_songs()   			{ return as_boolean("skip_broken_songs"); }
+	public static int 	  previous_song_buffer_threshold()  { return as_integer("previous_song_buffer_threshold"); }
+	public static boolean use_logarithmic_volume()   		{ return as_boolean("use_logarithmic_volume"); }
+
+	public static float   volume() {
+		// TODO Auto-generated method stub
+		return 1;
+	}
 
 }

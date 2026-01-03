@@ -16,6 +16,8 @@ import snowui.utility.GUIUtility;
 
 public class HomeScreen extends Screen {
 	
+	public static final String FAVORITES_GROUP = "§[Favorites";
+	
 	public static final HomeScreen instance = new HomeScreen();
 	public static HomeScreen instance() { return instance; }
 	
@@ -104,6 +106,11 @@ public class HomeScreen extends Screen {
 			((GUIText) t).set(PredicateKey.SELECTED, false);
 		}
 		tab.set(PredicateKey.SELECTED, true);
+	}
+	
+	public static void reload_groups() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

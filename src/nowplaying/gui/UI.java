@@ -5,11 +5,14 @@ import java.text.ParseException;
 
 import disaethia.io.nbt.NBTCompound;
 import disaethia.io.nbt.NBTTag;
+import frost3d.enums.IconType;
 import frost3d.implementations.BitmapIconRenderer;
 import frost3d.implementations.SimpleWindow;
+import frost3d.utility.Log;
 import nowplaying.gui.abstracts.Screen;
 import nowplaying.gui.screens.GUIScreenContainer;
 import nowplaying.gui.screens.HomeScreen;
+import nowplaying.parts.data.UUID;
 import nowplaying.settings.Settings;
 import snowui.GUIInstance;
 import snowui.coss.ComposingStyleSheet;
@@ -62,6 +65,26 @@ public class UI {
 
 	public static void set_current_screen(Screen screen) {
 		screen_container.current(screen);
+	}
+
+	public static void showError(String error_text) {
+		// TODO Auto-generated method stub
+		Log.send("TODO: Show Errors: " + error_text);
+	}
+
+	public static void set_current_song(UUID uuid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void setPlaying(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void set_shuffle_icon(IconType icon) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
