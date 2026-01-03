@@ -1,4 +1,4 @@
-package nowplaying.gui;
+package nowplaying.gui.screens;
 
 import frost3d.utility.Rectangle;
 import frost3d.utility.Utility;

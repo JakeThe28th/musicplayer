@@ -3,6 +3,7 @@ package nowplaying.settings;
 import java.util.HashMap;
 
 import nowplaying.NowPlayingMain;
+import nowplaying.gui.UI;
 import nowplaying.settings.data.Setting;
 import nowplaying.settings.data.SettingSlot;
 import nowplaying.settings.data.enums.SettingCategory;
@@ -38,15 +39,20 @@ public class Settings {
 		put("font_size", "Font Size", SettingCategory.THEME, 
 		  new SettingSlot(new RangedIntegerSetting(18, 4, 30)) {
 			@Override public void onChange(Setting new_value) {
-				NowPlayingMain.setFontSize(((RangedIntegerSetting) new_value).current);
+				UI.setFontSize(((RangedIntegerSetting) new_value).current);
 		  }
+		});
+		put("auto_reload_theme", "Automatically reload theme", SettingCategory.THEME, 
+		  new SettingSlot(new BooleanSetting(true)) {
+			@Override public void onChange(Setting new_value) { }
 		});
 	}
 	
 	public static boolean as_boolean(String setting) { return ((BooleanSetting) get(setting)).value; }
 	public static int 	  as_integer(String setting) { return ((RangedIntegerSetting) get(setting)).current; }
 
-	public static boolean use_vsync() { return as_boolean("use_vsync"); }
-	public static int 	  font_size() { return as_integer("font_size"); }
+	public static boolean use_vsync() 			{ return as_boolean("use_vsync"); }
+	public static int 	  font_size() 			{ return as_integer("font_size"); }
+	public static boolean auto_reload_theme() 	{ return as_boolean("auto_reload_theme"); }
 
 }

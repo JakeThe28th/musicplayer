@@ -2,8 +2,7 @@ package nowplaying.gui.screens;
 
 import frost3d.enums.IconType;
 import frost3d.utility.Rectangle;
-import musicplayer.utility.Log;
-import nowplaying.NowPlayingMain;
+import nowplaying.gui.UI;
 import nowplaying.gui.abstracts.Screen;
 import nowplaying.settings.gui.SettingsScreen;
 import snowui.GUIInstance;
@@ -73,7 +72,7 @@ public class HomeScreen extends Screen {
 		addRightIcon(new GUIIcon(IconType.GENERIC_SETTINGS) {
 			@Override
 			public void onSingleClick() {
-				NowPlayingMain.screen_container.current(SettingsScreen.instance());
+				UI.set_current_screen(SettingsScreen.instance());
 			}
 		});
 		

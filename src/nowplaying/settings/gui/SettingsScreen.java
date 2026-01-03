@@ -4,18 +4,16 @@ import java.util.HashMap;
 
 import frost3d.enums.IconType;
 import frost3d.utility.Rectangle;
-import nowplaying.NowPlayingMain;
+import nowplaying.gui.UI;
 import nowplaying.gui.abstracts.Screen;
 import nowplaying.gui.elements.GUIRollingText;
 import nowplaying.gui.screens.HomeScreen;
 import nowplaying.settings.Settings;
-import nowplaying.settings.data.SettingSlot;
 import nowplaying.settings.data.enums.SettingCategory;
 import nowplaying.settings.data.types.BooleanSetting;
 import nowplaying.settings.data.types.RangedIntegerSetting;
 import nowplaying.settings.gui.types.GUIBooleanSetting;
 import snowui.GUIInstance;
-import snowui.elements.abstracts.GUIElement;
 import snowui.elements.base.GUICollapsible;
 import snowui.elements.base.GUIIcon;
 import snowui.elements.base.GUIList;
@@ -41,7 +39,7 @@ public class SettingsScreen extends Screen {
 		header.add(new GUIIcon(IconType.GENERIC_HOME) {
 			@Override
 			public void onSingleClick() {
-				NowPlayingMain.screen_container.current(HomeScreen.instance());
+				UI.set_current_screen(HomeScreen.instance());
 			}
 		});
 		
@@ -58,55 +56,6 @@ public class SettingsScreen extends Screen {
 	
 	// -- -- -- //
 	
-	public void loadSettingsList() {
-		list.clear();
-		
-		HashMap<SettingCategory, GUIList> categories = new HashMap<>();
-		
-		for (SettingCategory category : SettingCategory.values()) {
-			GUIList category_list = new GUIList();
-					category_list.identifier("setting_list");
-			categories	.put(		 category, 		  category_list);
-			list		.add(section(category.friendlyname(), category_list));
-		}
-		
-		list.identifier("setting_list");
-
-		// ... actual settings loading ... //
-		
-		for (String key : Settings.settings.keySet()) {
-
-			GUISplit setting_split = new GUISplit();
-				setting_split.first(new GUIRollingText(Settings.getname(key)).identifier("setting_key"));
-				
-			switch (Settings.get(key)) {
-				case BooleanSetting s : {
-					setting_split.second(new GUIBooleanSetting(s.value) {
-						@Override public void onChangeValue(boolean b) { Settings.set(key, new BooleanSetting(b)); }
-					});
-					break;
-				}
-				case RangedIntegerSetting s : {
-					setting_split.second(new GUISlider(s.percent()) {
-						{ display_amount_on_hover = true; }
-						@Override public void onChange(float v) { Settings.set(key, s.copyWithPercent(v)); }
-						protected String amountFormatted() {
-							return String.valueOf(s.fromPercent(amount));
-						}
-					});
-					break;
-				}
-				default: {
-					setting_split.second(new GUIText("Unknown Setting Type"));
-					break;
-				}
-			};
-			
-			categories.get(Settings.getcategory(key)).add(setting_split);
-			
-		}
-	}
-
 	private GUICollapsible section(String name, GUIList setting_list) {
 		GUIList hidden_list = new GUIList();
 			hidden_list.add(setting_list);
@@ -120,5 +69,46 @@ public class SettingsScreen extends Screen {
 		result.identifier("setting_collapsible");
 		return result;
 	}
+	
+	public void loadSettingsList() {
+		list.clear();
+		
+		HashMap<SettingCategory, GUIList> categories = new HashMap<>();
+		
+		for (SettingCategory category : SettingCategory.values()) {
+			GUIList category_list = new GUIList();
+					category_list.identifier("setting_list");
+			categories	.put(		 category, 		  		  category_list);
+			list		.add(section(category.friendlyname(), category_list));
+		}
+		
+		list.identifier("setting_list");
 
+		// ... actual settings loading ... //
+		
+		for (String key : Settings.settings.keySet()) {
+			GUISplit setting_split = new GUISplit();
+			setting_split.first(new GUIRollingText(Settings.getname(key)).identifier("setting_key"));
+			
+			switch (Settings.get(key)) {
+				case BooleanSetting s : 
+					setting_split.second(new GUIBooleanSetting(s.value) {
+						@Override public void onChangeValue(boolean b) { Settings.set(key, new BooleanSetting(b)); }
+					}); 
+					break;
+				case RangedIntegerSetting s : 
+					setting_split.second(new GUISlider(s.percent()) {
+						{ display_amount_on_hover = true; }
+						@Override public void onChange(float v) { Settings.set(key, s.copyWithPercent(v)); }
+						@Override protected String amountFormatted() { return String.valueOf(s.fromPercent(amount)); }
+					}); 
+					break;
+				default: 
+					setting_split.second(new GUIText("Unknown Setting Type"));
+					break;
+			};
+			categories.get(Settings.getcategory(key)).add(setting_split);
+		}
+	}
+	
 }
