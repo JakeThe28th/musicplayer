@@ -12,7 +12,6 @@
             min_height: "flex",
             horizontal_alignment: "left",
             vertical_alignment: "top",
-            base_color: "css_rgba(0,0,0,0)"
         }
     },
 	font_size: {

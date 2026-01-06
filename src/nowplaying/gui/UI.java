@@ -16,6 +16,7 @@ import nowplaying.parts.data.UUID;
 import nowplaying.settings.Settings;
 import snowui.GUIInstance;
 import snowui.coss.ComposingStyleSheet;
+import snowui.elements.interfaces.FloatingElement;
 
 public class UI {
 
@@ -85,6 +86,10 @@ public class UI {
 	public static void set_shuffle_icon(IconType icon) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public static void addWindow(FloatingElement element) {
+		gui.add_window(element);
 	}
 	
 }

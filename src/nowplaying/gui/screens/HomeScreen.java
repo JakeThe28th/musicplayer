@@ -1,7 +1,13 @@
 package nowplaying.gui.screens;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
+
 import frost3d.enums.IconType;
 import frost3d.utility.Rectangle;
+import nowplaying.NowPlayingMain;
 import nowplaying.gui.UI;
 import nowplaying.gui.abstracts.Screen;
 import nowplaying.settings.gui.SettingsScreen;
@@ -12,6 +18,9 @@ import snowui.elements.base.GUIIcon;
 import snowui.elements.base.GUIList;
 import snowui.elements.base.GUIScrollable;
 import snowui.elements.base.GUIText;
+import snowui.elements.floating.GUIContextMenu;
+import snowui.elements.floating.GUIContextMenuOption;
+import snowui.elements.floating.GUIInputPopup;
 import snowui.utility.GUIUtility;
 
 public class HomeScreen extends Screen {
@@ -59,16 +68,44 @@ public class HomeScreen extends Screen {
 
 	// -- ==    _____________________________________________    == -- //
 	
+	ArrayList<GUIContextMenuOption> add_album_options 		= new ArrayList<>();
+	ArrayList<GUIContextMenuOption> add_playlist_options 	= new ArrayList<>();
+	
+	private enum Tab { ALBUMS, PLAYLISTS }
+	private 	 Tab current_tab = Tab.ALBUMS;
+
 	{
 		this.registerSubElement(left_icons);
 		this.registerSubElement(right_icons);
 		this.registerSubElement(tabs);
 		this.registerSubElement(groups_scroll);
+		
+		// Tabs //
 				
 		tabs.identifier("home_screen_tabs");
 		
+		addTab(new GUIText("Albums") {
+			@Override public void onSingleClick() { selectTab(this, Tab.ALBUMS); }
+			{ onSingleClick(); }
+		});
+		
+		addTab(new GUIText("Playlists") {
+			@Override public void onSingleClick() { selectTab(this, Tab.PLAYLISTS); }
+		});
+		
+		// Icons //
+		
 		addLeftIcon(new GUIIcon(IconType.GENERIC_EDIT) {
 			
+		});
+		
+		addLeftIcon(new GUIIcon(IconType.GENERIC_PLUS) {
+			@Override
+			public void onSingleClick() {
+				Rectangle b = hover_rectangle();
+				if (current_tab == Tab.ALBUMS ) 	UI.addWindow(new GUIContextMenu(add_album_options, b.center().x, b.center().y));
+				if (current_tab == Tab.PLAYLISTS ) 	UI.addWindow(new GUIContextMenu(add_playlist_options, b.center().x, b.center().y));
+			}
 		});
 		
 		addRightIcon(new GUIIcon(IconType.GENERIC_SETTINGS) {
@@ -82,35 +119,53 @@ public class HomeScreen extends Screen {
 			
 		});
 		
-		addTab(new GUIText("Albums") {
-			@Override public void onSingleClick() {
-				selectTab(this);
-			}
-			{ onSingleClick(); }
-		});
-		
-		addTab(new GUIText("Playlists") {
-			@Override public void onSingleClick() {
-				selectTab(this);
-			}
-		});
-		
 	}
 	
 	public void addLeftIcon	 (GUIIcon icon) { left_icons 	.add(icon); }
 	public void addRightIcon (GUIIcon icon) { right_icons	.add(icon); }
 	public void addTab	 	 (GUIText text) { tabs 			.add(text);  text.identifier("home_screen_tab_text"); }
 	
-	private void selectTab(GUIText tab) {
-		for (GUIElement t : tabs.sub_elements()) {
-			((GUIText) t).set(PredicateKey.SELECTED, false);
-		}
+	private void selectTab(GUIText tab, Tab type) {
+		for (GUIElement t : tabs.sub_elements()) t.set(PredicateKey.SELECTED, false);
 		tab.set(PredicateKey.SELECTED, true);
+		current_tab = type;
+		reload_groups();
 	}
 	
 	public static void reload_groups() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	// -- ==    _____________________________________________    == -- //
+
+	{
+		add_album_options.add(new GUIContextMenuOption(IconType.CONTROL_PIN, "New album", "spooky") {
+			@Override
+			public void onSingleClick(GUIInstance gui) {
+				 {
+//						String name = TinyFileDialogs.tinyfd_inputBox(
+//								NowPlayingMain.PROGRAM_TITLE + " ", 
+//								"Name of new album", 
+//								"album-" + (Math.random() * 10000));
+//						if (name != null) {
+//							try {
+//								Album n = new Album(name);
+//								Library.registerAlbum(n);
+//								n.save();
+//							} catch (IOException e) { e.printStackTrace(); }
+//						}
+					 	GUIInputPopup input = new GUIInputPopup("Name of new album", "album-" + (Math.random() * 10000), gui) {
+					 		@Override
+					 		public void onFinish(String string) {
+					 			
+					 		}
+					 	};
+					 	UI.addWindow(input);
+					}
+				 close_menu(gui);
+			}
+		});
 	}
 
 }

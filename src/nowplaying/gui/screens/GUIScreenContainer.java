@@ -38,6 +38,10 @@ public class GUIScreenContainer extends GUIElement {
 			current.limit_rectangle(b);
 		}
 		
+		if (previous != null && timer.just_finished()) {
+			current.force_update_all();
+		}
+		
 		this.hover_rectangle(b);
 			
 	}
