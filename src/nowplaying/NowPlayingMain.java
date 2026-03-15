@@ -3,6 +3,8 @@ package nowplaying;
 import java.io.IOException;
 import java.text.ParseException;
 
+import javax.imageio.ImageIO;
+
 import frost3d.GLState;
 import frost3d.data.BuiltinShaders;
 import frost3d.implementations.SimpleWindow;
@@ -27,6 +29,8 @@ public class NowPlayingMain {
 	public static void title(String string) { window.title(string); }
 
 	public static void main(String[] args) throws IOException, ParseException {
+		
+		ImageIO.setUseCache(false);
 		
 		GLState.initializeGLFW();
 			window = new SimpleWindow(window_initial_width, window_initial_height, "music thingy");

@@ -20,6 +20,7 @@ import snowui.elements.base.GUIList;
 import snowui.elements.base.GUIScrollable;
 import snowui.elements.base.GUISlider;
 import snowui.elements.base.GUIText;
+import snowui.elements.detail.GUISectionLine;
 import snowui.elements.docking.GUISplit;
 
 public class SettingsScreen extends Screen {
