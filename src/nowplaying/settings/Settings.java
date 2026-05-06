@@ -1,7 +1,14 @@
 package nowplaying.settings;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import musicplayer.utility.Log;
 import nowplaying.NowPlayingMain;
 import nowplaying.gui.UI;
 import nowplaying.settings.data.Setting;
@@ -9,6 +16,7 @@ import nowplaying.settings.data.SettingSlot;
 import nowplaying.settings.data.enums.SettingCategory;
 import nowplaying.settings.data.types.BooleanSetting;
 import nowplaying.settings.data.types.RangedIntegerSetting;
+import nowplaying.utility.Utility;
 
 public class Settings {
 	
@@ -16,8 +24,12 @@ public class Settings {
 	public static HashMap<String, String> 			friendly_names 	= new HashMap<>();
 	public static HashMap<String, SettingCategory> 	categories		= new HashMap<>();
 
-	public static Setting 	get(String key) 				{ return settings.get(key).value(); 			 }
-	public static void 		set(String key, Setting value)  { 		 settings.get(key).defined_value(value); }
+	public static Setting 	get(String key) 				{ return settings.get(key).value(); }
+	
+	public static void 		set(String key, Setting value)  { 		
+		settings.get(key).defined_value(value);
+		save_settings(); 
+	}
 	
 	public static String			getname	   (String key) { return friendly_names.get(key);	}
 	public static SettingCategory	getcategory(String key) { return categories	   .get(key);	}
@@ -58,6 +70,7 @@ public class Settings {
 		  new SettingSlot(new BooleanSetting(true)) {
 			@Override public void onChange(Setting new_value) { }
 		});
+				
 	}
 	
 	public static boolean as_boolean(String setting) { return ((BooleanSetting) get(setting)).value; }
@@ -73,6 +86,58 @@ public class Settings {
 	public static float   volume() {
 		// TODO Auto-generated method stub
 		return 1;
+	}
+	
+	// ----- //
+	
+	public static final String CONFIG_PATH = "settings.txt";
+	
+	/** Saves all non-default settings to a file. */
+	public static void save_settings() {
+		String serialized = "";
+			   serialized += "# " + NowPlayingMain.PROGRAM_TITLE + " configuration file.\n";
+			   serialized += "# Any comments added to this file will not be saved.\n";
+			   serialized += "\n";
+
+		for (String setting_key : settings.keySet()) {
+			if (!settings.get(setting_key).is_modified_from_default()) continue;
+			SettingCategory category 	= categories		.get(setting_key);
+			String 			name 		= friendly_names	.get(setting_key);
+			Setting 		value 		= settings			.get(setting_key).value();
+			String			type		= value.getClass().getSimpleName();
+			String			s_value		= Utility.escape(value.serialize());
+			serialized += "# " + category.friendlyname() + " - " + name + " (" + type + ")\n";
+			serialized += setting_key + "=" + s_value + "\n";
+			serialized += "\n";
+		}
+		
+		try {
+			Files.delete(Paths.get(CONFIG_PATH));
+			Files.writeString(Paths.get(CONFIG_PATH), serialized, StandardOpenOption.CREATE);
+		} catch (IOException e) {
+			UI.showError("Failed to save settings file. " + e.getMessage());
+			Log.trace(e);
+		}
+	}
+	
+	public static void load_settings() {
+		try {
+			String[] lines = Files.readString(Paths.get(CONFIG_PATH)) .split("\n");
+			
+			for (String line : lines) {
+				if (line.isBlank()) continue;
+				if (line.startsWith("#")) continue;
+				String setting_name = line.substring(0, line.indexOf("="));
+				String setting_value = line.substring(line.indexOf("=") + 1);
+				// (settings from the file are treated like user defined settings, even if they're defaults)
+				SettingSlot setting_slot = settings.get(setting_name);
+				setting_slot.defined_value(setting_slot.value().deserialize(setting_value));
+			}
+			
+		} catch (IOException e) {
+			UI.showError("Failed to read settings file. " + e.getMessage());
+			Log.trace(e);
+		}
 	}
 
 }

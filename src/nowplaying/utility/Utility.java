@@ -260,4 +260,12 @@ public class Utility {
 		}
 	}
 	
+	public static String escape(String string) {
+		return HiddenUtility.insertEscapes(string);
+	}
+	
+	public static String unescape(String string) {
+		return string.translateEscapes();
+	}
+	
 }

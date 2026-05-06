@@ -15,6 +15,7 @@ import nowplaying.parts.Library;
 import nowplaying.parts.MusicPlayer;
 import nowplaying.parts.data.Album;
 import nowplaying.parts.data.Playlist;
+import nowplaying.settings.Settings;
 
 public class NowPlayingMain {
 	
@@ -60,6 +61,9 @@ public class NowPlayingMain {
 			FallbackGraphics.center_text(0, 0, "Initializing GUI");
 			FallbackGraphics.end_text();
 			UI.init(window);
+			
+			// (Runs after the rest of initialization due to onChange callbacks)
+			Settings.load_settings();
 			
 			// Where Most Of The Program Actually Happens
 			while (!window.should_close()) {

@@ -10,6 +10,11 @@ public abstract class SettingSlot {
 		return defined_value;
 	}
 	
+	public boolean is_modified_from_default() {
+		if (defined_value == null) return false;
+		return true;
+	}
+	
 	public void defined_value(Setting value) {
 		this.defined_value = value;
 		this.onChange(value);
