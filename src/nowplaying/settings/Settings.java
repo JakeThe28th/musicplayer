@@ -43,7 +43,7 @@ public class Settings {
 		  }
 		});
 		put("auto_reload_theme", "Automatically reload theme", SettingCategory.THEME, 
-		  new SettingSlot(new BooleanSetting(true)) {
+		  new SettingSlot(new BooleanSetting(false)) {
 			@Override public void onChange(Setting new_value) { }
 		});
 		put("skip_broken_songs", "Skip broken songs", SettingCategory.BEHAVIOR, 

@@ -1,11 +1,11 @@
 package nowplaying.settings.gui.types;
 
 import frost3d.utility.Rectangle;
-import nowplaying.gui.abstracts.GUISizelessElement;
 import snowui.GUIInstance;
 import snowui.coss.enums.PredicateKey;
+import snowui.elements.abstracts.GUIElement;
 
-public class GUIBooleanSetting extends GUISizelessElement {
+public class GUIBooleanSetting extends GUIElement {
 	
 	{ identifier("setting_boolean"); }
 	
@@ -14,6 +14,12 @@ public class GUIBooleanSetting extends GUISizelessElement {
 	}
 
 	Rectangle indicator;
+	
+	@Override
+	public void recalculateSize(GUIInstance gui) {
+		this.unpadded_height = 10;
+		this.unpadded_width = 10;
+	}
 	
 	@Override
 	public void updateDrawInfo(GUIInstance gui) {
