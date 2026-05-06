@@ -5,9 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import musicplayer.utility.Log;
 import nowplaying.NowPlayingMain;
 import nowplaying.gui.UI;
@@ -121,6 +118,7 @@ public class Settings {
 	}
 	
 	public static void load_settings() {
+		if (!Files.exists(Paths.get(CONFIG_PATH))) return;
 		try {
 			String[] lines = Files.readString(Paths.get(CONFIG_PATH)) .split("\n");
 			
