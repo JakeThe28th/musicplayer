@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -73,11 +74,11 @@ public class Utility {
 		return classes;
 	}
 	
-	public static void runCommand(GenericSingleStringInterface tick, GenericInterface finish, String...command) throws IOException {
+	public static void runCommand(Consumer<String> tick, Runnable finish, String...command) throws IOException {
 		runCommand(null, tick, finish, command);
 	}
 	
-	public static void runCommand(File directory, GenericSingleStringInterface tick, GenericInterface finish, String...command) throws IOException {
+	public static void runCommand(File directory, Consumer<String> tick, Runnable finish, String...command) throws IOException {
 		ProcessBuilder builder = new ProcessBuilder(command);
 		if (directory != null) builder.directory(directory);
 		
@@ -90,7 +91,7 @@ public class Utility {
             if (line == null) { break; }
             //System.out.println(line);
             Log.send("[cmd.exe] " + line);
-            if (tick != null) tick.run(line);
+            if (tick != null) tick.accept(line);
             if (line.contains("ERROR")) UI.showError(line);
         }
         if (finish != null) finish.run();
