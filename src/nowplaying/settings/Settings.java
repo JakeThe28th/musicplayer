@@ -88,7 +88,8 @@ public class Settings {
 	// ----- //
 	
 	public static final String CONFIG_PATH = "settings.txt";
-	
+	public static final String CONFIG_PATH_TEMP = "settings_new.txt";
+
 	/** Saves all non-default settings to a file. */
 	public static void save_settings() {
 		String serialized = "";
@@ -109,12 +110,15 @@ public class Settings {
 		}
 		
 		try {
+			Files.writeString(Paths.get(CONFIG_PATH_TEMP), serialized, StandardOpenOption.CREATE);
 			if (Files.exists(Paths.get(CONFIG_PATH))) Files.delete(Paths.get(CONFIG_PATH));
-			Files.writeString(Paths.get(CONFIG_PATH), serialized, StandardOpenOption.CREATE);
+			Files.copy(Paths.get(CONFIG_PATH_TEMP), Paths.get(CONFIG_PATH));
+			Files.delete(Paths.get(CONFIG_PATH_TEMP));
 		} catch (IOException e) {
 			UI.showError("Failed to save settings file. " + e.getMessage());
 			Log.trace(e);
 		}
+		
 	}
 	
 	public static void load_settings() {

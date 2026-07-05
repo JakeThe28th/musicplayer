@@ -1,13 +1,9 @@
 package nowplaying.gui.screens;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import frost3d.enums.IconType;
 import frost3d.utility.Rectangle;
-import nowplaying.NowPlayingMain;
 import nowplaying.gui.UI;
 import nowplaying.gui.abstracts.Screen;
 import nowplaying.settings.gui.SettingsScreen;
