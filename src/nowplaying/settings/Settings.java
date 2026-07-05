@@ -109,7 +109,7 @@ public class Settings {
 		}
 		
 		try {
-			Files.delete(Paths.get(CONFIG_PATH));
+			if (Files.exists(Paths.get(CONFIG_PATH))) Files.delete(Paths.get(CONFIG_PATH));
 			Files.writeString(Paths.get(CONFIG_PATH), serialized, StandardOpenOption.CREATE);
 		} catch (IOException e) {
 			UI.showError("Failed to save settings file. " + e.getMessage());
