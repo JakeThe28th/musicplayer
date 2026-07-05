@@ -1,11 +1,17 @@
 package nowplaying.gui.screens;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import frost3d.enums.IconType;
 import frost3d.utility.Rectangle;
+import nowplaying.parts.data.Album;
+import nowplaying.parts.data.Playlist;
+import nowplaying.parts.Library;
 import nowplaying.gui.UI;
 import nowplaying.gui.abstracts.Screen;
+import nowplaying.gui.elements.GUIPlaylistCover;
+import nowplaying.gui.elements.GUIPlaylistGroup;
 import nowplaying.settings.gui.SettingsScreen;
 import snowui.GUIInstance;
 import snowui.coss.enums.PredicateKey;
@@ -79,6 +85,8 @@ public class HomeScreen extends Screen {
 		// Tabs //
 				
 		tabs.identifier("home_screen_tabs");
+		groups.identifier("home_screen_groups");
+		groups_scroll.horizontal_scroll_enabled(false);
 		
 		addTab(new GUIText("Albums") {
 			@Override public void onSingleClick() { selectTab(this, Tab.ALBUMS); }
@@ -91,10 +99,6 @@ public class HomeScreen extends Screen {
 		
 		// Icons //
 		
-		addLeftIcon(new GUIIcon(IconType.GENERIC_EDIT) {
-			
-		});
-		
 		addLeftIcon(new GUIIcon(IconType.GENERIC_PLUS) {
 			@Override
 			public void onSingleClick() {
@@ -102,6 +106,10 @@ public class HomeScreen extends Screen {
 				if (current_tab == Tab.ALBUMS ) 	UI.addWindow(new GUIContextMenu(add_album_options, b.center().x, b.center().y));
 				if (current_tab == Tab.PLAYLISTS ) 	UI.addWindow(new GUIContextMenu(add_playlist_options, b.center().x, b.center().y));
 			}
+		});
+		
+		addLeftIcon(new GUIIcon(IconType.GENERIC_EDIT) {
+			
 		});
 		
 		addRightIcon(new GUIIcon(IconType.GENERIC_SETTINGS) {
@@ -128,8 +136,34 @@ public class HomeScreen extends Screen {
 		reload_groups();
 	}
 	
-	public static void reload_groups() {
+	public void reload_groups() {
 		// TODO Auto-generated method stub
+		
+		groups.clear();
+		
+		switch (current_tab) {
+			case ALBUMS: {
+				HashMap<String, GUIPlaylistGroup> h_groups = new HashMap<>();
+				for (String group : Library.album_group_order) {
+					h_groups.put(group, new GUIPlaylistGroup());
+					groups.add(h_groups.get(group));
+				}
+				for (Album album : Library.listAlbums()) {
+					String group = album.linked_playlist.metadata("group");
+					if (group == null) {
+						h_groups.get("Default").addPlaylist(album.linked_playlist);
+
+					} else {
+						h_groups.get(group).addPlaylist(album.linked_playlist);
+					}
+				}
+				break;
+			}
+			case PLAYLISTS: for (Playlist playlist : Library.listPlaylists()) {
+				// TODO;
+			}
+
+		}
 		
 	}
 	

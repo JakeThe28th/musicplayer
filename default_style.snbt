@@ -80,12 +80,6 @@
         },
         contains: ["font_size", "hoverable"]
     },
-    home_screen_tab_text: {
-        predicates: {
-            "SELECTED=true": "text"
-        },
-        contains: ["grayed_text"]
-    },
     icon: {
         properties: {
             base_color: "#F0F0F0",
@@ -93,11 +87,20 @@
         },
         contains: ["icon_size", "hoverable"]
     },
+    home_screen_tab_text: {
+        predicates: {
+            "SELECTED=true": "text"
+        },
+        contains: ["grayed_text"]
+    },
     home_screen_tabs: {
         properties: {
             horizontal_alignment: "middle",
             outline_margin: "0"
         }
+    },
+	home_screen_groups: {
+	    contains: ["snowui-w_contained"]
     },
     settings_header_icons: {
         properties: {
@@ -166,5 +169,25 @@
             size: "14",
         },
         contains: ["accent_color"]
-    }
+    },
+	scrollbar: {
+        properties: {
+            base_color: "css_rgba(255,255,255,.04)",
+			left_margin: "12",
+			right_margin: "12",
+        }
+    },
+	scroll_handle: {
+        properties: {
+			left_margin: "5",
+			right_margin: "5",
+			size: "12",
+        },
+		contains: ["accent_color"]
+    },
+	playlist_group_title_elements: {
+		properties: {
+			horizontal_alignment: "middle",
+		}
+	}
 }

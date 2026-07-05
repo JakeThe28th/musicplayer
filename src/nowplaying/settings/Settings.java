@@ -67,7 +67,18 @@ public class Settings {
 		  new SettingSlot(new BooleanSetting(true)) {
 			@Override public void onChange(Setting new_value) { }
 		});
-				
+		put("max_album_grid_size", "[max_album_grid_size]", SettingCategory.APPEARANCE, 
+		  new SettingSlot(new RangedIntegerSetting(500, 20, 1000)) {
+			@Override public void onChange(Setting new_value) { }
+		});
+		put("min_album_grid_size", "[min_album_grid_size]", SettingCategory.APPEARANCE, 
+		  new SettingSlot(new RangedIntegerSetting(150, 20, 1000)) {
+			@Override public void onChange(Setting new_value) { }
+		});
+		put("album_grid_colum_target", "[album_grid_colum_target]", SettingCategory.APPEARANCE, 
+		  new SettingSlot(new RangedIntegerSetting(3, 1, 10)) {
+			@Override public void onChange(Setting new_value) { }
+		});
 	}
 	
 	public static boolean as_boolean(String setting) { return ((BooleanSetting) get(setting)).value; }
@@ -79,6 +90,9 @@ public class Settings {
 	public static boolean skip_broken_songs()   			{ return as_boolean("skip_broken_songs"); }
 	public static int 	  previous_song_buffer_threshold()  { return as_integer("previous_song_buffer_threshold"); }
 	public static boolean use_logarithmic_volume()   		{ return as_boolean("use_logarithmic_volume"); }
+	public static int 	  max_album_grid_size() 			{ return as_integer("max_album_grid_size"); }
+	public static int 	  min_album_grid_size() 			{ return as_integer("min_album_grid_size"); }
+	public static int 	  album_grid_colum_target() 		{ return as_integer("album_grid_colum_target"); }
 
 	public static float   volume() {
 		// TODO Auto-generated method stub

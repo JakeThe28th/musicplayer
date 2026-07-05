@@ -56,12 +56,17 @@ public class UI {
 	}
 	
 	public static void reloadStyle() throws IOException, ParseException {
-		gui.style(ComposingStyleSheet.from((NBTCompound) NBTTag.readUnnamedSNBTFromFile("default_style.snbt")));
-		gui.style().setProperty("slider", "base_color", null);
-		gui.style().setProperty("slider_handle", "base_color", null);
-		gui.style().setProperty("text", "size", null);
-		setFontSize(Settings.font_size());
-		setIconSize((int) (Settings.font_size() * 1.555555555555555555555555555555555555555));
+		try {
+			gui.style(ComposingStyleSheet.from((NBTCompound) NBTTag.readUnnamedSNBTFromFile("default_style.snbt")));
+			gui.style().setProperty("slider", "base_color", null);
+			gui.style().setProperty("slider_handle", "base_color", null);
+			gui.style().setProperty("text", "size", null);
+			setFontSize(Settings.font_size());
+			setIconSize((int) (Settings.font_size() * 1.555555555555555555555555555555555555555));
+		} catch (Exception e) {
+			Log.trace(e);
+			showError("Failed to read Stylesheet.");
+		}
 	}
 
 	public static void set_current_screen(Screen screen) {

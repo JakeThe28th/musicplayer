@@ -66,7 +66,7 @@ public class Library {
 		playlist_group_order = Utility.readStringDefaulted(playlist_group_order_location, HomeScreen.FAVORITES_GROUP + "\nDefault").split("\n");
 		
 		is_initialized = true;
-		HomeScreen.reload_groups();
+		HomeScreen.instance().reload_groups();
 	}
 	
 	public static void registerAlbum(Album album) {
@@ -81,7 +81,7 @@ public class Library {
 		} else {
 			playlists.put(album.getIdentifier(), album.linked_playlist);
 		}
-		HomeScreen.reload_groups();
+		if (is_initialized) HomeScreen.instance().reload_groups();
 	}
 	
 	public static void registerPlaylist(Playlist playlist) {
@@ -90,7 +90,7 @@ public class Library {
 		}
 		
 		playlists.put(playlist.identifier(), playlist);
-		HomeScreen.reload_groups();
+		if (is_initialized) HomeScreen.instance().reload_groups();
 	}
 	
 	public static Song getSongFromAlbum(String album_name, String identifier) {
@@ -160,7 +160,7 @@ public class Library {
 		Utility.delete(dir);
 		Log.send("Deleted " + playlist.name());
 		UI.showError("Deleted " + playlist.name());
-		HomeScreen.reload_groups();
+		HomeScreen.instance().reload_groups();
 	}
 
 	public static void deleteAlbum(String identifier) {
@@ -176,7 +176,7 @@ public class Library {
 		
 		Log.send("Deleted " + album.linked_playlist.name());
 		UI.showError("Deleted " + album.linked_playlist.name());
-		HomeScreen.reload_groups();
+		HomeScreen.instance().reload_groups();
 	}
 	
 }
